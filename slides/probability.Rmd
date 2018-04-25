@@ -1,0 +1,70 @@
+---
+title: "Introduction to Data"
+author: "Sam Tyner"
+date: "TBD"
+output: 
+  beamer_presentation:
+    theme: "AnnArbor"
+    colortheme: "dolphin"
+    includes:
+      in_header: header.tex
+      before_body: slide_prefix.tex
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, fig.align = 'center', fig.width = 6)
+```
+
+## Textbook
+
+These slides are based on the book *OpenIntro Statistics* by David Diez, Christopher Barr, and Mine Çetinkaya-Rundel
+
+The book can be downloaded from [https://www.openintro.org/stat/textbook.php](https://www.openintro.org/stat/textbook.php)
+
+
+## Outline 
+
+- Defining Probability
+- Conditional probability
+- Random variables
+- Continuous distributions
+
+# Defining Probability
+
+## What is probability?
+
+\begin{figure}
+\centering
+\includegraphics[width=.5\linewidth]{img/confused.png}
+\caption{Confused Nick Young}
+\end{figure}
+
+## Very formal definition 
+
+> The probability of an outcome is the proportion of times the outcome would occur if we observed the random process an infinite number of times.
+
+- What is an outcome? 
+- What is a random process? 
+
+## Very formal definition 
+
+> The probability of an outcome is the proportion of times the outcome would occur if we observed the random process an infinite number of times.
+
+- What is an outcome? \textcolor{red}{Any event or outcome of interest}
+- What is a random process?  \textcolor{red}{Anything that causes events at random that can theoretically happen an infinite number of times}
+
+## Examples 
+
+Random Process | Outcome 
+:-------------:|:-------:
+Roll of a die | 6
+Flip of a coin | Heads 
+ 
+
+# Conditional probability
+
+# Random variables
+
+# Continuous distributions

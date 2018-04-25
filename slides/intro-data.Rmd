@@ -1,0 +1,738 @@
+---
+title: "Introduction to Data"
+author: "Sam Tyner"
+date: "TBD"
+output: 
+  beamer_presentation:
+    theme: "AnnArbor"
+    colortheme: "dolphin"
+    includes:
+      in_header: header.tex
+      before_body: slide_prefix.tex
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, fig.align = 'center', fig.width = 6)
+```
+
+## Textbook
+
+These slides are based on the book *OpenIntro Statistics* by David Diez, Christopher Barr, and Mine Çetinkaya-Rundel
+
+The book can be downloaded from [https://www.openintro.org/stat/textbook.php](https://www.openintro.org/stat/textbook.php)
+
+
+## Outline 
+
+- Introductory example - why statistics? 
+- Data basics
+- Overview of data collection principles
+- Obervational studies and sampling strategies
+- Experiments
+- Looking at Numerical Data
+- Looking at Categorical data
+
+
+# Introductory example - Why Statistics? 
+
+## Why Statistics? 
+
+>- Good scientists use rigorous methods and make careful observations
+
+  - Observations aka **data**: the backbone of a statistical investigation
+  
+>- **Statistics**: "the study of how best to collect, analyze, and draw conclusions from data" (from the textbook)
+>- **Statistics**: "a branch of mathematics dealing with the collection, classification, analysis, interpretation of numerical facts, for drawing inferences on the basis of their quantifiable likelihood (probability) of data." (from [Wikipedia](https://en.wikipedia.org/wiki/Statistics))
+>- **Statistics**: "the study of variation" (my definition)
+
+## Statistics in context
+
+General investigative process: 
+
+1. Identify a question or problem.
+2. Collect relevant data on the topic. 
+3. Analyze the data.
+4. Form a conclusion.
+
+Where do you think "statistics" fit in?
+
+## Statistics in context
+
+General investigative process: 
+
+1. Identify a question or problem.
+2. \textcolor{red}{Collect relevant data on the topic.} 
+3. \textcolor{red}{Analyze the data.}
+4. \textcolor{red}{Form a conclusion.}
+
+\textcolor{red}{Statistics focuses on making stages 2-4 objective, rigorous, and efficient} 
+
+## The three pieces of statistics 
+
+1. How *best* can we collect data? 
+2. How *should* it be analyzed? 
+3. And what can we *infer* from the analysis?
+
+## Classical application: medical trials
+
+1. Identify a question or problem.
+2. Collect relevant data on the topic. 
+3. Analyze the data.
+4. Form a conclusion.
+
+## 1. Identify a question or problem.
+
+> Does the use of stents reduce the risk of stroke? 
+
+Will patients with stents inserted have better outcomes (fewer and/or more minor strokes) than patients without stents inserted? 
+
+Stents - "a metal or plastic tube inserted into the lumen of an anatomic vessel or duct to keep the passageway open" ([Wikipedia](https://en.wikipedia.org/wiki/Stent))
+
+## 2. Collect relevant data on the topic. 
+
+451 at-risk patients volunteered to be studied. Split into 2 groups:
+
+- **Treatment** group (224 patients): Received a stent and medical management (medications, management of risk factors, and help in lifestyle modification)
+- **Control** group (227 patients): Received same medical management as treatment group, but did not receive stents.
+
+What is the purpose of the control group? 
+
+## 2. Collect relevant data on the topic. 
+
+451 at-risk patients volunteered to be studied. Split into 2 groups:
+
+- **Treatment** group (224 patients): Received a stent and medical management (medications, management of risk factors, and help in lifestyle modification)
+- **Control** group (227 patients): Received same medical management as treatment group, but did not receive stents.
+
+What is the purpose of the control group? 
+
+\textcolor{red}{The control group provides a reference point against which we can measure the medical impact of stents in the treatment group.}
+
+## 2. Collect relevant data on the topic. (cont.)
+
+- Researchers looked at 2 time points: 30 days after enrollment and 365 days after enrollment 
+- Results of 5 patients: 
+
+Patient | group | after 30 days | after 365 days
+:------:|:------|:-------------:|:-------------:
+1       | treatment | no event  | no event
+2       | treatment | stroke    | stroke 
+3       | treatment | no event  | no event 
+...     | ...       |   ...     |  ...
+450     | control   | no event  | no event
+451     | control   | no event  | no event
+
+## 2. Collect relevant data on the topic. (cont.)
+
+All outcomes in all patients in all groups: 
+
+group | timepoint | outcome | count 
+:-----|:---------:|:-------:|:----:
+treatment | 0-30 days | stroke | 33
+treatment | 0-30 days | no event | 191  
+treatment | 0-365 days | stroke | 45
+treatment | 0-365 days | no event | 179
+control | 0-30 days | stroke | 13
+control | 0-30 days | no event | 214
+control | 0-365 days | stroke | 28
+control | 0-365 days | no event | 199
+
+## 3. Analyze the data. 
+
+**Summary statistic** - one numerical value that summarizes a large amount of data 
+
+What do you think would be a good summary statistic for this data? 
+
+## 3. Analyze the data. 
+
+**Summary statistic** - one numerical value that summarizes a large amount of data 
+
+What do you think would be a good summary statistic for this data? \textcolor{red}{Proportion of patients having a stroke}
+
+- Proportion of patients who had a stroke in the treatment group: 45/224 = 0.20 = 20%. 
+- Proportion of patients who had a stroke in the control group: 28/227 = 0.12 = 12%.
+- Overall proportion of patients who had a stroke: 73/451 = 0.16 = 16%
+
+## 4. Form a conclusion.
+
+Surprising result: treatment group has higher rate of stroke (8% more)
+
+- Not what doctors expect
+- Is this difference meaningful? 
+
+Not yet equipped with statistical tools to answer the 2nd question: is the difference between stent and non-stent groups so large that we should reject the notion that it was due to random variation? 
+
+We'll get there eventually! 
+
+## Your Turn 
+
+Researchers studying the effect of temperature on glass looked at the refractive index (RI) measured on 89 different types of glass before and after being exposed to extreme temperatures. The RI value on all glass types was recorded, then the glass was exposed to very cold ($0^o$F) or very hot ($400^o$F) conditions for 20 minutes. After the glass returned to room temperature, the researchers measured the RI again to see if it was the same or if it had changed. Results are summarized below: 
+
+Group | change | no change | Total
+:-----|:------:|:---------:|------:
+Heat  | 10     | 33        | 43
+Cold  |  2     |  44       |   46
+------|--------|-----------|--------
+Total | 12     | 77        | 89
+
+## Your Turn (cont.)
+
+Group | change | no change | Total
+:-----|:------:|:---------:|------:
+Heat  | 10     | 33        | 43
+Cold  |  2     |  44       |   46
+------|--------|-----------|--------
+Total | 12     | 77        | 89
+
+1. What percent of observations had a change in RI after being exposed to extreme heat? What percent of observations had a change in RI after being exposed to extreme cold?
+2. At first glance, does exposure to extreme temperatures appear to have an effect on RI of glass? Explain.
+3. Do the data provide convincing evidence that there is a real change in RI for either group? 
+4. Do you think the effect may just be due to random variability (as opposed to temperature)? 
+
+## Your Turn (soln.)
+
+Group | change | no change | Total
+:-----|:------:|:---------:|------:
+Heat  | 10     | 33        | 43
+Cold  |  2     |  44       |   46
+------|--------|-----------|--------
+Total | 12     | 77        | 89
+
+1. What percent of observations had a change in RI after being exposed to extreme heat? \textcolor{red}{$\frac{10}{43} = 0.23 = 23\%$}
+ What percent of observations had a change in RI after being exposed to extreme cold? \textcolor{red}{$\frac{2}{46} = 0.04 = 4\%$}
+2. At first glance, does exposure to extreme temperatures appear to have an effect on RI of glass? Explain. \textcolor{red}{Heat, yes. Cold, no.}
+3. Do the data provide convincing evidence that there is a real change in RI for either group? \textcolor{red}{(discussion)}
+4. Do you think the effect may just be due to random variability (as opposed to temperature)? \textcolor{red}{(discussion)} 
+
+
+
+# Data basics
+
+## Observations, variables, and matrices
+
+Data are stored in **tables** aka **matrices**
+
+![Red Pill or blue pill?](img/neo.jpg)
+
+## Observations, variables, and matrices
+
+Data are stored in **tables** aka **matrices**: 
+
+- each row is an **observation**
+- each column is a **variable**
+- data are stored in a **matrix**
+- Example: 6 randomly selected obervations of 6 variables on glass element analysis. (units of last 3 columns are ppm)
+
+```{r glassdat}
+library(tidyverse)
+glass <- read_csv("dat/glass_sample.csv")
+glass_samp <- glass[sample(nrow(glass), 6), 1:6]
+knitr::kable(glass_samp)
+```
+
+## Types of variables
+
+![Types of variables](img/variables.pdf)
+
+[Link to Image Source (from textbook)](https://github.com/OpenIntroOrg/openintro-statistics/blob/master/ch_intro_to_data/figures/variables/variables.pdf) 
+
+## Relationships between variables 
+
+Most (if not all) analyses are performed in order to determine if there is a relationship between variables
+
+Is there a relationship between these two variables in the glass data? 
+
+```{r glassscatterpos, out.width='.8\\textwidth', fig.height=3}
+ggplot(data = glass) + 
+  geom_point(aes(x = Li7, y = Na23)) + 
+  labs(x = "Lithium (ppm)", y = "Sodium (ppm)", title = "Glass element analysis", subtitle = "Method: ICP-MS")
+```
+
+## Relationships between variables 
+
+Is there a relationship between these two variables in the glass data? 
+
+```{r glassscatterneg, out.width='.8\\textwidth', fig.height=3}
+ggplot(data = glass) + 
+  geom_point(aes(y = Na23, x = Sr88)) + 
+  labs(x = "Sodium (ppm)", y = "Strontium (ppm)", title = "Glass element analysis", subtitle = "Method: ICP-MS")
+```
+
+## Relationships between variables 
+
+Is there a relationship between these two variables in the glass data? 
+
+```{r glassscatternon, out.width='.8\\textwidth', fig.height=3}
+ggplot(data = glass) + 
+  geom_point(aes(x = Pb208, y = Sr88)) + 
+  labs(x = "Lead (ppm)", y = "Strontium (ppm)", title = "Glass element analysis", subtitle = "Method: ICP-MS")
+```
+
+## Relationships between variables 
+
+- **positive** association (correlation) between 2 variables 
+- **negative** association (correlation) between 2 variables 
+- **no** association between two variables 
+
+## Relationships between variables 
+
+- **Positive** association: Values of one variable tend to **increase** when values of the other variable increase
+- **Negative** association: Values of one variable tend to **decrease** when values of the other variable increase
+- **No** association: **Independence** occurs when there is no relationship between two variables 
+
+## Your Turn 1
+
+Researchers collected data to examine the relationship between air pollutants and preterm births in Southern California. During the study air pollution levels were measured by air quality monitoring stations. Levels of $CO$ were recorded in ppm, $NO_2$ and $O_3$ in pphm, and coarse particulate matter ($PM_{10}$) in $\mu g/m^3$. Length of gestation data were collected on 143,196 births between the years 1989 and 1993, and air pollution exposure during gestation was calculated for each birth. The analysis suggested that increased ambient $PM_{10}$ and, to a lesser degree, $CO$ concentrations may be associated with the occurrence of preterm births. In this study, identify: 
+
+1. The observational units
+2. The variables and their types
+3. The main research question
+
+## Your Turn 1 (soln.)
+
+Researchers collected data to examine the relationship between air pollutants and preterm births in Southern California. During the study air pollution levels were measured by air quality monitoring stations. Levels of $CO$ were recorded in ppm, $NO_2$ and $O_3$ in pphm, and coarse particulate matter ($PM_{10}$) in $\mu g/m^3$. Length of gestation data were collected on 143,196 births between the years 1989 and 1993, and air pollution exposure during gestation was calculated for each birth. The analysis suggested that increased ambient $PM_{10}$ and, to a lesser degree, $CO$ concentrations may be associated with the occurrence of preterm births. In this study, identify: 
+
+1. The observational units - \textcolor{red}{143,196 births in Southern California from 1989-1993}
+2. The variables and their types - \textcolor{red}{Length of gestation, $CO$, $NO_2$, $O_3$, and $PM_{10}$. All are numerical \& continuous}
+3. The main research question - \textcolor{red}{Is there an association between pregnant mothers' exposure to air pollution and preterm births?}
+
+## Your Turn 2 
+
+A survey was conducted to study the smoking habits of UK residents. Below is a data matrix displaying a portion of the data collected in this survey. Note that NA refers to a missing component of the data.
+
+\begin{tiny}
+
+```{r smoking1, results = "asis"}
+smokers <- openintro::smoking
+smokers <- select(smokers, gender, age, maritalStatus, grossIncome, smoke, amtWeekends, amtWeekdays)
+knitr::kable(smokers[c(1:3, 1691), ], format = "latex")
+```
+
+\end{tiny} 
+
+1. What does each row of the data matrix represent?
+2. How many participants were included in the survey?
+3. Indicate whether each variable in the study is numerical or categorical. If numerical, identify as continuous or discrete. If categorical, indicate if the variable is ordinal.
+
+## Your Turn 2 (soln.)
+
+A survey was conducted to study the smoking habits of UK residents. Below is a data matrix displaying a portion of the data collected in this survey. Note that NA refers to a missing component of the data.
+
+\begin{tiny}
+
+```{r smoking12, results = "asis"}
+smokers <- openintro::smoking
+smokers <- select(smokers, gender, age, maritalStatus, grossIncome, smoke, amtWeekends, amtWeekdays)
+knitr::kable(smokers[c(1:3, 1691), ], format = "latex")
+```
+
+\end{tiny} 
+
+1. What does each row of the data matrix represent? \textcolor{red}{a person living in the UK}
+2. How many participants were included in the survey? \textcolor{red}{1691}
+3. Indicate whether each variable in the study is numerical or categorical. If numerical, identify as continuous or discrete. If categorical, indicate if the variable is ordinal. \textcolor{red}{Numerical: age, amtWeekends, amtWeekdays (discrete). Categorical: gender, marital, grossIncome (ordinal), smoke}
+
+# Overview of data collection principles
+
+## Populations and samples
+
+Consider 3 research questions
+
+1. What is the average lead content in float glass manufactured in the US? 
+2. Since 2010, what is the average length of the training process to become a forensic scientist in the US? 
+3. Does a new powder lift up higher quality latent prints than the standard powder? 
+
+For each question: What is the **population** of interest? What would a **sample** be?
+
+## Populations and samples
+
+1. **Population**: All float glass manufactured in the US. **Sample**: The windows in Durham Center.
+2. **Population**: All forensic scientists who started training in 2010 or later. **Sample**: The new and recent hires at Iowa's DCI Lab
+3. **Population**: All latent prints. **Sample**: Some latent prints picked up in this conference room.
+
+## Summary
+
+**Population**: all items you're interested in for your research questions
+
+**Sample**: the subset of items in the population that you collect data on
+
+## Anecdotal evidence
+
+Anecdote = story
+
+One or two or a handful of observations cannot be  proof of a pattern 
+
+Haphazard, cherry-picked examples $\neq$ Science! 
+
+## Sampling from a population
+
+Sampling should be **random**
+
+- think about a raffle or roll of a die
+- every person has one ticket, every number has one side of the die 
+
+
+Sampling should be **representative**
+
+- all elements of the population should have a chance to be in the sample
+
+## Where sampling goes wrong
+
+- **bias**: the method of collection favors one type of response over others. Example: 
+
+![Dewey defeats Truman?](img/dewey.jpg)
+
+## Where sampling goes wrong 
+
+- **non-response**: is a survey where only 20% of people respond *actually* representative? 
+
+Example: survey on drug use in teenagers 
+
+- **convenience sample**: only sample people/things that are most accessible. Sample is not represenative.
+
+Example: How much do people spend on groceries every week? Standing outside of Whole Foods will get very different answers than standing outside of Wal-Mart
+
+## Simple random sampling
+
+Simple random sampling (SRS) is the best way to sample in most cases
+
+- every element of the population could be selected 
+- every element of the poulation has the same chance of being selected 
+
+## Explanatory and response variables
+
+**response** variable: the main thing you want to know about your data
+
+What is the response variable in the 3 scenarios from earlier? 
+
+1. What is the average lead content in float glass manufactured in the US? 
+2. Since 2010, what is the average length of the training process to become a forensic scientist in the US? 
+3. Does a new powder lift up higher quality latent prints than the standard powder? 
+
+## Explanatory and response variables
+
+**response** variable: the main thing you want to know about your data
+
+What is the response variable in the 3 scenarios from earlier? 
+
+1. What is the average lead content in float glass manufactured in the US? \textcolor{red}{Lead content measured in glass}
+2. Since 2010, what is the average length of the training process to become a forensic scientist in the US?  \textcolor{red}{time a forensic scientist spent in training (in months)}
+3. Does a new powder lift up higher quality latent prints than the standard powder? \textcolor{red}{print quality/clarity}
+
+## Explanatory and response variables
+
+**explanatory** variable: may have an effect on the response variable, and you want to study the relationship between the response and expanatory variables
+
+What is the explanatory variable in the 3 scenarios from earlier (if applicable)? 
+
+1. What is the average lead content in float glass manufactured in the US? 
+2. Since 2010, what is the average length of the training process to become a forensic scientist in the US? 
+3. Does a new powder lift up higher quality latent prints than the standard powder? 
+
+## Explanatory and response variables
+
+**explanatory** variable: may have an effect on the response variable, and you want to study the relationship between the response and expanatory variables
+
+What is the explanatory variable in the 3 scenarios from earlier (if applicable)? 
+
+1. What is the average lead content in float glass manufactured in the US? \textcolor{red}{(discussion)}
+2. Since 2010, what is the average length of the training process to become a forensic scientist in the US? \textcolor{red}{(discussion)}
+3. Does a new powder lift up higher quality latent prints than the standard powder? \textcolor{red}{powder type (new or old)}
+
+## Correlation $\neq$ Causation
+
+An association between the explanatory and response variable does not always mean that the explanatory variable causes the change in the response variable.
+
+```{r spurious, fig.height=3, fig.width=7}
+library(rvest)
+url <- "http://tylervigen.com/old-version.html"
+html <- read_html(url)
+html %>% html_children() %>% html_children() %>% 
+  html_nodes("table") %>% html_table(fill = TRUE) -> cor_tables
+cor_tables[[8]][1:3,-c(1,12)] -> spurious
+names(spurious) <- 2000:2009
+spurious <- spurious[-1,]
+spurious$var <- c("Per capita cheese consumption in the US (lbs)", "# of people who died becoming tangled\nin their bedsheets in the US")
+spurious %>% gather(year, val, 1:10) %>% 
+  spread(var, val) %>% mutate_all(.funs = parse_number) %>% 
+  ggplot(aes(x = `Per capita cheese consumption in the US (lbs)`, y = `# of people who died becoming tangled\nin their bedsheets in the US`)) + 
+  geom_point() + 
+  geom_smooth(method = "lm", se=FALSE)
+```
+
+## Causation: only from experiments
+
+- To determine a causal relationship between and explanatory and response variable, an *experiment* must be done
+- Often unethical or impossible to do an experiment (e.g. smoking and lung cancer), so an **observational study** is a substitute
+
+## Your Turn 1 
+
+Recall the study where researchers collected data to examine the relationship between air pollutants and preterm births in Southern California. 
+
+1. Identify the population of interest and the sample in this study.
+2. Comment on whether or not the results of the study can be generalized to the population, and
+if the findings of the study can be used to establish causal relationships.
+
+## Your Turn 1 (soln.)
+
+Recall the study where researchers collected data to examine the relationship between air pollutants and preterm births in Southern California. 
+
+1. Identify the population of interest and the sample in this study. \textcolor{red}{Population: all births. Sample: 143,196 births between 1989-1993 in Southern California}
+2. Comment on whether or not the results of the study can be generalized to the population, and
+if the findings of the study can be used to establish causal relationships. \textcolor{red}{(discussion)}
+
+## Your Turn 2 
+
+Researchers are interested in predicting the amount of lead in a pane of glass by measuring the content of another element that is much cheaper to measure, rubidium. A random sample of 193 panes of glass from homes built before 1950 in Ames, Iowa was taken. The scatterplot below displays the relationship between these two elements.
+
+```{r yourturn23, fig.height = 2}
+set.seed(123456)
+glass %>% filter(mfr == "M1") %>% sample_n(193) %>% 
+  ggplot() + 
+  geom_point(aes(x = Rb85, y = Pb208)) + 
+  labs(x = "Rubidium concentration (ppm)", y = "Lead concentration (ppm)")
+```
+
+## Your Turn 2 (cont.)
+
+```{r yourturn232, fig.height = 2}
+set.seed(123456)
+glass %>% filter(mfr == "M1") %>% sample_n(193) %>% 
+  ggplot() + 
+  geom_point(aes(x = Rb85, y = Pb208)) + 
+  labs(x = "Rubidium concentration (ppm)", y = "Lead concentration (ppm)")
+```
+
+1. What is the explanatory variable and what is the response variable?
+2. Describe the relationship between the two variables.
+3. Is this an experiment or an observational study?
+4. Can we conclude that more rubidium in the glass means more lead in the glass?
+
+## Your Turn 2 (soln.)
+
+1. What is the explanatory variable and what is the response variable? \textcolor{red}{Explanatory variable: rubidium concentration; Respons variable: lead concentration}
+2. Describe the relationship between the two variables. \textcolor{red}{There is a slight positive association between the two, meaning that lead content may increase with rubidium content.}
+3. Is this an experiment or an observational study? \textcolor{red}{Observational (no control)}
+4. Can we conclude that more rubidium in the glass means more lead in the glass?  \textcolor{red}{No, because we can not infer a causal relationship without an experiment.}
+
+# Obervational studies and sampling strategies
+
+## Observational studies
+
+- researchers *observe* the data
+- no intereference 
+- there may be **counfounding** variables that are correlated with both the explanatory and response variables 
+
+## Sampling strategies
+
+- **Simple random sampling**
+- **Stratified sampling**
+- **Cluster sampling**
+- **Multistage sampling**
+- **Census**
+
+## Simple random sampling 
+
+- all elements have the same chance of being chosen
+- the selection of one element does not affect the chances of a second element being selected 
+
+```{r sampling, fig.height=2.5}
+set.seed(123456)
+samps <- data_frame(x = rnorm(100), y = rnorm(100))
+samps$srs <- rbinom(100, 1, .2)
+ggplot(data = samps) + 
+  geom_point(aes(x = x, y = y, color = as.factor(srs))) + 
+  scale_color_manual(values = c("black", "red")) + 
+  theme_void() + 
+  theme(legend.position = 'none') + 
+  ggtitle("Simple random sample")
+```
+
+## Stratified sampling 
+
+- Population is made up of different groups or **strata** 
+- "divide and conquer" 
+- elements within a strata are more similar than elements from different strata
+- draw simple random samples from each strata
+
+```{r strsamp, fig.height = 2}
+rectdat <- data_frame(xmin= c(-3,-3,0,0), xmax = c(0,0,3,3), ymin = c(-2.5, 0, -2.5, 0), ymax=c(0,2,0,2), group = LETTERS[1:4])
+samps$strat <- NA
+for(i in 1:100){
+  if (samps$x[i] < 0 & samps$y[i] < 0){
+    samps$strat[i] <- "A"
+  } else if (samps$x[i] < 0 & samps$y[i] > 0){
+    samps$strat[i] <- "B"
+  } else if (samps$x[i] > 0 & samps$y[i] < 0){
+    samps$strat[i] <- "C"
+  } else {
+    samps$strat[i] <- "D"
+  }
+}
+
+samps <- samps %>% group_by(strat) %>% mutate(strat2 = row_number())
+samps <- mutate(samps, strat3 = ifelse(strat2 < 9, 1, 0))
+  
+ggplot() + 
+  geom_rect(data = rectdat, aes(xmin = xmin, xmax=xmax, ymin=ymin, ymax=ymax, fill = group), alpha = 0.3) + 
+  scale_fill_brewer(palette = "Dark2") + 
+   geom_point(data = samps, aes(x = x, y = y, color = as.factor(strat3))) + 
+  scale_color_manual(values = c("black", "red")) + 
+  theme_void() + 
+  theme(legend.position = 'none') + 
+  ggtitle("Stratified sample")
+```
+
+
+## Cluster sampling
+
+- Divide population into representative **clusters**
+- Clusters are similar
+- Randomly sample clusters, and then take a census of all elements in the cluster
+
+```{r cluster, fig.height=2}
+set.seed(123456)
+samps2 <- data_frame(x = runif(100, -3,3), y = samps$y)
+
+samps2$clus <- as.numeric(cut_interval(samps2$x, n  = 10))
+samps2 <- mutate(samps2, clus2 = ifelse(clus %in% c(1,3,5,8), 1,0))
+
+ggplot() + 
+  geom_vline(aes(xintercept = c(-2.99, -2.4, -1.8, -1.21, -.61, -.0146, 0.581, 1.18, 1.77, 2.37)), alpha = .8) +
+  geom_point(data = samps2, aes(x = x, y = y, color = as.factor(clus2))) + 
+  scale_color_manual(values = c("black", "red")) + 
+  theme_void() + 
+  theme(legend.position = 'none') + 
+  ggtitle("Cluster sample")
+```
+
+## Multistage sampling 
+
+- Like cluster sampling, but take a random sample from the clusters instead of a census
+- Done when getting an observation is very expensive
+
+## Census
+
+- Observe all elements in a population
+- Rarely done because it's so expensive
+
+```{r, fig.height=2}
+ggplot(data = samps) + 
+  geom_point(aes(x = x, y = y), color = 'red') +
+  theme_void() + 
+  theme(legend.position = 'none') + 
+  ggtitle("Census")
+```
+
+## Your Turn 1 
+
+```{r yourturn141}
+load("dat/factbook.rda")
+cia_factbook
+```
+
+# Experiments
+
+## What are experiments? 
+
+- Researchers *assign* treatment to participants
+- If treatment is *randomly* assigned, then it is a **randomized experiment**
+
+## Principles of experimental design 
+
+- **Control**: researchers control as much as possible. (This is the reason for placebos. Everyone takes a medication without knowing whether it contains active ingredients.)
+- **Randomization**: "evens out" differences that are outside of the researchers' control
+- **Replication**: get a large sample! 
+- **Blocking**: similar to stratified sampling, where each block shares some characteristic, and treatments are randomly assigned within block
+- **Blinding**: the people in the experiment don't know which treatment group they are in. A study is **double-blind** if neither the people receiving nor the people giving the treatment know what the treatment is
+
+# Looking at Numerical Data
+
+## Scatterplots
+
+- two numerical variables 
+
+```{r glassscatterpos2, out.width='.8\\textwidth', fig.height=3}
+ggplot(data = glass) + 
+  geom_point(aes(x = Li7, y = Na23)) + 
+  labs(x = "Lithium (ppm)", y = "Sodium (ppm)", title = "Glass element analysis", subtitle = "Method: ICP-MS")
+```
+
+## Histogram 
+
+- one numerical variable 
+
+```{r glasshist, out.width='.8\\textwidth', fig.height=3}
+ggplot(data = glass) + 
+  geom_histogram(aes(x = Li7), binwidth=.2, color = 'black', fill = 'white') + 
+  labs(x = "Lithium (ppm)", title = "Glass element analysis", subtitle = "Method: ICP-MS")
+```
+
+## Boxplots 
+
+- assess distribution of one numerical variable
+
+```{r glassboxpl, fig.height=3}
+ggplot(data = glass) + 
+  geom_boxplot(aes(x = 1, y = Li7)) +
+    coord_flip() + 
+  labs(title = "Glass element analysis", subtitle = "Lithium measured by ICP-MS") + theme_void() 
+```
+
+## Boxplots
+
+- compare distribution of a numerical variable across different values of a categorical variable 
+
+```{r glassboxpl2, fig.height=3}
+ggplot(data = glass) + 
+  geom_boxplot(aes(x = pane, y = Li7)) + 
+  labs(x = "Pane", y = "Lithium (ppm)", title = "Glass element analysis", subtitle = "Method: ICP-MS")
+```
+
+# Categorical data
+
+## Contingency tables 
+
+- contigency tables show observed counts of categorical variables
+- Example: `titanic` data 
+
+```{r titanic, results='asis'}
+t2 <- data.frame(Titanic) %>% 
+  group_by(Class, Survived) %>% 
+  summarise(total = sum(Freq)) %>% 
+  spread(Survived, total) %>% 
+  mutate(Total = No + Yes) %>% 
+  ungroup() %>%
+  add_row(Class = "Total", No = 122+167+528+673, Yes = 203+118+178+212, Total = 325+285+706+885)
+names(t2)[2:3] <- c("Died", "Survived") 
+knitr::kable(t2)
+```
+
+## Bar charts
+
+- show counts of different groups in the data 
+
+```{r titanic2, fig.show='hold', fig.height=4, out.width='.5\\linewidth'}
+data.frame(Titanic) %>% group_by(Class) %>% 
+  summarise(n = sum(Freq)) %>% 
+  ggplot() + 
+  geom_bar(aes(x = Class, weight = n))
+data.frame(Titanic) %>% group_by(Class, Survived) %>% 
+  summarise(n = sum(Freq)) %>% 
+  ggplot() + 
+  geom_bar(aes(x = Class, weight = n, fill = Survived), position = "dodge") + 
+  scale_fill_manual(values = c("#e41a1c", "#4daf4a"))
+```
+
+## Mosaic Plots
+
+- plots to compare two categorical variables 
+
+```{r mosa}
+mosaicplot(~ Sex + Survived, data = Titanic, color = TRUE)
+```
+
+
+
