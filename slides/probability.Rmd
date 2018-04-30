@@ -61,7 +61,95 @@ Random Process | Outcome
 :-------------:|:-------:
 Roll of a die | 6
 Flip of a coin | Heads 
- 
+
+Others? 
+
+## Some notation
+
+$P(A)$ - often used to denote the probability of event $A$
+
+Probability is always between 0 and 1. In symbols: $0 \leq P(A) \leq 1$
+
+Probability can also be expressed as a percentage: $100 \times P(A) \%$
+
+- e.g. $P(A) = 0.45$ is equivalent to $45\%$, $P(A) = 0.015$ is equivalent to $1.5\%$
+
+Example: 
+
+- Suppose we are rolling a fair 6-sided die. There are 6 outcomes, $\{1,2,3,4,5,6\}$, and we are interested in the outcome $1$. 
+- What is $P(1)$? 
+
+## Law of Large Numbers (Activity)
+
+>- Suppose we are rolling a fair 6-sided die. There are 6 outcomes, $\{1,2,3,4,5,6\}$, and we are interested in the outcome $1$. 
+>- We roll the die $n$ times. The symbol $\hat{p}_n$ represents the proportion of observed outcomes that are $1$ after the first $n$ rolls.
+>- As the number of rolls ($n$) increases, $\hat{p}_n$ (observed probability) will get closer and closer to the theoretical probability $p$.
+>- For this example, $p = \frac{1}{6}$
+>- This is due to the **Law of Large Numbers**: the tendency of observed probabilities to approach theoretical probabilities as the number of total observations increases. 
+
+## Disjoint outcomes 
+
+- Two outcomes are **disjoint** (also called **mutually exclusive**) if they cannot both happen 
+- Example: In a single roll of a die, the outcome $1$ and the outcome $2$ are disjoint, because they cannot both happen. 
+- Example: In a single roll of a die, the outcome $1$ and the outcome "rolling an odd number" are NOT disjoint because if you roll a $1$, both outcomes have happened. 
+
+## Probability of disjoint outcomes 
+
+- Let $A$ and $B$ denote 2 disjoint events. Their probabilities are denoted $P(A)$ and $P(B)$ 
+- We are interested in the probability of either $A$ or $B$ occurring: denoted $P(A \text{ or } B)$. 
+- To compute this probability, we use the **addition rule of disjoint outcomes**
+$$P(A \text{ or } B) = P(A) + P(B)$$
+- In words: if two outcomes are disjoint, the probability that one of the two will occur is the sum of their individual probabilities 
+- Addition rule applies for more than 2 outcomes as well as long as ALL outcomes are **disjoint**.
+
+## Probabilities when events are not disjoint
+<!--latex below taken directly from os3 github page-->
+Example: Standard deck of cards 
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lll lll lll lll l}
+{2$\clubsuit$} & {3$\clubsuit$} & {4$\clubsuit$} & {5$\clubsuit$} & {6$\clubsuit$} & {7$\clubsuit$} & {8$\clubsuit$} & {9$\clubsuit$} & {10$\clubsuit$} & {J$\clubsuit$} & {Q$\clubsuit$} & {K$\clubsuit$} & {A$\clubsuit$}  \\
+\color{red} {2$\diamondsuit$} & \color{red}{3$\diamondsuit$} & \color{red}{4$\diamondsuit$} & \color{red}{5$\diamondsuit$} & \color{red}{6$\diamondsuit$} & \color{red}{7$\diamondsuit$} & \color{red}{8$\diamondsuit$} & \color{red}{9$\diamondsuit$} & \color{red}{10$\diamondsuit$} & \color{red}{J$\diamondsuit$} & \color{red}{Q$\diamondsuit$} & \color{red}{K$\diamondsuit$} & \color{red}{A$\diamondsuit$} \\
+\color{red}{2$\heartsuit$} & \color{red}{3$\heartsuit$} & \color{red}{4$\heartsuit$} & \color{red}{5$\heartsuit$} & \color{red}{6$\heartsuit$} & \color{red}{7$\heartsuit$} & \color{red}{8$\heartsuit$} & \color{red}{9$\heartsuit$} & \color{red}{10$\heartsuit$} & \color{red}{J$\heartsuit$} & \color{red}{Q$\heartsuit$} & \color{red}{K$\heartsuit$} & \color{red}{A$\heartsuit$} \\
+{2$\spadesuit$} & {3$\spadesuit$} & {4$\spadesuit$} & {5$\spadesuit$} & {6$\spadesuit$} & {7$\spadesuit$} & {8$\spadesuit$} & {9$\spadesuit$} & {10$\spadesuit$} & {J$\spadesuit$} & {Q$\spadesuit$} & {K$\spadesuit$} & {A$\spadesuit$}
+\end{tabular}
+\caption{Representations of the 52 unique cards in a deck.}
+\label{deckOfCards}
+\end{table}
+
+What are some non-disjoint events? 
+
+## Non-disjoint examples 
+
+When drawing a card at random from a deck of cards: 
+
+- Let $A$ represent the outcome that the card is a diamond
+- Let $B$ represent the outcome that the card is a face card
+- What is the probability of $A$ or $B$? 
+
+Question: why aren't these events disjoint? 
+
+## Non-disjoint examples 
+
+When drawing a card at random from a deck of cards: 
+
+- Let $A$ represent the outcome that the card is a diamond
+- Let $B$ represent the outcome that the card is a face card
+- What is the probability of $A$ or $B$? 
+
+Question: why aren't these events disjoint? Because \color{red}{J$\diamondsuit$}, \color{red}{Q$\diamondsuit$}, \color{red}{K$\diamondsuit$} are outcomes that fall into $A$ and $B$. 
+
+## Probabilities when events are not disjoint (ex.)
+
+If we used the addition rule, the outcomes \textcolor{red}{J$\diamondsuit$}, \textcolor{red}{Q$\diamondsuit$}, \textcolor{red}{K$\diamondsuit$} would be counted twice: once for outcome $A$, and once for outcome $B$.
+
+\begin{align*}
+P(A \text{ or } B) & = P( \textcolor{red}{\diamondsuit} \text{ or face card}) \\
+  & = P(\textcolor{red}{\diamondsuit}) + P(\text{face card}) - P(\textcolor{red}{\diamondsuit} \text{ AND face card}) \\
+  & = \frac{13}{52} + \frac{12}{52} - \frac{3}{52} \\ 
+  & = \frac{22}{52} = \frac{11}{26} \approx 0.4231 \equiv 42.31\%
+\end{align*}
 
 # Conditional probability
 

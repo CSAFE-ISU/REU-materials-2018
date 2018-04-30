@@ -1,5 +1,5 @@
 ---
-title: "Introduction to Data"
+title: "Part 1: Introduction to Data"
 author: "Sam Tyner"
 date: "TBD"
 output: 
@@ -14,7 +14,7 @@ editor_options:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, fig.align = 'center', fig.width = 6)
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, fig.align = 'center', fig.width = 6, cache = T)
 ```
 
 ## Textbook
@@ -23,19 +23,21 @@ These slides are based on the book *OpenIntro Statistics* by David Diez, Christo
 
 The book can be downloaded from [https://www.openintro.org/stat/textbook.php](https://www.openintro.org/stat/textbook.php)
 
+Part 1 Corresponds to Chapter 1 of the text. Sections 1.1-1.7 correspond to sections 1.1-1.7 of the text.
+
 
 ## Outline 
 
-- Introductory example - why statistics? 
-- Data basics
-- Overview of data collection principles
-- Obervational studies and sampling strategies
-- Experiments
-- Looking at Numerical Data
-- Looking at Categorical data
+- Introductory example - why statistics? (1.1)
+- Data basics (1.2)
+- Overview of data collection principles (1.3)
+- Obervational studies and sampling strategies (1.4)
+- Experiments (1.5)
+- Looking at Numerical Data (1.6)
+- Looking at Categorical data (1.7)
 
 
-# Introductory example - Why Statistics? 
+# Section 1.1: Introductory example - Why Statistics? 
 
 ## Why Statistics? 
 
@@ -166,7 +168,7 @@ Not yet equipped with statistical tools to answer the 2nd question: is the diffe
 
 We'll get there eventually! 
 
-## Your Turn 
+## Your Turn 1.1.1
 
 Researchers studying the effect of temperature on glass looked at the refractive index (RI) measured on 89 different types of glass before and after being exposed to extreme temperatures. The RI value on all glass types was recorded, then the glass was exposed to very cold ($0^o$F) or very hot ($400^o$F) conditions for 20 minutes. After the glass returned to room temperature, the researchers measured the RI again to see if it was the same or if it had changed. Results are summarized below: 
 
@@ -177,7 +179,7 @@ Cold  |  2     |  44       |   46
 ------|--------|-----------|--------
 Total | 12     | 77        | 89
 
-## Your Turn (cont.)
+## Your Turn 1.1.1 (cont.)
 
 Group | change | no change | Total
 :-----|:------:|:---------:|------:
@@ -191,7 +193,7 @@ Total | 12     | 77        | 89
 3. Do the data provide convincing evidence that there is a real change in RI for either group? 
 4. Do you think the effect may just be due to random variability (as opposed to temperature)? 
 
-## Your Turn (soln.)
+## Your Turn 1.1.1 (soln.)
 
 Group | change | no change | Total
 :-----|:------:|:---------:|------:
@@ -206,9 +208,7 @@ Total | 12     | 77        | 89
 3. Do the data provide convincing evidence that there is a real change in RI for either group? \textcolor{red}{(discussion)}
 4. Do you think the effect may just be due to random variability (as opposed to temperature)? \textcolor{red}{(discussion)} 
 
-
-
-# Data basics
+# Section 1.2: Data basics
 
 ## Observations, variables, and matrices
 
@@ -282,7 +282,7 @@ ggplot(data = glass) +
 - **Negative** association: Values of one variable tend to **decrease** when values of the other variable increase
 - **No** association: **Independence** occurs when there is no relationship between two variables 
 
-## Your Turn 1
+## Your Turn 1.2.1
 
 Researchers collected data to examine the relationship between air pollutants and preterm births in Southern California. During the study air pollution levels were measured by air quality monitoring stations. Levels of $CO$ were recorded in ppm, $NO_2$ and $O_3$ in pphm, and coarse particulate matter ($PM_{10}$) in $\mu g/m^3$. Length of gestation data were collected on 143,196 births between the years 1989 and 1993, and air pollution exposure during gestation was calculated for each birth. The analysis suggested that increased ambient $PM_{10}$ and, to a lesser degree, $CO$ concentrations may be associated with the occurrence of preterm births. In this study, identify: 
 
@@ -290,7 +290,7 @@ Researchers collected data to examine the relationship between air pollutants an
 2. The variables and their types
 3. The main research question
 
-## Your Turn 1 (soln.)
+## Your Turn 1 1.2.1 (soln.)
 
 Researchers collected data to examine the relationship between air pollutants and preterm births in Southern California. During the study air pollution levels were measured by air quality monitoring stations. Levels of $CO$ were recorded in ppm, $NO_2$ and $O_3$ in pphm, and coarse particulate matter ($PM_{10}$) in $\mu g/m^3$. Length of gestation data were collected on 143,196 births between the years 1989 and 1993, and air pollution exposure during gestation was calculated for each birth. The analysis suggested that increased ambient $PM_{10}$ and, to a lesser degree, $CO$ concentrations may be associated with the occurrence of preterm births. In this study, identify: 
 
@@ -298,7 +298,7 @@ Researchers collected data to examine the relationship between air pollutants an
 2. The variables and their types - \textcolor{red}{Length of gestation, $CO$, $NO_2$, $O_3$, and $PM_{10}$. All are numerical \& continuous}
 3. The main research question - \textcolor{red}{Is there an association between pregnant mothers' exposure to air pollution and preterm births?}
 
-## Your Turn 2 
+## Your Turn 1.2.2
 
 A survey was conducted to study the smoking habits of UK residents. Below is a data matrix displaying a portion of the data collected in this survey. Note that NA refers to a missing component of the data.
 
@@ -316,7 +316,7 @@ knitr::kable(smokers[c(1:3, 1691), ], format = "latex")
 2. How many participants were included in the survey?
 3. Indicate whether each variable in the study is numerical or categorical. If numerical, identify as continuous or discrete. If categorical, indicate if the variable is ordinal.
 
-## Your Turn 2 (soln.)
+## Your Turn 1.2.2 (soln.)
 
 A survey was conducted to study the smoking habits of UK residents. Below is a data matrix displaying a portion of the data collected in this survey. Note that NA refers to a missing component of the data.
 
@@ -334,7 +334,7 @@ knitr::kable(smokers[c(1:3, 1691), ], format = "latex")
 2. How many participants were included in the survey? \textcolor{red}{1691}
 3. Indicate whether each variable in the study is numerical or categorical. If numerical, identify as continuous or discrete. If categorical, indicate if the variable is ordinal. \textcolor{red}{Numerical: age, amtWeekends, amtWeekdays (discrete). Categorical: gender, marital, grossIncome (ordinal), smoke}
 
-# Overview of data collection principles
+# Section 1.3: Overview of data collection principles
 
 ## Populations and samples
 
@@ -467,7 +467,7 @@ spurious %>% gather(year, val, 1:10) %>%
 - To determine a causal relationship between and explanatory and response variable, an *experiment* must be done
 - Often unethical or impossible to do an experiment (e.g. smoking and lung cancer), so an **observational study** is a substitute
 
-## Your Turn 1 
+## Your Turn 1.3.1 
 
 Recall the study where researchers collected data to examine the relationship between air pollutants and preterm births in Southern California. 
 
@@ -475,7 +475,7 @@ Recall the study where researchers collected data to examine the relationship be
 2. Comment on whether or not the results of the study can be generalized to the population, and
 if the findings of the study can be used to establish causal relationships.
 
-## Your Turn 1 (soln.)
+## Your Turn 1.3.1 (soln.)
 
 Recall the study where researchers collected data to examine the relationship between air pollutants and preterm births in Southern California. 
 
@@ -483,7 +483,7 @@ Recall the study where researchers collected data to examine the relationship be
 2. Comment on whether or not the results of the study can be generalized to the population, and
 if the findings of the study can be used to establish causal relationships. \textcolor{red}{(discussion)}
 
-## Your Turn 2 
+## Your Turn 1.3.2
 
 Researchers are interested in predicting the amount of lead in a pane of glass by measuring the content of another element that is much cheaper to measure, rubidium. A random sample of 193 panes of glass from homes built before 1950 in Ames, Iowa was taken. The scatterplot below displays the relationship between these two elements.
 
@@ -495,7 +495,7 @@ glass %>% filter(mfr == "M1") %>% sample_n(193) %>%
   labs(x = "Rubidium concentration (ppm)", y = "Lead concentration (ppm)")
 ```
 
-## Your Turn 2 (cont.)
+## Your Turn 1.3.2 (cont.)
 
 ```{r yourturn232, fig.height = 2}
 set.seed(123456)
@@ -510,14 +510,14 @@ glass %>% filter(mfr == "M1") %>% sample_n(193) %>%
 3. Is this an experiment or an observational study?
 4. Can we conclude that more rubidium in the glass means more lead in the glass?
 
-## Your Turn 2 (soln.)
+## Your Turn 1.3.2 (soln.)
 
 1. What is the explanatory variable and what is the response variable? \textcolor{red}{Explanatory variable: rubidium concentration; Respons variable: lead concentration}
 2. Describe the relationship between the two variables. \textcolor{red}{There is a slight positive association between the two, meaning that lead content may increase with rubidium content.}
 3. Is this an experiment or an observational study? \textcolor{red}{Observational (no control)}
 4. Can we conclude that more rubidium in the glass means more lead in the glass?  \textcolor{red}{No, because we can not infer a causal relationship without an experiment.}
 
-# Obervational studies and sampling strategies
+# Section 1.4: Obervational studies and sampling strategies
 
 ## Observational studies
 
@@ -626,14 +626,137 @@ ggplot(data = samps) +
   ggtitle("Census")
 ```
 
-## Your Turn 1 
+## Your Turn 1.4.1 
 
-```{r yourturn141}
+The following scatterplot was created as part of a study evaluating the relationship between estimated life expectancy at birth (as of 2014) and percentage of internet users (as of 2009) in 208 countries for which such data were available.
+
+```{r yourturn141, fig.height=2}
 load("dat/factbook.rda")
-cia_factbook
+cia_factbook %>% 
+  mutate(perc_internet_users = 100 * internet_users / population) %>% 
+  filter(!is.na(perc_internet_users), !is.na(life_exp_at_birth)) %>%
+  ggplot() + 
+  geom_point(aes(x = perc_internet_users, y = life_exp_at_birth)) + 
+  labs(x = "% Internet Users", y = "Life expectancy at birth (years)")
 ```
 
-# Experiments
+## Your Turn 1.4.1 (cont.)
+
+```{r yourturn142, fig.height=2}
+load("dat/factbook.rda")
+cia_factbook %>% 
+  mutate(perc_internet_users = 100 * internet_users / population) %>% 
+  filter(!is.na(perc_internet_users), !is.na(life_exp_at_birth)) %>%
+  ggplot() + 
+  geom_point(aes(x = perc_internet_users, y = life_exp_at_birth)) + 
+  labs(x = "% Internet Users", y = "Life expectancy at birth (years)")
+```
+
+1. Describe the relationship between life expectancy and percentage of internet users. 
+2. What type of study is this? 
+3. State a possible confounding variable that might explain this relationship and describe its potential effect. 
+
+## Your Turn 1.4.1 (soln.)
+
+```{r yourturn143, fig.height=2}
+load("dat/factbook.rda")
+cia_factbook %>% 
+  mutate(perc_internet_users = 100 * internet_users / population) %>% 
+  filter(!is.na(perc_internet_users), !is.na(life_exp_at_birth)) %>%
+  ggplot() + 
+  geom_point(aes(x = perc_internet_users, y = life_exp_at_birth)) + 
+  labs(x = "% Internet Users", y = "Life expectancy at birth (years)")
+```
+
+1. Describe the relationship between life expectancy and percentage of internet users. \textcolor{red}{Positive, non-linear relationship. Levels off at around age 75}
+2. What type of study is this? \textcolor{red}{Observational}
+3. State a possible confounding variable that might explain this relationship and describe its potential effect. \textcolor{red}{(discussion)}
+
+## Your Turn 1.4.2
+ 
+\begin{small}
+
+Identify the flaw(s) in reasoning in the following scenarios. What should have been done differently to arrive at the desired conclusions?
+
+1. Students at an elementary school are given a questionnaire that they are asked to return after their parents have completed it. One of the questions asked is, "Do you find that your work schedule makes it difficult for you to spend time with your kids after school?" Of the parents who replied, 85\% said "no". Based on these results, the school o cials conclude that a great majority of the parents have no difficulty spending time with their kids after school.
+
+2. A survey is conducted on a simple random sample of 1,000 crime victims (robbery, assault, etc.) asking whether or not they saught mental health counseling after their crime. A follow-up survey asking asking the same question 3 years later is condcuted, however, only 567 of these original participants are reached at the same address. The researcher reports that these 567 people are representative of all crime victims.
+
+\end{small}
+
+## Your Turn 1.4.2 (soln.)
+
+\begin{small}
+
+Identify the flaw(s) in reasoning in the following scenarios. What should have been done differently to arrive at the desired conclusions?
+
+1. Students at an elementary school are given a questionnaire that they are asked to return after their parents have completed it. One of the questions asked is, "Do you find that your work schedule makes it difficult for you to spend time with your kids after school?" Of the parents who replied, 85\% said "no". Based on these results, the school o cials conclude that a great majority of the parents have no difficulty spending time with their kids after school. \textcolor{red}{Parents with time to fill out a survey probably have more time to spend with their children after work. (discussion)}
+
+2. A survey is conducted on a simple random sample of 1,000 crime victims (robbery, assault, etc.) asking whether or not they saught mental health counseling after their crime. A follow-up survey asking asking the same question 3 years later is condcuted, however, only 567 of these original participants are reached at the same address. The researcher reports that these 567 people are representative of all crime victims. \textcolor{red}{People who moved away may have felt unsafe, perhaps they would not have felt unsafe if they saught counseling. (discussion)}
+
+\end{small}
+
+## Your Turn 1.4.3
+
+\begin{small}
+
+Below is an excerpt from an article published in the NY Times:
+
+``Risks: Smokers Found More Prone to Dementia" \href{(https://www.nytimes.com/2010/11/02/health/research/02risks.html)}{(link)}: 
+
+``Researchers analyzed the data of 23,123 health plan members who participated in a voluntary exam and health behavior survey from 1978 to 1985, when they were 50 to 60 years old. 23 years later, about 1/4 of the group, or 5,367, had dementia, including 1,136 with Alzheimer’s disease and 416 with vascular dementia. After adjusting for other factors, the researchers concluded that pack-a-day smokers were 37\% more likely than nonsmokers to develop dementia, and the risks went up sharply with increased smoking; 44\% for 1-2 packs a day; and twice the risk for more than 2 packs."
+
+Based on this study, can we conclude that smoking causes dementia later in life? Explain.
+
+\end{small}
+
+## Your Turn 1.4.3 (soln.)
+
+\begin{small}
+
+Below is an excerpt from an article published in the NY Times:
+
+``Risks: Smokers Found More Prone to Dementia" \href{(https://www.nytimes.com/2010/11/02/health/research/02risks.html)}{(link)}: 
+
+``Researchers analyzed the data of 23,123 health plan members who participated in a voluntary exam and health behavior survey from 1978 to 1985, when they were 50 to 60 years old. 23 years later, about 1/4 of the group, or 5,367, had dementia, including 1,136 with Alzheimer’s disease and 416 with vascular dementia. After adjusting for other factors, the researchers concluded that pack-a-day smokers were 37\% more likely than nonsmokers to develop dementia, and the risks went up sharply with increased smoking; 44\% for 1-2 packs a day; and twice the risk for more than 2 packs."
+
+Based on this study, can we conclude that smoking causes dementia later in life? Explain.
+
+\textcolor{red}{Association $\neq$ causation. Observational study, not experiment. However, experiment would be unethical in this case.}
+
+\end{small}
+
+## Your Turn 1.4.4
+
+\begin{small}
+
+Below is another excerpt from another article published in the NY Times:
+
+``The School Bully is Sleepy" \href{https://well.blogs.nytimes.com/2011/06/02/the-school-bully-is-sleepy}{(link)}: 
+
+``The University of Michigan study collected data from parents on each child’s sleep habits and asked both parents and teachers to assess behavioral concerns. Among the 341 children studied, about a third were identified by parents or teachers as having problems with disruptive behavior or bullying. The researchers found that children who had behavioral issues were twice as likely to have shown symptoms of sleep-disordered breathing, like snoring or daytime sleepiness."
+
+A friend of yours who read the article says, ``The study shows that sleep disorders lead to bullying in school children." Is this statement justified? If not, how best can you describe the conclusion that can be drawn from this study?
+
+\end{small}
+
+## Your Turn 1.4.4 (soln.)
+
+\begin{small}
+
+Below is another excerpt from another article published in the NY Times:
+
+``The School Bully is Sleepy" \href{https://well.blogs.nytimes.com/2011/06/02/the-school-bully-is-sleepy}{(link)}: 
+
+``The University of Michigan study collected data from parents on each child’s sleep habits and asked both parents and teachers to assess behavioral concerns. Among the 341 children studied, about a third were identified by parents or teachers as having problems with disruptive behavior or bullying. The researchers found that children who had behavioral issues were twice as likely to have shown symptoms of sleep-disordered breathing, like snoring or daytime sleepiness."
+
+A friend of yours who read the article says, ``The study shows that sleep disorders lead to bullying in school children." Is this statement justified? If not, how best can you describe the conclusion that can be drawn from this study? 
+
+\textcolor{red}{Association $\neq$ causation. Observational study, not experiment. Both sleep problems and bullying behaviors could be caused by other confounding variables}
+
+\end{small}
+
+# Section 1.5: Experiments
 
 ## What are experiments? 
 
@@ -648,7 +771,54 @@ cia_factbook
 - **Blocking**: similar to stratified sampling, where each block shares some characteristic, and treatments are randomly assigned within block
 - **Blinding**: the people in the experiment don't know which treatment group they are in. A study is **double-blind** if neither the people receiving nor the people giving the treatment know what the treatment is
 
-# Looking at Numerical Data
+## Designing an Experiment 
+
+You would like to conduct an experiment to see if forensic scientists perform better at their jobs if they listen to music when they work.  You want to determine if they work best without any music, with music that has no lyrics (instrumental), or with music that has lyrics. Briefly outline a design for this study.
+
+
+## Designing an Experiment 
+
+You would like to conduct an experiment to see if forensic scientists perform better at their jobs if they listen to music when they work.  You want to determine if they work best without any music, with music that has no lyrics (instrumental), or with music that has lyrics. Briefly outline a design for this study.
+
+- **Control**
+- **Randomization**
+- **Replication** 
+- **Blocking**
+- **Blinding**
+
+## Designing an Experiment 
+
+You would like to conduct an experiment to see if forensic scientists perform better at their jobs if they listen to music when they work.  You want to determine if they work best without any music, with music that has no lyrics (instrumental), or with music that has lyrics. Briefly outline a design for this study.
+
+- **Control**: \textcolor{red}{Control who listens to what music. Also, control group is no music} 
+- **Randomization**: \textcolor{red}{Randomly assign all forensic scientists in the lab who volunteer to one of the three groups}
+- **Replication**:  \textcolor{red}{make sure there are many people in each group}
+- **Blocking**: \textcolor{red}{not required. could maybe block by age.}
+- **Blinding**: \textcolor{red}{Not possible here. Everyone knows which music they are listening to.}
+
+## Your Turn 1.5.1 
+
+A researcher is interested in the effects of exercise on mental health and he proposes the following study: Use stratified random sampling to ensure representative proportions of 18-30, 31-40 and 41- 55 year olds from the population. Next, randomly assign half the subjects from each age group to exercise twice a week, and instruct the rest not to exercise. Conduct a mental health exam at the beginning and at the end of the study, and compare the results.
+
+1. What type of study is this?
+2. What are the treatment and control groups in this study?
+3. Does this study make use of blocking? If so, what is the blocking variable?
+4. Does this study make use of blinding?
+5. Comment on whether or not the results of the study can be used to establish a causal relationship between exercise and mental health, and indicate whether or not the conclusions can be generalized to the population at large.
+6. Suppose you are given the task of determining if this proposed study should get funding. Would you have any reservations about the study proposal?
+
+## Your Turn 1.5.1 (soln.)
+
+A researcher is interested in the effects of exercise on mental health and he proposes the following study: Use stratified random sampling to ensure representative proportions of 18-30, 31-40 and 41- 55 year olds from the population. Next, randomly assign half the subjects from each age group to exercise twice a week, and instruct the rest not to exercise. Conduct a mental health exam at the beginning and at the end of the study, and compare the results.
+
+1. What type of study is this? \textcolor{red}{Experiment}
+2. What are the treatment and control groups in this study? \textcolor{red}{Treatment: excercise 2 times per week, Control: no exercise}
+3. Does this study make use of blocking? If so, what is the blocking variable? \textcolor{red}{Yes, on age groups}
+4. Does this study make use of blinding? \textcolor{red}{No. Participants know what group they are in.}
+5. Comment on whether or not the results of the study can be used to establish a causal relationship between exercise and mental health, and indicate whether or not the conclusions can be generalized to the population at large. \textcolor{red}{Yes, because it is an experiment. Only generalizable for ages 18-55}
+6. Suppose you are given the task of determining if this proposed study should get funding. Would you have any reservations about the study proposal? \textcolor{red}{"Exercise" is not specific enough. Ethical concerns with instructing people to NOT exercise (something known to have health benefits)}
+
+# Section 1.6: Looking at Numerical Data
 
 ## Scatterplots
 
@@ -675,10 +845,14 @@ ggplot(data = glass) +
 - assess distribution of one numerical variable
 
 ```{r glassboxpl, fig.height=3}
-ggplot(data = glass) + 
-  geom_boxplot(aes(x = 1, y = Li7)) +
-    coord_flip() + 
-  labs(title = "Glass element analysis", subtitle = "Lithium measured by ICP-MS") + theme_void() 
+vals1 <- as.numeric(summary(glass$Li7)[-4])
+labs1 <- c("Min", "Q1", "Median", "Q3", "Max")
+ggplot() + 
+  geom_boxplot(data = glass, aes(x = 1, y = Li7)) +
+  geom_text(data = NULL, aes(x = 1, y = vals1, label = labs1), hjust = 0, vjust = 0) + 
+  labs(title = "Glass element analysis", subtitle = "Lithium measured by ICP-MS") +
+  coord_flip() + 
+  theme_void() 
 ```
 
 ## Boxplots
@@ -691,7 +865,111 @@ ggplot(data = glass) +
   labs(x = "Pane", y = "Lithium (ppm)", title = "Glass element analysis", subtitle = "Method: ICP-MS")
 ```
 
-# Categorical data
+## Your Turn 1.6.1 
+
+Indicate which plots show a positive association, a negative association, and no association. If there is an association, is it linear or non-linear? 
+
+```{r yourturn161, fig.height=3}
+x <- 1:100
+set.seed(123456)
+y <- 4 + 0.5*x + rnorm(100, sd = 10)
+y2 <- rnorm(100)
+y3 <- 4 + .2*x^2 + rnorm(100,sd = 100)
+y4 <- 4 - 0.5*x + rnorm(100, sd = 8)
+dat <- data_frame(x = rep(x, 4), y = c(y, y2, y3, y4), group = rep(1:4, each = 100))
+ggplot(data = dat) + 
+  geom_point(aes(x = x, y = y), alpha = .8) + 
+  facet_wrap(~group, scales = 'free') + 
+  theme_void() + 
+  theme(panel.background = element_rect(color = 'black', fill = 'grey90'))
+```
+
+## Your Turn 1.6.1 (soln.)
+
+Indicate which plots show a positive association, a negative association, and no association. If there is an association, is it linear or non-linear? 
+
+- positive: 1 (linear), 3 (non-linear) 
+- negative: 4 (linear)
+- no association: 2
+
+## Your Turn 1.6.2 
+
+For each part, compare distributions (1) and (2) based on their medians and IQRs. 
+
+\begin{enumerate}
+\item 
+  \begin{enumerate}
+  \item 3, 5, 6, 7, 9
+  \item 3, 5, 6, 7, 20
+  \end{enumerate}
+\item 
+  \begin{enumerate}
+  \item 3, 5, 6, 7, 9 
+  \item 3, 5, 7, 8, 9
+  \end{enumerate}
+\item 
+  \begin{enumerate}
+  \item 1, 2, 3, 4, 5
+  \item 6, 7, 8, 9, 10
+  \end{enumerate}
+\item 
+  \begin{enumerate}
+  \item 0, 10, 50, 60, 100
+  \item 0, 100, 500, 600, 1000
+  \end{enumerate}
+\end{enumerate}
+
+## Your Turn 1.6.2  (soln.)
+
+For each part, compare distributions (1) and (2) based on their medians and IQRs. 
+
+\begin{enumerate}
+\item \textcolor{red}{Very similar, outlier in (b) at 20}
+  \begin{enumerate}
+  \item 3, 5, 6, 7, 9 \textcolor{red}{Med.=6, IQR = 2}
+  \item 3, 5, 6, 7, 20 \textcolor{red}{Med.=6, IQR = 2}
+  \end{enumerate}
+\item \textcolor{red}{(b) tends to have higher values, has more variability}
+  \begin{enumerate}
+  \item 3, 5, 6, 7, 9  \textcolor{red}{Med.=6, IQR = 2}
+  \item 3, 5, 7, 8, 9 \textcolor{red}{Med.=7, IQR = 3}
+  \end{enumerate}
+\item \textcolor{red}{Same spread, (b) higher than (a)}
+  \begin{enumerate}
+  \item 1, 2, 3, 4, 5 \textcolor{red}{Med.=3, IQR = 2}
+  \item 6, 7, 8, 9, 10 \textcolor{red}{Med.=8, IQR = 2}
+  \end{enumerate}
+\item \textcolor{red}{Both have median equal to IQR. (a) much smaller than (b)}
+  \begin{enumerate}
+  \item 0, 10, 50, 60, 100 \textcolor{red}{Med.=50, IQR = 50}
+  \item 0, 100, 500, 600, 1000 \textcolor{red}{Med.=500, IQR = 500}
+  \end{enumerate}
+\end{enumerate}
+
+## Your Turn 1.6.3
+
+Describe the data in the histograms and match them to the boxplots.
+
+```{r yourturn163, fig.show='hold', out.width='.49\\textwidth', fig.height=5}
+set.seed(123456)
+N <- rnorm(1000, mean = 60, sd = 4)
+U <- runif(1000, min = 0, max = 100)
+G <- rgamma(1000, 2)
+dat <- data_frame(a = N, b = U, c = G)
+dat %>% gather(var, val) %>%
+  ggplot() + 
+  geom_histogram(aes(x = val), bins = 20) + 
+  facet_wrap(~var, scales = 'free', nrow = 1) + 
+  theme_bw()
+dat %>% select(`1` = c, `2` = a, `3` = b) %>% gather(var, val) %>%
+  ggplot() + 
+  geom_boxplot(aes(x = 1 , y = val)) + 
+  facet_wrap(~var, scales = 'free', nrow = 1) + 
+  theme_bw() + 
+  theme(axis.title = element_blank(), axis.text.x = element_blank(), axis.ticks.x = element_blank())
+```
+
+# Section 1.7: Looking at Categorical data
 
 ## Contingency tables 
 
