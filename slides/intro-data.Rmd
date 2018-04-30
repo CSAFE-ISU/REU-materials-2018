@@ -969,6 +969,14 @@ dat %>% select(`1` = c, `2` = a, `3` = b) %>% gather(var, val) %>%
   theme(axis.title = element_blank(), axis.text.x = element_blank(), axis.ticks.x = element_blank())
 ```
 
+## Your Turn 1.6.3 (soln.)
+
+Histogram | Boxplot
+:--------:|:-------:
+a         | 2
+b         | 3
+c         | 1 
+
 # Section 1.7: Looking at Categorical data
 
 ## Contingency tables 
@@ -1012,5 +1020,59 @@ data.frame(Titanic) %>% group_by(Class, Survived) %>%
 mosaicplot(~ Sex + Survived, data = Titanic, color = TRUE)
 ```
 
+## Your Turn 1.7.1 
 
+The bar plot and the pie chart below show the ditribution of blood types in the US. 
 
+```{r bloodtypes, fig.show='hold', out.width='.49\\linewidth', fig.height=4}
+url <- "https://www2.palomar.edu/anthro/blood/table_of_ABO_and_Rh_blood_type_frequencies_in_US.htm"
+library(rvest)
+blood <- read_html(url) %>% html_children() %>% html_nodes("table") %>% magrittr::extract2(1) %>% html_table(fill = T)
+names(blood) <- c("ABOType", "RhType", "USpopFreq", "USpopFreq2")
+blood <- blood %>% mutate(USpopFreq = parse_number(USpopFreq)/100, USpopFreq2 = parse_number(USpopFreq2)/100)
+blood <- blood %>% mutate(RhType = ifelse(RhType == "positive", "+", "-"), type = paste0(ABOType, RhType)) 
+
+ggplot(data = blood) + 
+  geom_bar(aes(x = reorder(type, USpopFreq), weight = USpopFreq)) + 
+  coord_flip() + 
+  labs(x = "Blood Type", y = "Frequency in US population") + 
+  theme(text = element_text(size = rel(5)))
+
+ggplot(blood, aes(x="", y=USpopFreq, fill=type)) +
+  geom_bar(width = 1, stat = "identity", color = 'black') + 
+  scale_fill_brewer(palette = "Paired") + 
+  coord_polar("y", start=0) + 
+  theme_void() + 
+  ggtitle("     Blood Type Frequency in US Population")
+```
+
+## Your Turn 1.7.1 (cont.)
+
+1. What features are apparent in the bar plot but not in the pie chart? 
+2. What features are apparent in the pie chart but not in the bar plot?
+3. Which graph would you prefer to use for displaying these categorical data?
+
+## Your Turn 1.7.1 (soln.)
+
+1. What features are apparent in the bar plot but not in the pie chart? \textcolor{red}{We see the order of the categories and the relative frequencies in the bar plot.}
+2. What features are apparent in the pie chart but not in the bar plot? \textcolor{red}{There are no features that are apparent in the pie chart but not in the bar plot.}
+3. Which graph would you prefer to use for displaying these categorical data? \textcolor{red}{We usually prefer to use a bar plot as we can also see the relative frequencies of the categories in this graph.}
+
+## Your Turn 1.7.2 
+
+ A random sample of US registered voters were asked if they support the DREAM Act. The survey also asked about the political ideology of the respondents. Based on the mosaic plot shown on the next slide, do views on the DREAM Act and political ideology appear to be **independent** ? Explain.
+ 
+## Your Turn 1.7.2 (cont.)
+ 
+```{r yt172}
+dream <- openintro::dream
+names(dream)[2] <- "support"
+mosaicplot(~ ideology + support, data = dream, color = TRUE)
+```
+
+## Your Turn 1.7.2 (soln.)
+
+A random sample of US registered voters were asked if they support the DREAM Act. The survey also asked about the political ideology of the respondents. Based on the mosaic plot shown on the next slide, do views on the DREAM Act and political ideology appear to be **independent** ? Explain.
+ 
+
+\textcolor{red}{The vertical locations at which the ideological groups break into the Yes, No, and Not Sure categories differ, which idicates that likelihood of supporting the DREAM act varies by political ideology. This suggests that the two variables may be dependent.}
