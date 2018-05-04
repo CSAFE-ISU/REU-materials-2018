@@ -244,6 +244,68 @@ $$P(A \text{ and } B) = P(A) \times P(B)$$
 - This is also true for more than 2 independent events, as long as they are ALL independent.
 - This is also used as a definition to determine if two events are independent. i.e. if we know $P(A)$, $P(B)$, and $P(A \text{ and } B)$, we can figure out if the events are independent. 
 
+## Your Turn 1.1.1 
+
+Determine if the statements below are true or false, and explain your reasoning.
+
+1. If a fair coin is tossed many times and the last eight tosses are all heads, then the chance that the next toss will be heads is somewhat less than 50%.
+2. Drawing a face card (jack, queen, or king) and drawing a red card from a full deck of playing cards are mutually exclusive events.
+3. Drawing a face card and drawing an ace from a full deck of playing cards are mutually exclusive events.
+
+## Your Turn 2.1.1 (soln.)
+
+Determine if the statements below are true or false, and explain your reasoning.
+
+1. If a fair coin is tossed many times and the last eight tosses are all heads, then the chance that the next toss will be heads is somewhat less than 50%. \textcolor{red}{False. The probability of heads on a flip of a fair coin is always 0.5. Thinking otherwise is called the \textit{Gambler's Fallacy}}
+2. Drawing a face card (jack, queen, or king) and drawing a red card from a full deck of playing cards are mutually exclusive events.\textcolor{red}{False. The red suits (heart, diamond) have face cards.}
+3. Drawing a face card and drawing an ace from a full deck of playing cards are mutually exclusive events.\textcolor{red}{True. A card cannot be a face card and an ace.}
+
+## Your Turn 2.1.2 
+
+Below are four versions of the same game. Your archnemesis gets to pick the version of the game, and then you get to choose how many times to flip a coin: 10 times or 100 times. Identify how many coin flips you should choose for each version of the game. It costs $1 to play each game. Explain your reasoning.
+
+1. If the proportion of heads is larger than 0.60, you win \$1.
+2. If the proportion of heads is larger than 0.40, you win \$1.
+3. If the proportion of heads is between 0.40 and 0.60, you win \$1. 
+4. If the proportion of heads is smaller than 0.30, you win \$1.
+
+## Your Turn 2.1.2 (soln.)
+
+Below are four versions of the same game. Your archnemesis gets to pick the version of the game, and then you get to choose how many times to flip a coin: 10 times or 100 times. Identify how many coin flips you should choose for each version of the game. It costs $1 to play each game. Explain your reasoning.
+
+1. If the proportion of heads is larger than 0.60, you win \$1. \textcolor{red}{10 tosses. Higher variability with fewer tosses}
+2. If the proportion of heads is larger than 0.40, you win \$1.\textcolor{red}{100 tosses. More tosses will be closer to the mean (0.5), which is above 0.4.}
+3. If the proportion of heads is between 0.40 and 0.60, you win \$1. \textcolor{red}{100 tosses. Same reason as 2.}
+4. If the proportion of heads is smaller than 0.30, you win \$1.\textcolor{red}{10 tosses. Same reason as 1.}
+
+## Your Turn 2.1.3 
+
+Each row in the table below is a proposed grade distribution for a class. Identify each as a valid or invalid probability distribution, and explain your reasoning. 
+
+No. | A | B | C | D | F
+----|---|---|---|---|---
+1   |0.3|0.3|0.3|0.2|0.1
+2   | 0 | 0 | 1 | 0 | 0
+3   |0.3|0.3|0.3| 0 | 0 
+4   |0.3|0.5|0.2|0.1|-0.1
+5   |0.2|0.4|0.2|0.1|0.1
+6   | 0 |-0.1|1.1|0 |0
+
+## Your Turn 2.1.3 (soln.)
+
+Each row in the table below is a proposed grade distribution for a class. Identify each as a valid or invalid probability distribution, and explain your reasoning. 
+
+No. | A | B | C | D | F
+----|---|---|---|---|---
+1   |0.3|0.3|0.3|0.2|0.1
+2   | 0 | 0 | 1 | 0 | 0
+3   |0.3|0.3|0.3| 0 | 0 
+4   |0.3|0.5|0.2|0.1|-0.1
+5   |0.2|0.4|0.2|0.1|0.1
+6   | 0 |-0.1|1.1|0 |0
+
+\textcolor{red}{Only 2 and 5 are valid distributions. 1 and 3 are not valid because the probabilities do not sum to 1. 4 and 6 are not valid because they have "probabilities" less than 0 or greater than 1.}  
+
 # Section 2.2: Conditional probability
 
 ## Example 
@@ -380,6 +442,62 @@ As we saw: $P(E|N)$ is what the forensic scientist knows. The prosecutor's falla
 
 It is called the Prosecutor's fallacy because it usually favors the prosecution over the defense. i.e. If $P(E|N) =1/1$ million (like a piece of DNA evidence), the fallacy is stating that the probability the defendant is innocent is 1 in 1 million. 
 
+## Your Turn 2.2.1
+
+Suppose you have 2 events, $A, B$. All you know about these events is that $P(A) = 0.3$ and $P(B) = 0.7$.
+
+1. Can you compute $P(A \text{ and } B)$ if you only know $P(A)$ and $P(B)$?
+2. Assuming that events $A$ and $B$ arise from independent random processes. 
+    a. what is $P(A \text{ and } B)$? 
+    b. what is $P(A \text{ or } B)$?
+    c. what is $P(A|B)$?
+3. If we are given that $P(A \text{ and } B) = 0.1$, are the random variables giving rise to events A and B independent?
+4. If we are given that $P(A \text{ and } B) = 0.1$, what is $P(A|B)$?
+
+## Your Turn 2.2.1 (soln.)
+
+Suppose you have 2 events, $A, B$. All you know about these events is that $P(A) = 0.3$ and $P(B) = 0.7$.
+
+1. Can you compute $P(A \text{ and } B)$ if you only know $P(A)$ and $P(B)$? \textcolor{red}{No. You need to either know that $A,B$ are independent or you need to know either $P(A|B)$ or $P(B|A)$.}
+2. Assuming that events $A$ and $B$ arise from independent random processes. 
+    a. what is $P(A \text{ and } B)$? \textcolor{red}{$P(A)\cdot P(B) = 0.3 \cdot 0.7 = 0.21$}
+    b. what is $P(A \text{ or } B)$? \textcolor{red}{$P(A)+ P(B) = 0.3 + 0.7 = 1$}
+    c. what is $P(A|B)$? \textcolor{red}{$P(A|B) = P(A) = 0.3$}
+3. If we are given that $P(A \text{ and } B) = 0.1$, are the random variables giving rise to events A and B independent? \textcolor{red}{No. $P(A \text{ and } B) = 0.1 \neq P(A)\cdot P(B) = 0.21$ }
+4. If we are given that $P(A \text{ and } B) = 0.1$, what is $P(A|B)$? \textcolor{red}{$P(A|B) = \frac{P(A \text{ and } B)}{P(B)} = \frac{0.1}{0.7} = 0.143$}
+
+## Your Turn 2.2.2 
+
+Swaziland has the highest HIV prevalence in the world: 25.9% of this country’s population is infected with HIV. The ELISA test is one of the first and most accurate tests for HIV. For those who carry HIV, the ELISA test is 99.7% accurate. For those who do not carry HIV, the test is 92.6% accurate. If an individual from Swaziland has tested positive, what is the probability that he carries HIV?
+
+## Your Turn 2.2.2 (soln.)
+
+\footnotesize
+Swaziland has the highest HIV prevalence in the world: 25.9% of this country’s population is infected with HIV. The ELISA test is one of the first and most accurate tests for HIV. For those who carry HIV, the ELISA test is 99.7% accurate. For those who do not carry HIV, the test is 92.6% accurate. If an individual from Swaziland has tested positive, what is the probability that he carries HIV?
+
+\textcolor{red}{
+$P(\text{status}=+) = 0.259$, so $P(\text{status}=-) = 0.741$. $P(\text{test}=+|\text{status}=+) = 0.997$, $P(\text{test}=-|\text{status}=-) = 0.926$
+\begin{align*}
+P(\text{status}=+|\text{test}=+) & = \frac{P(\text{test}=+|\text{status}=+)\cdot P(\text{status}=+)}{P(\text{test}=+)} \\
+  & \hspace{-3cm} = \frac{P(\text{test}=+|\text{status}=+)\cdot P(\text{status}=+)}{P(\text{test}=+|\text{status}=+)\cdot P(\text{status}=+) + P(\text{test}=+|\text{status}=-)\cdot P(\text{status}=-)} \\
+  & = \frac{0.997 \times 0.259}{0.997 \times 0.259 + (1-.926) \times 0.741} \\
+  & = 0.825
+\end{align*} 
+}
+
+## Your Turn 2.2.3
+
+Lupus is a medical phenomenon where antibodies that are supposed to attack foreign cells to prevent infections instead see plasma proteins as foreign bodies, leading to a high risk of blood clotting. It is believed that 2% of the population suffer from this disease. The test is 98% accurate if a person actually has the disease. The test is 74% accurate if a person does not have the disease. There is a line from the Fox television show House that is often used after a patient tests positive for lupus: ``It’s never lupus." Do you think there is truth to this statement? Use appropriate probabilities to support your answer.
+
+## Your Turn 2.2.3 (soln.)
+
+\footnotesize
+Lupus is a medical phenomenon where antibodies that are supposed to attack foreign cells to prevent infections instead see plasma proteins as foreign bodies, leading to a high risk of blood clotting. It is believed that 2% of the population suffer from this disease. The test is 98% accurate if a person actually has the disease. The test is 74% accurate if a person does not have the disease. There is a line from the Fox television show House that is often used after a patient tests positive for lupus: ``It’s never lupus." Do you think there is truth to this statement? Use appropriate probabilities to support your answer. \textcolor{red}{$P(\text{status} = + | \text{test} = +) = \frac{0.02*0.98}{0.02*0.98+0.98\cdot 0.26 } = 0.071$}
+
+\centering
+\includegraphics[width=.6\textwidth]{img/tree_lupus}
+
+
 # Section 2.3: Random variables
 
 ## Random Variable
@@ -387,7 +505,7 @@ It is called the Prosecutor's fallacy because it usually favors the prosecution 
 We call a variable or process with a numerical outcome a **random variable**
 
 - We denote random variables with a capital letter, like $X$, $Y$, or $Z$
-- Examples: $X$ = result of rolling a die once; $Y = $ annual income of an adult in the US; $Z =$ amount of lead in ppm in a pane of glass 
+- Examples: $X$ = result of rolling a die once; $Y =$ annual income of an adult in the US; $Z =$ amount of lead in ppm in a pane of glass 
 - Observed outcomes of random variables are denoted with the corresponding lower case letter, like $x$, $y$, or $z$
 - Examples: Roll a die 3 times. Observe a 3, a 2, and a 1: $x_1 = 3, x_2 = 2, x_3 = 1$; Some incomes of adults in the US: my mom = \$0 (stay-at-home mom), Bill Gates = \$2.6 billion, Lebron James = \$31 million: $y_1 = 0, y_2 = 2.6 \times 10^9, y_3 = 31 \times 10^6$; Observations from the glass data: $z_1 = 1.090,  z_2=1.005, z_3=1.059$
 
@@ -431,6 +549,41 @@ $\sigma^2 = 2.92$
 - The standard deviation of a random variable is a measure of how much you can expect an observation to differ from the mean by
 - Denoted $\sigma = \sqrt{\sigma^2}$ 
 - Is equal to the square root of the variance
+
+## Your Turn 2.3.1 
+
+A portfolio's value increases by 18% during a financial boom and by 9% during normal times. It decreases by 12% during a recession. What is the expected return on this portfolio if each scenario is equally likely?
+
+## Your Turn 2.3.1 (soln.)
+
+A portfolio's value increases by 18% during a financial boom and by 9% during normal times. It decreases by 12% during a recession. What is the expected return on this portfolio if each scenario is equally likely?
+
+\textcolor{red}{Let $R$ denote the return of the portfolio. $R$ has 3 outomes: 0.18, 0.09, and -0.12. Each outcome has probability $\frac{1}{3}$. \\ $E[R] = \frac{1}{3}(0.18 + 0.09 + (-0.12)) = \frac{0.15}{3} = 0.05$}
+
+## Your Turn 2.3.2
+
+The game of American roulette involves spinning a wheel with 38 slots: 18 red, 18 black, and 2 green. A ball is spun onto the wheel and will eventually land in a slot, where each slot has an equal chance of capturing the ball. Gamblers can place bets on red or black. If the ball lands on their color, they double their money. If it lands on another color, they lose their money. Suppose you bet $1 on red. What’s the expected value and standard deviation of your winnings?
+
+## Your Turn 2.3.2 (soln.)
+
+\small
+
+The game of American roulette involves spinning a wheel with 38 slots: 18 red, 18 black, and 2 green. A ball is spun onto the wheel and will eventually land in a slot, where each slot has an equal chance of capturing the ball. Gamblers can place bets on red or black. If the ball lands on their color, they double their money. If it lands on another color, they lose their money. Suppose you bet $1 on red. What’s the expected value and standard deviation of your winnings?
+
+\textcolor{red}{
+\begin{tabular}{lccc}
+Outcome: & Red & Black & Green \\
+\hline
+$x$      & \$1      & -\$1   & -\$1  \\
+$P(X= x)$   & $\frac{18}{38} = 0.474$ & $\frac{18}{38} = 0.474$ & $\frac{2}{38} = 0.053$ \\
+$E(X)$   & \$ -0.053 \\
+$(x - E(X))$ & 1.053 & -0.947 & -0.947 \\
+$(x - E(X))^2$ & 1.108 & 0.897 & 0.897 \\
+$P(X = x)\cdot(x - E(X))^2$ & 0.525 & 0.425 & 0.047 \\
+$Var(X)$ & 0.997 \\
+$sd(X)$ & $\sqrt{0.997} = 0.999$ 
+\end{tabular}
+}
 
 # Section 2.4: Continuous distributions
 
@@ -490,3 +643,38 @@ p +
   theme(text = element_text(size = rel(5)))
 ```
 
+## Your Turn 2.4.1 
+
+\small 
+
+The histogram shown below represents the concentration (in ppm) of lithium (Li) in 144 measurements in 12 different panes of glass. 
+
+1. What fraction of the glass fragments have Li concentration less than 2.5 ppm?  
+2. What fraction of the glass fragments have Li concentration between 2.5 and 2.75 ppm? 
+3. What fraction of the glass fragments have Li concentration between 2.75 and 3.5 ppm? 
+
+```{r cathist, out.width='.6\\linewidth', fig.height=3}
+ggplot(data = openintro::cats) + 
+  geom_histogram(aes(x = Bwt), binwidth = 0.25, fill = 'white', color = 'black', center = 2.125) + 
+  scale_y_continuous(breaks = seq(0,35, 5), labels = seq(0,35, 5)) + 
+  theme_bw()  + theme(text = element_text(size = rel(4))) + 
+  labs(x = "Lithium concentration (ppm)")
+```
+
+## Your Turn 2.4.1 (soln.)
+
+\small 
+
+The histogram shown below represents the concentration (in ppm) of lithium (Li) in 144 measurements in 12 different panes of glass. 
+
+1. What fraction of the glass fragments have Li concentration less than 2.5 ppm?  \textcolor{red}{$\frac{29+32}{144} = 0.424$}
+2. What fraction of the glass fragments have Li concentration between 2.5 and 2.75 ppm? \textcolor{red}{$\frac{21}{144} = 0.146$} 
+3. What fraction of the glass fragments have Li concentration between 2.75 and 3.5 ppm? \textcolor{red}{$\frac{26}{144} = 0.181$}
+
+```{r cathist2, out.width='.6\\linewidth', fig.height=3}
+ggplot(data = openintro::cats) + 
+  geom_histogram(aes(x = Bwt), binwidth = 0.25, fill = 'white', color = 'black', center = 2.125) + 
+  scale_y_continuous(breaks = seq(0,35, 5), labels = seq(0,35, 5)) + 
+  theme_bw()  + theme(text = element_text(size = rel(4))) + 
+  labs(x = "Lithium concentration (ppm)")
+```
