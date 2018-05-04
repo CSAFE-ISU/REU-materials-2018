@@ -14,7 +14,7 @@ editor_options:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, fig.align = 'center', fig.width = 6)
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, fig.align = 'center', fig.width = 6, cache=T)
 ```
 
 ```{r loadpkgs}
@@ -283,10 +283,210 @@ The **marginal probabilies** are the probabilities based on a single variable wi
 
 A probability of outcomes for two or more variables or processes is called a **joint probability**. 
 
-Example: $P(\text{support }= \text{ yes} \text{ and } \text{ideology }= \text{ conservative}) = \frac{186}{910} = 0.20$
+Example: $P(\text{support }= \text{ yes} ,  \text{ideology }= \text{ conservative}) = \frac{186}{910} = 0.20$
+
+Notation: Inside $P()$, $P(A,B)$ means $P(A \text{ and } B)$
 
 ## Defining conditional probability
 
+- We know there is a relationship between ideology and support of the DREAM act.
+- Conditional probability is the idea that we can use knowledge of the relationship to improve probability estimation
+- Example: $P(\text{support = yes}) = 0.52$ but what if we know the person is ideologically liberal? Does that change the probability? 
+
+$$P(\text{support = yes } \textit{given } \text{ ideology = liberal} ) = \frac{114}{175} = 0.65$$
+
+- This is a **conditional probability** because we computed probability of one outcome under a condition (ideology = liberal)
+- $P(\text{support = yes } \textit{given } \text{ ideology = liberal} )$ is the same as $P(\text{support = yes } |\text{ ideology = liberal} )$ 
+
+## Defining conditional probability
+
+- To obtain the conditional probability of "support = yes" given "ideology = liberal", we first consider only the respondents who say they are liberal (175 respondents), then look at the fraction of those who support the DREAM act: 
+
+\begin{align*}
+& P(\text{support = yes } |\text{ ideology = liberal})  \\
+   & = \frac{\# \text{support = yes and ideology = liberal}}{\# \text{ideology = liberal}} \\
+   & = \frac{114}{175} = 0.65
+\end{align*}
+
+## Formal Definition
+
+**Conditional Probability**: The conditional probability of the outcome of interest $A$ givent condition $B$ is computed as: 
+$$P(A|B) = \frac{P(A \text{ and } B)}{P(B)}$$
+
+## General multiplication rule
+
+We learned how to compute the joint probability of \textit{independent} events, but this general multiplication rule can be used for any two events, $A$ and $B$: 
+
+$$P(A \text{ and } B) = P(A | B) \times P(B)$$
+
+- Note: When $A, B$ are independent, $P(A|B) = P(A)$.
+- Note: This is just a re-arranging of the definition of conditional probability on the previous slide. 
+
+## Conditional probability rules 
+
+- For events $A_1, \dots, A_k$ that are disjoint, and represent ALL outcomes for a random process, and for another event $B$ (maybe from a different process): 
+$$P(A_1 | B) + \cdots + P(A_k|B) = 1$$
+
+- For complement events, the rule also holds: 
+$$P(A^c | B) = 1 - P(A^c | B)$$
+
+## Tree diagrams 
+
+**Tree diagrams**  are a tool to organize outcomes and probabilities around the structure of the data. Example for DREAM act data: 
+\begin{center}
+\includegraphics[scale=.3]{img/dreamTree}
+\end{center}
+
+```{r treedream, eval=FALSE,fig.height=2, fig.width=4}
+dat <- data.frame(x = rep(0:2, c(1,3,9)), y = c(.5,1:3/4, .15, .25, .35, .4, .5, .6, .65, .75, .85), var=rep(c("NA","ideoloy", "support"), c(1,3,9)), label = c("","Moderate", "Liberal", "Conservative", rep(c("Not Sure", "No", "Yes"), 3)), val = c(NA, c(363, 175, 372)/910, c(28,161,174)/363, c(9,52,114)/175, c(35, 151,186)/372 ), id = letters[c(1,4:2, 13:5)])
+dat <- dat %>% mutate(val = round(val, 3), label2 = paste(label, val, sep = "\n"))
+net <- data.frame(from = rep(letters[1:4], each = 3), to = letters[2:13])
+net2 <- merge(merge(net, dat, by.x = "from", by.y = "id"), dat, by.x = "to", by.y = "id")
+B <- c(363, 175, 372)/910
+AgivB <-  c(c(28,161,174)/363, c(9,52,114)/175, c(35, 151,186)/372 )
+AandB <- round(rep(B, each = 3) * AgivB, 3)
+
+ggplot() + 
+  geom_segment(data = net2, aes(x = x.x, y = y.x, xend = x.y, yend = y.y)) + 
+  geom_label(data = dat[-1,], aes(x = x, y = y, label = label2), hjust = rep(0:1, c(3,9)), vjust = c(rep(.5,3), rep(c(0,.5,.5), 3))) + 
+  geom_text(data = NULL, aes(x = 2.4, y = dat[5:13, "y"], 
+                             label = paste0(round(rep(B,each = 3),3), "x", round(AgivB, 3) ,"=" ))) + 
+  geom_text(data = NULL, aes(x = 2.75 , y = dat[5:13, "y"], label = AandB)) + 
+  geom_text(data = NULL, aes(x = c(1,2), y = 1, label = c("Ideology", "Support")), size = 5, color = "navy", hjust = c(0,1)) + 
+  theme_void() 
+```
+
+## Bayes' Theorem 
+
+- Idea: We know a conditional probability of the form $P(A|B)$. i.e. we know the probability of $A$ conditioned on the event $B$.
+- BUT, we really are interested in the probability $P(B|A)$. 
+- We sometimes say something like, "we want to flip (or reverse) the conditional"
+- Example: Suppose we have a piece of DNA evidence in a case that matches the defendant, call it $E$. We assume the forensic scientist knows $P(E|N)$, the probability that the evidence matching the defendant would be found *given* that the defendant is Not guilty. (This is the *random match probability* (RMP).) But, we are really interested in $P(N|E)$, the probability the defendant is Not guilty *given* the evidence $E$. 
+- Note: Let $N^c = G$ be the event that the defendant is Guilty. Then, $P(G|E) = 1- P(N|E)$ since $G$ and $N$ are disjoint events. We are *really* interested in $P(G|E)$. 
+
+## Bayes' Theorem Definition
+
+For 2 events, $A$ and $B$: 
+$$P(A|B) = \frac{P(B|A)\times P(A)}{P(B)}$$
+
+For disjoint events $A_1, \dots, A_k$ that represent all possible outcomes of an process, and another event, $B$: 
+$$P(A_1 | B) = \frac{P(B|A_1)P(A_1)}{P(B|A_1)P(A_1) + P(B|A_2)P(A_2) + \cdots P(B|A_k)P(A_k)}$$
+
+## Prosecutor's Fallacy
+
+In court cases, the **Prosecutor's Fallacy** occurs when someone treats the RMP as the probability that the defendant is innocent. This is NOT correct. 
+
+As we saw: $P(E|N)$ is what the forensic scientist knows. The prosecutor's fallacy occurs when someone incorrectly assumes $P(E|N) = P(N|E)$. 
+
+It is called the Prosecutor's fallacy because it usually favors the prosecution over the defense. i.e. If $P(E|N) =1/1$ million (like a piece of DNA evidence), the fallacy is stating that the probability the defendant is innocent is 1 in 1 million. 
+
 # Section 2.3: Random variables
 
+## Random Variable
+
+We call a variable or process with a numerical outcome a **random variable**
+
+- We denote random variables with a capital letter, like $X$, $Y$, or $Z$
+- Examples: $X$ = result of rolling a die once; $Y = $ annual income of an adult in the US; $Z =$ amount of lead in ppm in a pane of glass 
+- Observed outcomes of random variables are denoted with the corresponding lower case letter, like $x$, $y$, or $z$
+- Examples: Roll a die 3 times. Observe a 3, a 2, and a 1: $x_1 = 3, x_2 = 2, x_3 = 1$; Some incomes of adults in the US: my mom = \$0 (stay-at-home mom), Bill Gates = \$2.6 billion, Lebron James = \$31 million: $y_1 = 0, y_2 = 2.6 \times 10^9, y_3 = 31 \times 10^6$; Observations from the glass data: $z_1 = 1.090,  z_2=1.005, z_3=1.059$
+
+## Expected value
+
+- The expected value of a random variable is the average value of it 
+- It's what you *expect* the value to be if you observe a new value
+- Denoted $E(X)$: "the expected value of (the random variable) $X$"
+- For a discrete variable $X$ (with finite number of outcomes $x_1, x_2, \dots, x_k$), the expected value of $X$ is: 
+$$E(X) = x_1 \times P(X = x_1) + x_2 \times P(X = x_2) + \cdots x_k \times P(X = x_k)$$
+
+Example: $E(X)$ where $X$ is a roll of a die. 
+
+Outcome | $x_1=1$ |$x_2=2$ | $x_3=3$ | $x_4=4$ | $x_5=5$ | $x_6=6$ | 
+:-------|:-------:|:------:|:-------:|:-------:|:-------:|:-------:|
+Probability | $\frac{1}{6}$ | $\frac{1}{6}$ | $\frac{1}{6}$ | $\frac{1}{6}$ | $\frac{1}{6}$ | $\frac{1}{6}$ | 
+
+$$E(X) = 1 \times \frac{1}{6} + 2 \times \frac{1}{6} + 3 \times \frac{1}{6} + 4 \times \frac{1}{6} + 5 \times \frac{1}{6} + 6 \times \frac{1}{6} = 3.5$$
+
+## Variance
+
+- The **variance** of a random variable, describes the variability of it.
+- Denoted by $Var(X)$ or $\sigma^2$
+- i.e. if you observe several values, how different are they expected to be from each other
+- For a discrete variable $X$ (with finite number of outcomes $x_1, x_2, \dots, x_k$), the variance of $X$ is: 
+\begin{footnotesize}
+$$\sigma^2 = (x_1- E(X))^2 \cdot P(X = x_1) + (x_2- E(X))^2 \cdot P(X = x_2) + \cdots + (x_k - E(X))^2 \cdot P(X = x_k)$$
+\end{footnotesize}
+
+Example: for $X$= roll of a die. 
+
+Outcome | $x_1=1$ |$x_2=2$ | $x_3=3$ | $x_4=4$ | $x_5=5$ | $x_6=6$ | 
+:-------|:-------:|:------:|:-------:|:-------:|:-------:|:-------:|
+$(x_i - E(X))$ | -2.5 | -1.5 | -0.5 | 0.5 | 1.5 | 2.5 |
+$(x_i - E(X))^2$ | 6.25 | 2.25 | 0.25 | 0.25 | 2.25 | 6.25 | 
+
+$\sigma^2 = 2.92$
+
+## Standard deviation
+
+- The standard deviation of a random variable is a measure of how much you can expect an observation to differ from the mean by
+- Denoted $\sigma = \sqrt{\sigma^2}$ 
+- Is equal to the square root of the variance
+
 # Section 2.4: Continuous distributions
+
+## Recall: Histogram 
+
+Let's look at the lead content of our glass samples: 
+
+```{r glasslead, fig.show='hold', out.width='.245\\linewidth'}
+glass <- read_csv("dat/glass_sample.csv")
+ggplot(data = glass) + 
+  geom_histogram(aes(x = Pb208), bins = 10, color = 'black', fill = 'white') + 
+  theme_bw() + 
+  theme(text = element_text(size = rel(5)))
+ggplot(data = glass) + 
+  geom_histogram(aes(x = Pb208), bins = 20, color = 'black', fill = 'white') + 
+  theme_bw() + 
+  theme(text = element_text(size = rel(5)))
+ggplot(data = glass) + 
+  geom_histogram(aes(x = Pb208), bins = 30, color = 'black', fill = 'white') + 
+  theme_bw() + 
+  theme(text = element_text(size = rel(5)))
+ggplot(data = glass) + 
+  geom_histogram(aes(x = Pb208), bins = 40, color = 'black', fill = 'white') + 
+  theme_bw() + 
+  theme(text = element_text(size = rel(5)))
+```
+
+What makes continuous variables different from discrete variables? 
+
+## Density
+
+- A **probability density function** is a smooth curve that represents the relative frequency of outcomes of a continuous random variable. 
+- The area under the curve is 1. (Represents summing up all probabilities of disjoint outcomes)
+
+```{r glassleaddens, out.width='.5\\linewidth', fig.height=4}
+ggplot(data = glass, aes(x = Pb208, y = ..density..)) + 
+  geom_histogram(bins = 30, color = 'black', fill = 'white') + 
+  geom_density(color = 'red') + 
+  theme_bw()  + theme(text = element_text(size = rel(5)))
+```
+
+## Probabilities from densities 
+
+- Since the probability of any one outcome is 0, we need to look at ranges of outcomes 
+- Example: $P(0.99 \leq \text{lead concentration (ppm)} \leq 1.01) = 0.0379$ but $P(\text{lead concentration (ppm)}=1.00) = 0$
+
+```{r glassleadprob, out.width='.5\\linewidth', fig.height=4}
+p <- ggplot(data = glass, aes(x = Pb208, y = ..density..)) + 
+  geom_histogram(bins = 30, color = 'black', fill = 'white') + 
+  geom_density(color = 'red') + 
+  theme_bw() 
+pd <- ggplot_build(p)
+dat2 <- pd$data[[2]]
+p + 
+  geom_area(data = dat2 %>% filter(x <= 1.01, x >= .99), aes(x = x, y = density),
+            fill = 'red', alpha = .65) + 
+  theme(text = element_text(size = rel(5)))
+```
+
