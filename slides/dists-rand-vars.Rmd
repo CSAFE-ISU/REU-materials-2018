@@ -109,6 +109,9 @@ $$z = \frac{x - \mu}{\sigma}$$
 - Tells you how "different" an observation is from the mean 
 - $z$-scores less than 0 are below the mean, $z$-scores greater than 0 are above the mean. $z$-score of 0 means that $x = \mu$. 
 - Observations with higher $z$-scores (in absolute value) are "more unusual" than observations with lower $z$-scores (in absolute value)
+
+**The 68-95-99.7% Rule** 
+
 - About 68% of observations have an absolute $z$-score less than 1
 - About 95% of observations have an absolute $z$-score less than 2
 - About 99.7% of observations have an absolute $z$-score less than 3
@@ -132,6 +135,72 @@ ggplot(data = dat, y = Fe57) +
   geom_abline(slope = slope, intercept = int) + 
   theme_bw() + theme(aspect.ratio = 1, text = element_text(size=rel(3)))
 ```
+
+## Your Turn 3.1.1
+
+
+The Graduate Record Examination (GRE) is mandatory for many graduate school applications, similar to the ACT/SAT for college applications. A student scored 160 on the Verbal Reasoning (VR) section and 157 on the Quantitative Reasoning (QR) section. The mean score for VR section for all test takers was 151 with a standard deviation of 7, and the mean score for the QR was 153 with a standard deviation of 7.67. Suppose that both distributions are nearly normal.
+
+1. Write down the short-hand for these two normal distributions.
+2. What is the student's $z$-score on the Verbal Reasoning section? On the Quantitative Reasoning
+section? 
+3. Relative to others, which section did the student do better on?
+4. Explain why simply comparing raw scores from the two sections could lead to an incorrect
+conclusion as to which section a student did better on.
+
+## Your Turn 3.1.1 (soln.)
+
+
+The Graduate Record Examination (GRE) is mandatory for many graduate programs, similar to the ACT/SAT for college applications. A student scored 160 on the Verbal Reasoning (V) section and 157 on the Quantitative Reasoning (Q) section. The mean score for the V section for all test takers was 151 with a standard deviation of 7, and the mean score for the Q section was 153 with a standard deviation of 7.67. Suppose that both distributions are nearly normal.
+
+1. Write down the short-hand for these two normal distributions. \textcolor{red}{$V\sim N(151, 7); Q\sim N(153, 7.67);$}
+2. What is the student's $z$-score on the Verbal Reasoning section? On the Quantitative Reasoning
+section?  \textcolor{red}{$V: z = \frac{160 - 151}{7} = 1.286$, $Q: z = \frac{157 - 153}{7.67} = 0.522$}
+3. Relative to others, which section did the student do better on?  \textcolor{red}{The verbal reasoning section. (Higher $z$-score.)}
+4. Explain why simply comparing raw scores from the two sections could lead to an incorrect 
+conclusion as to which section the student did better on.  \textcolor{red}{Without knowing the underlying distribution of scores, we cannot know how they did relative to others.}
+
+## Your Turn 3.1.2 
+
+\small 
+
+Below are final exam scores of 20 Introductory Statistics students: 
+
+57, 66, 69, 71, 72, 73, 74, 77, 78, 78, 79, 79, 81, 81, 82, 83, 83, 88, 89, 94
+
+1. The mean score is 77.7 points, with a standard deviation of 8.44 points. Use this information to determine if the scores approximately follow the 68-95-99.7% Rule.
+2. Do these data appear to follow a normal distribution? Explain your reasoning using the graphs provided below.
+
+```{r yourturn312, fig.show='hold', out.height = '.3\\textwidth', out.width='.3\\textwidth'}
+dat <- data.frame(x = c(57, 66, 69, 71, 72, 73, 74, 77, 78, 78, 79, 79, 81, 81, 82, 83, 83, 88, 89, 94))
+
+y     <- quantile(dat$x, c(0.25, 0.75), type=5) # Find the 1st and 3rd quartiles
+x     <- qnorm( c(0.25, 0.75))                 # Find the matching normal values on the x-axis
+slope <- diff(y) / diff(x)                     # Compute the line slope
+int   <- y[1] - slope * x[1]  
+
+ggplot(data = dat) + 
+  geom_histogram(aes(x = x, y = ..density..), binwidth = 5, fill = 'white', color = 'black', center= 2.5) + 
+  geom_density(aes(x = x)) + 
+  theme_bw() + theme(aspect.ratio = 1, text = element_text(size=rel(5)))
+ggplot(data = dat, y = x) +
+  stat_qq(aes(sample = x)) + 
+  geom_abline(slope = slope, intercept = int) + 
+  theme_bw() + theme(aspect.ratio = 1, text = element_text(size=rel(5)))
+  
+```
+
+## Your Turn 3.1.2 (soln.)
+
+\small 
+
+Below are final exam scores of 20 Introductory Statistics students: 
+
+\textcolor{purple}{57}, \textcolor{green}{ 66, 69,} \textcolor{blue}{71, 72, 73, 74, 77, 78, 78, 79, 79, 81, 81, 82, 83, 83}, \textcolor{green}{88, 89, 94}
+
+1. The mean score is 77.7 points, with a standard deviation of 8.44 points. Use this information to determine if the scores approximately follow the 68-95-99.7% Rule. \textcolor{red}{They do follow the rule. $77.7\pm 8.44 = \textcolor{blue}{(69.26, 86.14)}$, 14/20 = 70\%; $77.7\pm 2\cdot 8.44 = \textcolor{green}{(60.82, 94.58)}$, 19/20 = 95\%; $77.7\pm 3\cdot 8.44 = \textcolor{purple}{(52.38, 103.02)}$, 20/20=100\%}
+2. Do these data appear to follow a normal distribution? Explain your reasoning using the graphs provided below. \textcolor{red}{With the exception of a low outlier (57), the histogram is unimodal and symmetric and the points approximately follow the line in the QQ plot. So the data are approximately normal.}
+
 
 # Section 3.2: The Binomial Distribution
 
@@ -225,6 +294,43 @@ ggplot(data = NULL) + geom_bar(aes(x = x, weight = y)) + theme_bw()+ labs(x = "H
 3. Each trial is either a "success" or a "failure"
 4. The probability of a "success" ($p$) is the same for all trials 
 
+## Your Turn 3.2.1
+
+Determine if each trial below can be considered an independent binary trial for the following situations.
+
+1. Cards dealt in a hand of poker. 
+2. Outcome of each roll of a die.
+
+
+## Your Turn 3.2.1 (soln.)
+
+Determine if each trial below can be considered an independent binary trial for the following situations.
+
+1. Cards dealt in a hand of poker.  \textcolor{red}{No. The hands are not independent because hands are dealt without replacement from the deck.}
+2. Outcome of each roll of a die. \textcolor{red}{Yes, if we can define the definitions of success and failures. e.g. success = odd number, failure = even number. The rolls are independent.}
+
+## Your Turn 3.2.2
+
+Data collected by the Substance Abuse and Mental Health Services Administration (SAMSHA) suggests that 69.7% of 18-20 year olds consumed alcoholic beverages in 2008.
+
+1. Suppose a random sample of ten 18-20 year olds is taken. Is the use of the binomial distribution appropriate for calculating the probability that exactly six consumed alcoholic beverages? Explain.
+2. Calculate the probability that exactly 6 out of 10 randomly sampled 18- 20 year olds consumed an alcoholic drink.
+3. What is the probability that exactly four out of ten 18-20 year olds have not consumed an alcoholic beverage?
+4. What is the probability that at most 2 out of 5 randomly sampled 18-20 year olds have consumed alcoholic beverages?
+5. What is the probability that at least 1 out of 5 randomly sampled 18-20 year olds have consumed alcoholic beverages?
+
+## Your Turn 3.2.2 (soln.)
+
+\footnotesize
+
+Data collected by the Substance Abuse and Mental Health Services Administration (SAMSHA) suggests that 69.7% of 18-20 year olds consumed alcoholic beverages in 2008.
+
+1. Suppose a random sample of ten 18-20 year olds is taken. Is the use of the binomial distribution appropriate for calculating the probability that exactly six consumed alcoholic beverages? Explain. \textcolor{red}{Yes. There are a fixed number of trials ($n=10$), they are independent (randomly chosen), each trial is a success or failure (drank or not), and they have the same probablility of success ($p=0.697$) }
+2. Calculate the probability that exactly 6 out of 10 randomly sampled 18- 20 year olds consumed an alcoholic drink. \textcolor{red}{$P(X=6) = \binom{10}{6} 0.697^6 (1-0.697)^{10-6} = 0.203$}
+3. What is the probability that exactly four out of ten 18-20 year olds have not consumed an alcoholic beverage? \textcolor{red}{Same as 2}
+4. What is the probability that at most 2 out of 5 randomly sampled 18-20 year olds have consumed alcoholic beverages? \textcolor{red}{$P(X \leq 2) = \sum_{k=0}^2 \binom{5}{k} 0.697^k (1-0.697)^{5-k}$ = 0.167}
+5. What is the probability that at least 1 out of 5 randomly sampled 18-20 year olds have consumed alcoholic beverages? \textcolor{red}{$P(X \geq 1) = 1 - P(X = 0)= 1- \binom{5}{0} 0.697^0 (1-0.697)^{5-0} = 1- 0.0026 = 0.9974$}
+
 # Section 3.3: The Poisson Distribution 
 
 ## Poisson distribution
@@ -275,3 +381,21 @@ A random variable that follows the Poisson distribution if
 - It is concerned with the number of events
 - The population that generates such events is large 
 - The events occur independently of each other.
+
+## Your Turn 3.3.1 
+
+A coffee shop serves an average of 75 customers per hour
+during the morning rush. Assume the number of customers in the morning follows a Poisson distribution. 
+
+1. What are the mean and the standard deviation of the number of customers this coffee shop serves in one hour during this time of day?
+2. Would it be considered unusually low if only 60 customers showed up to this coffee shop in one hour during this time of day?
+3. Calculate the probability that this coffee shop serves 70 customers in one hour during this time of day?
+
+## Your Turn 3.3.1 (soln.)
+
+A coffee shop serves an average of 75 customers per hour
+during the morning rush. Assume the number of customers in the morning follows a Poisson distribution. 
+
+1. What are the mean and the standard deviation of the number of customers this coffee shop serves in one hour during this time of day? \textcolor{red}{Mean = 75, SD = $\sqrt{75}$ = 8.66}
+2. Would it be considered unusually low if only 60 customers showed up to this coffee shop in one hour during this time of day? \textcolor{red}{$\frac{60-75}{8.66} = -1.73$. Less than 2 standard deviations away from the mean. Not very unusual.}
+3. Calculate the probability that this coffee shop serves 70 customers in one hour during this time of day? \textcolor{red}{$P(\text{serve $70$ customers}) = \frac{75^{70}\cdot \exp(-75)}{70!} = 0.04$}
