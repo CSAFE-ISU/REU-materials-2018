@@ -243,5 +243,19 @@ ggplot(data = blfm32) +
   geom_abline(slope = 1, intercept = 0)
 ```
 
-
 # Section 4.3: Logistic Regression
+
+## Different types of responses
+
+In linear & multiple regression, we have a *continuous* numerical response variable. However, this is not always the case. 
+
+Often, we want to determine whether the response belongs in one of two categories. 
+
+Examples: 
+
+- Is an email spam or not? 
+- Is a glass fragment from manufacturer 1 or 2? 
+- Will a juror say the defendant in a case is guilty or not guilty? 
+
+## Logistic regression 
+
