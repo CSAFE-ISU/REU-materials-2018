@@ -1,5 +1,5 @@
 ---
-title: "Part 4: Multiple Regression and Logistic Regression"
+title: "Part 4: Regression"
 author: "Sam Tyner"
 date: "TBD"
 output: 
@@ -27,16 +27,221 @@ These slides are based on the book *OpenIntro Statistics* by David Diez, Christo
 
 The book can be downloaded from [https://www.openintro.org/stat/textbook.php](https://www.openintro.org/stat/textbook.php)
 
-Part 4 Corresponds to Chapter 8 of the text. Sections 3.1-3.3 correspond to sections 3.1, 3.4, 3.5.2 of the text.
+Part 4 Corresponds to Chapters 7, 8 of the text. Sections 4.1-4.3 correspond to chapters 7, 8.1, 8.4 of the text.
 
 ## Outline 
 
-- Multiple Regression (4.1)
-- Model Selection (4.2)
+- Simple Linear Regression (4.1)
+- Multiple Regression (4.2)
 - Logistic Regression (4.3)
 
-# Section 4.1: Multiple Regression
+# Section 4.1: Simple Linear Regression
 
-# Section 4.2: Model Selection
+## What is regression? 
+
+![](img/xkcdlinreg.png)
+
+## Formula for a line
+
+$$Y = a\cdot X + b$$
+
+- $Y$: dependent variable (response)
+- $X$: independent variable (predictor)
+- $a$: slope (for every 1 unit increase in $X$, $Y$ increases by $a$)
+- $b$: intercept (when $X=0$, $Y = b$)
+- *Deterministic*: knowledge of $a, X, b$ means you know $Y$ 
+
+## Linear Regression
+
+Why? 
+
+- Have two variables, $Y, X$ and we think that the value of $Y$ *depends on* the value of $X$ 
+- Why would we think that? Maybe we have previous knowledge or we looked at a scatterplot of the data 
+
+```{r scatter, fig.height=3, out.width = '.6\\linewidth'}
+glass <- read_csv("dat/glass_sample.csv")
+ggplot(data = glass) + 
+  geom_point(aes(x = log(Li7), y = log(Na23))) + 
+  theme_bw() + 
+  theme(text = element_text(size = rel(4)))
+```
+
+## Linear Regression
+
+\begin{figure}
+\centering
+\includegraphics[width=.6\linewidth]{regressions_files/figure-beamer/scatter-1}
+\end{figure}
+
+Guesstimate the slope and intercept of a line through this data
+
+- $a$: slope = ?
+- $b$: intercept = ? 
+
+## Linear Regression
+
+\begin{figure}
+\centering
+\includegraphics[width=.6\linewidth]{regressions_files/figure-beamer/scatter-1}
+\end{figure}
+
+Guesstimate the slope and intercept of a line through this data
+
+- $a$: slope $\approx$ \textcolor{red}{0.08}
+- $b$: intercept $\approx$ \textcolor{red}{11.48}
+
+## Best fit line
+
+The *best fit line* is the equation $Y = a\cdot X +b$ with values $a,b$ that minimize the **sum of squared residuals**. What does that mean? 
+
+>- Write the best fit line as $\hat{Y} = \beta_0 + \beta_1 \cdot X$. 
+>- $\hat{Y}$ is the predicted value of $Y$ by the best fit line
+>- **Residual** - what is "left over" after the prediction. 
+>- Denote residual for observation $i$ by $e_i = Y_i - \hat{Y}_i$
+>- We are minimizing $\sum_{i= 1}^N e_i^2$
+
+## Calculating the best fit line 
+
+- $\beta_1 = \frac{s_y}{s_x}\cdot r$
+- $s_y$: standard deviation of the data observations $Y$
+- $s_x$: standard deviation of the data observations $X$ 
+- $r$: correlation between the observations $X, Y$ (measure of association between $X,Y$)
+- $\beta_0 = \bar{y} - \beta_1\cdot \bar{x}$ 
+
+## Do it in `R` 
+
+\footnotesize
+
+```{r lm1, echo=TRUE}
+bfl <- lm(data = glass, log(Na23) ~ log(Li7))
+coef(bfl)
+```
+```{r plotlm, fig.height=3, out.width='.6\\linewidth'}
+bfl2 <- fortify(bfl)
+ggplot(data = bfl2, aes(x = `log(Li7)`)) + 
+  geom_point(aes(y = `log(Na23)`)) + 
+  geom_line(aes(y = .fitted), color = "red") + 
+  theme_bw() + 
+  theme(text = element_text(size = rel(4)))
+```
+
+## Residual Plot 
+
+Look at the residuals $e$ by the values of $X$: 
+
+```{r resid, fig.height=3, out.width='.49\\linewidth', fig.show='hold'}
+ggplot(data = bfl2, aes(x = `log(Li7)`)) + 
+  geom_point(aes(y = .resid)) +
+  geom_hline(yintercept = 0 , color = 'red') + 
+  theme_bw() + 
+  theme(text = element_text(size = rel(4)))
+ggplot(data = bfl2, aes(x = .resid, y = ..density..)) + 
+  geom_histogram(fill = 'white', color = 'black') + 
+  geom_density() + 
+  theme_bw() + 
+  theme(text = element_text(size = rel(4)))
+```
+
+Want to see a random scatter of points above and below 0
+
+## $R^2$: how well does $X$ explain $Y$?
+
+$R^2$, the **coefficient of determination** defines how much of the variability in $Y$ is explainable by the values of $X$. 
+
+$$R^2 = 1 - \frac{Var(e)}{Var(y)}$$
+
+Example: 
+
+- $Y = \log(Na23)$. $Var(Y) = 0.00089$ 
+- $e_i = Y_i-\hat{Y}_i = Y_i - (11.487 +  0.0763\cdot X_i )$. $Var(e) = 0.00019$
+- $\frac{Var(e)}{Var(y)} = \frac{0.00019}{0.00089} = 0.2138$
+- $R^2 = 1 - \frac{Var(e)}{Var(y)}  = 1- 0.2138 = 0.7862$
+
+78.62% of the variability in $Y$ is explained by the value of $X$. 
+
+# Section 4.2: Multiple Regression
+
+## Multiple Regression = Multiple Predictors
+
+Multiple regression is the same general idea as simple linear regression, but instead of one predictor variable, $X$, we have two or more: $X_1, X_2, \dots, X_p$ where $p$ is the number of predictor variables. 
+
+$$\hat{Y} = \beta_0 + \beta_1\cdot X_1 +  \beta_2\cdot X_2 + \cdots +  \beta_p\cdot X_p$$
+
+$\beta_0$ (intercept) and $\beta_1, \dots, \beta_p$ are called *coefficients* 
+
+- $\beta_0$ is the value of $\hat{Y}$ when ALL $X$s are 0
+- $\beta_k, k \in \{1,2,\dots, p\}$ is the amount that $Y$ increases when $X_k$ increases by 1 unit, and *all other $X$ values are held constant*
+
+Why? 
+
+## Why Multiple Regression? 
+
+- May know that more than 1 variable affects the value of $Y$ (background knowledge)
+- More predictors generally means better fit, better predictions
+
+Example: Add log value of Neodymium (common glass additive) to the model
+
+```{r multreg, echo = TRUE}
+blfm2 <- lm(log(Na23) ~ log(Li7) + log(Nd146), data = glass)
+blfm2
+```
+
+## Multiple Regression Example
+
+\small
+
+Example: $\log(Na23) = \beta_0 + \beta_1 \cdot \log(Li7) + \beta_2 \cdot \log(Nd146)$
+
+Residuals: 
+
+```{r multreg2, out.height='.6\\textwidth', fig.height=2}
+blmf22 <- fortify(blfm2)
+ggplot(data = blmf22) + 
+  geom_point(aes(x = `log(Nd146)`, y = .resid)) 
+```
+
+$R^2 = 1 - \frac{Var(e)}{Var(y)} = 1 - \frac{0.000155}{0.00089} = 0.8258$
+
+What do you think of this model? 
+
+## Multiple Regression Example
+
+\small
+
+Example: $\log(Na23) = \beta_0 + \beta_1 \cdot \log(Li7) + \beta_2 \cdot \log(Nd146)$
+
+Residuals: 
+
+```{r multreg2resi, out.height='.6\\textwidth', fig.height=2}
+blfm22 <- fortify(blfm2)
+ggplot(data = blfm22) + 
+  geom_point(aes(x = `log(Nd146)`, y = .resid)) 
+```
+
+$R^2 = 1 - \frac{Var(e)}{Var(y)} = 1 - \frac{0.000155}{0.00089} = 0.8258$
+
+\textcolor{red}{Better fit than the simple linear regression, but we uncovered a new pattern: two distinct groups of residuals}
+
+## Another multiple regression 
+
+\small
+
+There are 2 manufacturers in the glass data, so we'll add the manufacturer as a variable in the model: 
+
+$$\hat{Y}  = \beta_0 + \beta_1 \cdot X_1 +  \beta_2 \cdot X_2 +  \beta_3 \cdot X_3$$
+
+- $Y = \log(Na23)$, $X_1 = \log(Li7)$, $X_2 = \log(Nd146)$, $X_3 = \text{manufacturer}$. 
+
+```{r multreg3, echo =T }
+blfm3 <- lm(log(Na23) ~ log(Li7) + log(Nd146) + mfr , data = glass)
+blfm3
+```
+```{r multreg3resid, out.height='.6\\textwidth', fig.height=2}
+blfm32 <- fortify(blfm3)
+ggplot(data = blfm32) + 
+  geom_point(aes(x = `log(Na23)`, y = .fitted)) + 
+  geom_abline(slope = 1, intercept = 0)
+```
+
 
 # Section 4.3: Logistic Regression
