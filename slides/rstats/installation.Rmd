@@ -1,0 +1,99 @@
+---
+title: "Software Installation"
+author: "Sam Tyner"
+date: "2018/06/03"
+output:
+  xaringan::moon_reader:
+    css: ["csafe.css", "csafe-fonts.css"]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+```
+
+class:primary
+# Outline
+
+We'll need some new software this summer! 
+
+- R & R Studio
+- Git 
+
+Open the website http://happygitwithr.com/ in your browser. Most of these slides are from that book. 
+
+---
+class: primary
+# R & RStudio
+
+Why? 
+
+- computation (R)
+- writing (RStudio)
+- publishing (RStudio)
+
+---
+class: primary
+# Install R 
+
+Dowload R for Windows: https://cloud.r-project.org/ 
+
+---
+class: primary
+# Install RStudio 
+
+Download RStudio for Windows: https://www.rstudio.com/products/rstudio/download/preview/ 
+
+---
+class: primary
+# Git 
+
+Why? 
+
+- collaboration 
+- file tracking 
+- version control (no more "finalversion.docx" and "finalversion2.docx")
+
+---
+class: secondary
+
+<center><img src="https://imgs.xkcd.com/comics/git.png" height="50%"/></center>
+
+---
+class: primary
+# How?  
+
+1. Create a free [github.com](https://www.github.com) account. (Easiest)
+2. Download Git (Harder)
+3. Get Git, Github, and RStudio to talk to each other. (Hardest)
+
+---
+class: primary
+# Step 1: Get Github
+
+Make an account tied to an email you'll have access to for a long time
+
+Good practices for usernames: 
+
+- Contains elements of your actual name (e.g. sctyner)
+- Reuses your username from other contexts, e.g. email, Twitter (if appropriate) 
+- You should be comfortable showing it to your mom or boss.
+- Shorter is better than longer (less than 10 characters is good)
+- Be as unique as possible
+- Make it timeless. Don’t highlight your current university, employer, or place of residence, e.g. SamTyowa
+
+---
+class: primary
+
+# Step 2: Get Git 
+
+https://gitforwindows.org/ 
+
+Install Git for Windows, also known as `msysgit` or "Git Bash", to get Git in addition to some other useful tools, such as the Bash shell.
+
+- Select "Use Git from the Windows Command Prompt" during installation. 
+- Install location should be below C:/Program Files 
