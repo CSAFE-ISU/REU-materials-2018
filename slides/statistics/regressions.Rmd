@@ -259,3 +259,69 @@ Examples:
 
 ## Logistic regression 
 
+Idea: 
+
+When the outcome is one of 2 options, you select the "success" outcome and model the response as binary. 
+
+- If $Y_i = 1$ the response is a "success", if $Y_i = 0$ it is a "failure" 
+- $p_i = Pr(Y_i = 1)$ 
+- If there are more 1s than 0s, then $p_i$ should be higher than 0.50
+- Can use other information $x_i$ to influence the value of $p_i$ in the model 
+
+## Motivating Example
+
+Suppose we want to model what effects a juror's verdict:
+
+- $Y_i = 1$ means "guilty" and $Y_i = 0$ means "not guilty" 
+- Let $x_i$ be a variable indicating whether or not the defendant's DNA was found at the crime scene. $x_i$ is also binary: $x_i = 1$ when the defendant's DNA was found at the crime scene, and $x_i=0$ otherwise
+- We want to tie the probability a juror's verdict is guilty ($p_i$) to the presence of DNA evidence 
+- The probability should go up when there is DNA evidence, and should go down when there isn't DNA evidence. 
+
+## Formulae 
+
+$$Y_i \sim \text{Bernoulli}(p_i)$$
+$$\text{logit}(p_i) = \alpha + \beta \cdot x_i$$
+
+$Y_i$ is a random variable with $P(Y_i = 1) = p_i$, and the value of $p_i$ changes with the with the value of other information $x_i$. $\alpha$ is the intercept, $\beta$ is the slope of the model (similar to simple linear regression). 
+
+## Logit??? 
+
+The logit function takes a number from (0,1) (here, $p_i$) and turns it into a real number $(-\infty, \infty)$ (here $\alpha + \beta \cdot x_i$).
+
+The inverse of this function (take a number from $(-\infty, \infty)$ and turn it into a number from (0,1)) is: 
+
+$$p_i = \frac{\exp\{\alpha + \beta \cdot x_i \}}{1 + \exp\{\alpha + \beta \cdot x_i \}}$$
+
+This is why we use it for logistic regression: we can turn any value and combination of predictor variables into a probability in this way. 
+
+## Logit example 
+
+Email data: 
+
+```{r email}
+email <- openintro::email
+email %>% select(spam, to_multiple, winner) %>% mutate(winner = recode(winner, "no"= 0, "yes" = 1)) -> email
+email %>% slice(c(1:3, 3919:3921)) %>% knitr::kable()
+```
+
+Is it spam? We think that this can be predicted by: whether or not it is sent to multiple people and/or it contains the word "winner"
+
+## Logit example 
+
+\footnotesize 
+
+```{r email2, echo = TRUE, tidy=TRUE}
+glm(spam ~ to_multiple + winner, family = binomial, data = email)
+```
+
+
+## Logit example
+
+```{r email3}
+glm1 <- glm(spam ~ to_multiple + winner, family = binomial, data = email)
+pred <- predict(glm1, type = "response")
+new <- email %>% group_by(spam, to_multiple, winner) %>% count 
+new$pred_prob <- round(predict(glm1, type = "response", newdata = new),3)
+knitr::kable(new, caption = "Predicted probabilities of spam given the to_multiple and winner variables")
+```
+
