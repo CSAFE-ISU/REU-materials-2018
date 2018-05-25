@@ -7,7 +7,6 @@ a, a > code {
   background-image: url("img/primaryslideimg.png");
   background-size: cover;
   color: #000000;
-  padding-top: 40px;
   padding-right: 200px;
 }
 
@@ -15,10 +14,13 @@ a, a > code {
   color: #ffffff;
   text-transform: uppercase;
   font-weight: bold;
+  margin-top: 0px;
+  margin-left: -10px;
+  margin-bottom: 100px;
 }
 
 .secondary {
-  background-image: url("img/secondaryslideimg.png");
+  background: url("img/secondaryslideimg.png");
   background-size: cover;
   color: #000000;
   padding-top: 200px;

@@ -77,7 +77,7 @@ class: primary
 
 ---
 class: primary
-# Step 1: Create Github account
+# Step 1: Get Github
 
 Make an account tied to an email you'll have access to for a long time
 
@@ -93,14 +93,163 @@ Good practices for usernames:
 ---
 class: primary
 
-# Step 2: Download Git 
+# Step 2: Get Git 
 
 https://gitforwindows.org/ 
 
 Install Git for Windows, also known as `msysgit` or "Git Bash", to get Git in addition to some other useful tools, such as the Bash shell.
 
 - Select "Use Git from the Windows Command Prompt" during installation. 
-- Install location should be below C:/Program Files
+- Install location should be below C:/Program Files 
+
+---
+class: primary
+# Step 3: Communication
+
+Now we have all the tools, and we need to get them to talk to each other
+
+We'll need to use something called the `shell`
+
+---
+class: primary
+# The Shell
+
+"The shell is a program on your computer whose job is to run other programs."
+
+How to find the shell: 
+
+1. Open RStudio
+2. Click on the Terminal Tab
+3. Type `echo $SHELL` then Enter. 
+4. If it says `/usr/bin/bash`, you're done! There's your shell.
+5. If it says anything other than that, in the RStudio menu, go to Tools -&gt; Global Options -&gt; Terminal and select "Git Bash" 
+
+You should see something like `[username]@[computer] MSYS [wd]$` or  `[username]@[computer] MINGW64 [wd]$` where the cursor is *after* the `$`. You should see your username on your computer instead of `[username]` and your computer's name instead of `[computer]`. Where `[wd]` is, you'll see you current **w**orking **d**irectory (the folder you're in on your computer). 
+
+If you don't see `MSYS` or `MINGW64` let me know ASAP! 
+
+---
+class: primary
+# Using the Shell
+
+You have to tell git who you are and where your Github account lives:
+
+```
+$ git config --global user.name 'Your Name'
+$ git config --global user.email 'youremail@example.com'
+$ git config --global --list
+```
+
+Your name and email need to match your Github account! 
+
+---
+class: primary
+# More communication
+
+First, we make sure that Git on your computer is connected to your online account at Github.com
+
+1. Go to Github.com and sign in (if you're not already there)
+2. Click the big green "New Repository" button. 
+
+&lt;center&gt;&lt;img src="img/newrepo.png" width="75%"/&gt;&lt;/center&gt;
+
+---
+class: secondary
+
+Name the new repo `my-first-repo`, give a description, make it public, and initialize with a README.
+
+&lt;center&gt;&lt;img src="img/newreponame.png" width="60%"/&gt;&lt;/center&gt;
+
+---
+class: secondary
+
+Copy the HTTPS clone URL to your clipboard via the green "Clone or Download" button.
+
+&lt;center&gt;&lt;img src="img/newrepoclone.png" width="75%"/&gt;&lt;/center&gt;
+
+---
+class: primary
+# Get repo offline
+
+- Open Terminal in RStudio
+- Change your working directory: `$ cd ~/tmp`
+- Clone (copy) your github repo: `$ git clone https://github.com/sctyner/my-first-repo.git`
+- Change your working directory to the repo and list the files: 
+
+```
+$ cd my-first-repo
+$ ls
+```
+
+---
+class: primary
+# Make a change 
+
+1. Change the README.md file: `$ echo "A line I wrote on my local computer" &gt;&gt; README.md`
+2. Check the status of the repo `$ git status`. You should see something print out that says: `modified: README.md`
+
+---
+class: primary
+# Add change online
+
+1. Add the changed file to the repo, so it knows to update the remote file: `$ git add -A`. The `-A` tells git to add all modified or new files. You only have one! `$ git add README.md` is the same.
+2. Commit (save) to the repo with the `commit` command: `$ git commit -m "A commit from my local computer"` The `-m` is telling git that what comes next in quotes is the commit message&lt;sup&gt;1&lt;/sup&gt;. 
+3. Add the change to the remote repo: `$ git push` 
+4. Type your Github username and password when prompted. 
+5. Go to the repo on github.com and see your change! 
+
+.footnote[
+[1] The commit message is for your collaborators and future you. It should mean something! [Avoid commits like these](http://www.commitlogsfromlastnight.com/)
+]
+
+---
+class: primary
+# Save your account info 
+
+It will be frustrating to enter your username and password everytime! So, we have to save them for later. 
+
+1. Configure your git setup: `$ git config --global credential.helper wincred`
+2. Make another change to trigger entering your username and password:
+
+```
+$ echo "adding a line" &gt;&gt; README.md
+$ git add -A
+$ git commit -m "A commit from my local computer"
+$ git push -u origin master 
+```
+
+Test that it worked: `$ git push`. You should see `Everything up-to-date`. If you're asked to enter your username and password, we need to do something else! Let me know ASAP! 
+
+---
+class: primary
+# Connect to RStudio
+
+All that typing can get messy. A click-and-point way to do all this exists in RStudio. We'll be using RStudio throughout the summer for pretty much everything else we do, so we'll use it to talk to Github, too! 
+
+1. Create another repository on your github account:  Copy the URL again in the same way as before. 
+2. In RStudio, go to File -&gt; New Project -&gt; Version Control -&gt; Git. 
+
+&lt;center&gt;&lt;img src="img/rstudioclone.png" width="40%"/&gt;&lt;/center&gt;
+
+---
+class: primary
+# Make local change &amp; push
+
+1. Open README.md 
+2. Make a change, and save the file. 
+3. In the Git tab, check the "staged" box next to the file you changed
+4. Click "Commit"
+5. Type a commit message
+6. Click "Commit" 
+7. Click "Push"
+8. Check the online repo for your change! 
+
+(Picture on next slide)
+
+---
+class:secondary
+
+&lt;center&gt;&lt;img src="img/commitpushrstudio.png" width="90%"/&gt;&lt;/center&gt;
     </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
