@@ -4,7 +4,7 @@ author: "Sam Tyner"
 date: "2018/06/03"
 output:
   xaringan::moon_reader:
-    css: ["csafe.css", "csafe-fonts.css"]
+    css: ["default", "csafe.css", "csafe-fonts.css"]
     lib_dir: libs
     nature:
       highlightStyle: github
