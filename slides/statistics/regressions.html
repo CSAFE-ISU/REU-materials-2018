@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Part 4: Regression</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Sam Tyner" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="csafe.css" type="text/css" />
+    <link rel="stylesheet" href="csafe-fonts.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Part 4: Regression
+### Sam Tyner
+### TBD
+
+---
+
+
+
+
+
+
+class:primary
+# Textbook
+
+These slides are based on the book *OpenIntro Statistics* by David Diez, Christopher Barr, and Mine Çetinkaya-Rundel
+
+The book can be downloaded from [https://www.openintro.org/stat/textbook.php](https://www.openintro.org/stat/textbook.php)
+
+Part 4 Corresponds to Chapters 7, 8 of the text. Sections 4.1-4.3 correspond to chapters 7, 8.1, 8.4 of the text.
+
+---
+class: primary
+# Outline 
+
+- Simple Linear Regression (4.1)
+- Multiple Regression (4.2)
+- Logistic Regression (4.3)
+
+---
+class: inverse, center
+# Section 4.1: Simple Linear Regression
+
+---
+class: primary
+# What is regression? 
+
+![](img/xkcdlinreg.png)
+
+---
+class: primary
+# Formula for a line
+
+`$$Y = a\cdot X + b$$`
+
+- `\(Y\)`: dependent variable (response)
+- `\(X\)`: independent variable (predictor)
+- `\(a\)`: slope (for every 1 unit increase in `\(X\)`, `\(Y\)` increases by `\(a\)`)
+- `\(b\)`: intercept (when `\(X=0\)`, `\(Y = b\)`)
+- *Deterministic*: knowledge of `\(a, X, b\)` means you know `\(Y\)` 
+
+---
+class: primary
+# Linear Regression
+
+Why? 
+
+- Have two variables, `\(Y, X\)` and we think that the value of `\(Y\)` *depends on* the value of `\(X\)` 
+- Why would we think that? Maybe we have previous knowledge or we looked at a scatterplot of the data 
+
+&lt;img src="regressions_files/figure-html/scatter-1.png" width=".6\linewidth" style="display: block; margin: auto;" /&gt;
+
+---
+class: primary
+# Linear Regression
+
+![](regressions_files/figure-beamer/scatter-1)
+
+Guesstimate the slope and intercept of a line through this data
+
+- `\(a\)`: slope = ?
+- `\(b\)`: intercept = ? 
+
+---
+class: primary
+# Linear Regression
+
+![](regressions_files/figure-beamer/scatter-1)
+
+Guesstimate the slope and intercept of a line through this data
+
+- `\(a\)`: slope `\(\approx\)` .red[0.08]
+- `\(b\)`: intercept `\(\approx\)` .red[11.48]
+
+---
+class: primary
+# Best fit line
+
+The *best fit line* is the equation `\(Y = a\cdot X +b\)` with values `\(a,b\)` that minimize the **sum of squared residuals**. What does that mean? 
+
+&gt;- Write the best fit line as `\(\hat{Y} = \beta_0 + \beta_1 \cdot X\)`. 
+&gt;- `\(\hat{Y}\)` is the predicted value of `\(Y\)` by the best fit line
+&gt;- **Residual** - what is "left over" after the prediction. 
+&gt;- Denote residual for observation `\(i\)` by `\(e_i = Y_i - \hat{Y}_i\)`
+&gt;- We are minimizing `\(\sum_{i= 1}^N e_i^2\)`
+
+---
+class: primary
+# Calculating the best fit line 
+
+- `\(\beta_1 = \frac{s_y}{s_x}\cdot r\)`
+- `\(s_y\)`: standard deviation of the data observations `\(Y\)`
+- `\(s_x\)`: standard deviation of the data observations `\(X\)` 
+- `\(r\)`: correlation between the observations `\(X, Y\)` (measure of association between `\(X,Y\)`)
+- `\(\beta_0 = \bar{y} - \beta_1\cdot \bar{x}\)` 
+
+---
+class: primary
+# Do it in `R` 
+
+
+```r
+bfl &lt;- lm(data = glass, log(Na23) ~ log(Li7))
+coef(bfl)
+```
+
+```
+## (Intercept)    log(Li7) 
+## 11.48732735  0.07632503
+```
+&lt;img src="regressions_files/figure-html/plotlm-1.png" width=".6\linewidth" style="display: block; margin: auto;" /&gt;
+
+---
+class: primary
+# Residual Plot 
+
+Look at the residuals `\(e\)` by the values of `\(X\)`: 
+
+&lt;img src="regressions_files/figure-html/resid-1.png" width=".49\linewidth" style="display: block; margin: auto;" /&gt;&lt;img src="regressions_files/figure-html/resid-2.png" width=".49\linewidth" style="display: block; margin: auto;" /&gt;
+
+Want to see a random scatter of points above and below 0
+
+---
+class: primary
+# `\(R^2\)`: how well does `\(X\)` explain `\(Y\)`?
+
+`\(R^2\)`, the **coefficient of determination** defines how much of the variability in `\(Y\)` is explainable by the values of `\(X\)`. 
+
+`$$R^2 = 1 - \frac{Var(e)}{Var(y)}$$`
+
+Example: 
+
+- `\(Y = \log(Na23)\)`. `\(Var(Y) = 0.00089\)` 
+- `\(e_i = Y_i-\hat{Y}_i = Y_i - (11.487 +  0.0763\cdot X_i )\)`. `\(Var(e) = 0.00019\)`
+- `\(\frac{Var(e)}{Var(y)} = \frac{0.00019}{0.00089} = 0.2138\)`
+- `\(R^2 = 1 - \frac{Var(e)}{Var(y)}  = 1- 0.2138 = 0.7862\)`
+
+78.62% of the variability in `\(Y\)` is explained by the value of `\(X\)`. 
+
+---
+class: inverse, center
+# Section 4.2: Multiple Regression
+
+---
+class: primary
+# Multiple Predictors
+
+Multiple regression is the same general idea as simple linear regression, but instead of one predictor variable, `\(X\)`, we have two or more: `\(X_1, X_2, \dots, X_p\)` where `\(p\)` is the number of predictor variables. 
+
+`$$\hat{Y} = \beta_0 + \beta_1\cdot X_1 +  \beta_2\cdot X_2 + \cdots +  \beta_p\cdot X_p$$`
+
+`\(\beta_0\)` (intercept) and `\(\beta_1, \dots, \beta_p\)` are called *coefficients* 
+
+- `\(\beta_0\)` is the value of `\(\hat{Y}\)` when ALL `\(X\)`s are 0
+- `\(\beta_k, k \in \{1,2,\dots, p\}\)` is the amount that `\(Y\)` increases when `\(X_k\)` increases by 1 unit, and *all other `\(X\)` values are held constant*
+
+Why? 
+
+---
+class: primary
+# Why MR? 
+
+- May know that more than 1 variable affects the value of `\(Y\)` (background knowledge)
+- More predictors generally means better fit, better predictions
+
+Example: Add log value of Neodymium (common glass additive) to the model
+
+
+```r
+blfm2 &lt;- lm(log(Na23) ~ log(Li7) + log(Nd146), data = glass)
+blfm2
+```
+
+```
+## 
+## Call:
+## lm(formula = log(Na23) ~ log(Li7) + log(Nd146), data = glass)
+## 
+## Coefficients:
+## (Intercept)     log(Li7)   log(Nd146)  
+##    11.53947      0.05774     -0.03699
+```
+
+
+---
+class: primary
+# MR Example
+
+Example: `\(\log(Na23) = \beta_0 + \beta_1 \cdot \log(Li7) + \beta_2 \cdot \log(Nd146)\)`
+
+Residuals: 
+
+&lt;img src="regressions_files/figure-html/multreg2-1.png" height=".6\textwidth" style="display: block; margin: auto;" /&gt;
+
+`\(R^2 = 1 - \frac{Var(e)}{Var(y)} = 1 - \frac{0.000155}{0.00089} = 0.8258\)`
+
+What do you think of this model? 
+
+---
+class: primary
+# MR Example
+
+Example: `\(\log(Na23) = \beta_0 + \beta_1 \cdot \log(Li7) + \beta_2 \cdot \log(Nd146)\)`
+
+Residuals: 
+
+&lt;img src="regressions_files/figure-html/multreg2resi-1.png" height=".6\textwidth" style="display: block; margin: auto;" /&gt;
+
+`\(R^2 = 1 - \frac{Var(e)}{Var(y)} = 1 - \frac{0.000155}{0.00089} = 0.8258\)`
+
+.red[Better fit than the simple linear regression, but we uncovered a new pattern: two distinct groups of residuals]
+
+---
+class: primary
+# Another MR
+
+.small[There are 2 manufacturers in the glass data, so we'll add the manufacturer as a variable in the model: 
+
+`$$\hat{Y}  = \beta_0 + \beta_1 \cdot X_1 +  \beta_2 \cdot X_2 +  \beta_3 \cdot X_3$$`
+
+- `\(Y = \log(Na23)\)`, `\(X_1 = \log(Li7)\)`, `\(X_2 = \log(Nd146)\)`, `\(X_3 = \text{manufacturer}\)`. 
+
+
+```r
+blfm3 &lt;- lm(log(Na23) ~ log(Li7) + log(Nd146) + mfr , 
+            data = glass)
+```
+&lt;img src="regressions_files/figure-html/multreg3resid-1.png" height=".6\textwidth" style="display: block; margin: auto;" /&gt;
+]
+
+---
+class: inverse, center
+# Section 4.3: Logistic Regression
+
+---
+class: primary
+# Different responses
+
+In linear &amp; multiple regression, we have a *continuous* numerical response variable. However, this is not always the case. 
+
+Often, we want to determine whether the response belongs in one of two categories. 
+
+Examples: 
+
+- Is an email spam or not? 
+- Is a glass fragment from manufacturer 1 or 2? 
+- Will a juror say the defendant in a case is guilty or not guilty? 
+
+---
+class: primary
+# Logistic regression 
+
+Idea: 
+
+When the outcome is one of 2 options, you select the "success" outcome and model the response as binary. 
+
+- If `\(Y_i = 1\)` the response is a "success", if `\(Y_i = 0\)` it is a "failure" 
+- `\(p_i = Pr(Y_i = 1)\)` 
+- If there are more 1s than 0s, then `\(p_i\)` should be higher than 0.50
+- Can use other information `\(x_i\)` to influence the value of `\(p_i\)` in the model 
+
+---
+class: primary
+# Motivating Example
+
+Suppose we want to model what effects a juror's verdict:
+
+- `\(Y_i = 1\)` means "guilty" and `\(Y_i = 0\)` means "not guilty" 
+- Let `\(x_i\)` be a variable indicating whether or not the defendant's DNA was found at the crime scene. `\(x_i\)` is also binary: `\(x_i = 1\)` when the defendant's DNA was found at the crime scene, and `\(x_i=0\)` otherwise
+- We want to tie the probability a juror's verdict is guilty ( `\(p_i\)` ) to the presence of DNA evidence 
+- The probability should go up when there is DNA evidence, and should go down when there isn't DNA evidence. 
+
+---
+class: primary
+# Formulae 
+
+`$$Y_i \sim \text{Bernoulli}(p_i)$$`
+`$$\text{logit}(p_i) = \alpha + \beta \cdot x_i$$`
+
+`\(Y_i\)` is a random variable with `\(P(Y_i = 1) = p_i\)`, and the value of `\(p_i\)` changes with the with the value of other information `\(x_i\)`. `\(\alpha\)` is the intercept, `\(\beta\)` is the slope of the model (similar to simple linear regression). 
+
+---
+class: primary
+# Logit??? 
+
+The logit function takes a number from (0,1) (here, `\(p_i\)`) and turns it into a real number `\((-\infty, \infty)\)` (here `\(\alpha + \beta \cdot x_i\)`).
+
+The inverse of this function (take a number from `\((-\infty, \infty)\)` and turn it into a number from (0,1)) is: 
+
+`$$p_i = \frac{\exp\{\alpha + \beta \cdot x_i \}}{1 + \exp\{\alpha + \beta \cdot x_i \}}$$`
+
+This is why we use it for logistic regression: we can turn any value and combination of predictor variables into a probability in this way. 
+
+---
+class: primary
+# Logit example 
+
+Email data: 
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;"&gt; spam &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; to_multiple &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; winner &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+Is it spam? We think that this can be predicted by: whether or not it is sent to multiple people and/or it contains the word "winner"
+
+---
+class: primary
+# Logit example 
+
+
+```r
+glm(spam ~ to_multiple + winner, family = binomial, data = email)
+```
+
+```
+## 
+## Call:  glm(formula = spam ~ to_multiple + winner, family = binomial, 
+##     data = email)
+## 
+## Coefficients:
+## (Intercept)  to_multiple       winner  
+##      -2.160       -1.802        1.502  
+## 
+## Degrees of Freedom: 3920 Total (i.e. Null);  3918 Residual
+## Null Deviance:	    2437 
+## Residual Deviance: 2349 	AIC: 2355
+```
+
+
+---
+class: primary
+# Logit example
+
+&lt;table&gt;
+&lt;caption&gt;Predicted probabilities of spam given the to_multiple and winner variables&lt;/caption&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;"&gt; spam &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; to_multiple &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; winner &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; n &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; pred_prob &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2909 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.103 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 37 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.341 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 601 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.019 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.079 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 335 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.103 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 20 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.341 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 12 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.019 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+    </textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function() {
+  var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})();</script>
+
+<script>
+(function() {
+  var i, text, code, codes = document.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+})();
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

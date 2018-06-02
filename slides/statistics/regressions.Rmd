@@ -2,15 +2,14 @@
 title: "Part 4: Regression"
 author: "Sam Tyner"
 date: "TBD"
-output: 
-  beamer_presentation:
-    theme: "AnnArbor"
-    colortheme: "dolphin"
-    includes:
-      in_header: header.tex
-      before_body: slide_prefix.tex
-editor_options: 
-  chunk_output_type: console
+output:
+  xaringan::moon_reader:
+    css: ["default", "csafe.css", "csafe-fonts.css"]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
 ---
 
 ```{r setup, include=FALSE}
@@ -21,7 +20,8 @@ knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, fig.align 
 library(tidyverse)
 ```
 
-## Textbook
+class:primary
+# Textbook
 
 These slides are based on the book *OpenIntro Statistics* by David Diez, Christopher Barr, and Mine Çetinkaya-Rundel
 
@@ -29,19 +29,27 @@ The book can be downloaded from [https://www.openintro.org/stat/textbook.php](ht
 
 Part 4 Corresponds to Chapters 7, 8 of the text. Sections 4.1-4.3 correspond to chapters 7, 8.1, 8.4 of the text.
 
-## Outline 
+---
+class: primary
+# Outline 
 
 - Simple Linear Regression (4.1)
 - Multiple Regression (4.2)
 - Logistic Regression (4.3)
 
+---
+class: inverse, center
 # Section 4.1: Simple Linear Regression
 
-## What is regression? 
+---
+class: primary
+# What is regression? 
 
 ![](img/xkcdlinreg.png)
 
-## Formula for a line
+---
+class: primary
+# Formula for a line
 
 $$Y = a\cdot X + b$$
 
@@ -51,7 +59,9 @@ $$Y = a\cdot X + b$$
 - $b$: intercept (when $X=0$, $Y = b$)
 - *Deterministic*: knowledge of $a, X, b$ means you know $Y$ 
 
-## Linear Regression
+---
+class: primary
+# Linear Regression
 
 Why? 
 
@@ -66,31 +76,31 @@ ggplot(data = glass) +
   theme(text = element_text(size = rel(4)))
 ```
 
-## Linear Regression
+---
+class: primary
+# Linear Regression
 
-\begin{figure}
-\centering
-\includegraphics[width=.6\linewidth]{regressions_files/figure-beamer/scatter-1}
-\end{figure}
+![](regressions_files/figure-beamer/scatter-1)
 
 Guesstimate the slope and intercept of a line through this data
 
 - $a$: slope = ?
 - $b$: intercept = ? 
 
-## Linear Regression
+---
+class: primary
+# Linear Regression
 
-\begin{figure}
-\centering
-\includegraphics[width=.6\linewidth]{regressions_files/figure-beamer/scatter-1}
-\end{figure}
+![](regressions_files/figure-beamer/scatter-1)
 
 Guesstimate the slope and intercept of a line through this data
 
-- $a$: slope $\approx$ \textcolor{red}{0.08}
-- $b$: intercept $\approx$ \textcolor{red}{11.48}
+- $a$: slope $\approx$ .red[0.08]
+- $b$: intercept $\approx$ .red[11.48]
 
-## Best fit line
+---
+class: primary
+# Best fit line
 
 The *best fit line* is the equation $Y = a\cdot X +b$ with values $a,b$ that minimize the **sum of squared residuals**. What does that mean? 
 
@@ -100,7 +110,9 @@ The *best fit line* is the equation $Y = a\cdot X +b$ with values $a,b$ that min
 >- Denote residual for observation $i$ by $e_i = Y_i - \hat{Y}_i$
 >- We are minimizing $\sum_{i= 1}^N e_i^2$
 
-## Calculating the best fit line 
+---
+class: primary
+# Calculating the best fit line 
 
 - $\beta_1 = \frac{s_y}{s_x}\cdot r$
 - $s_y$: standard deviation of the data observations $Y$
@@ -108,9 +120,9 @@ The *best fit line* is the equation $Y = a\cdot X +b$ with values $a,b$ that min
 - $r$: correlation between the observations $X, Y$ (measure of association between $X,Y$)
 - $\beta_0 = \bar{y} - \beta_1\cdot \bar{x}$ 
 
-## Do it in `R` 
-
-\footnotesize
+---
+class: primary
+# Do it in `R` 
 
 ```{r lm1, echo=TRUE}
 bfl <- lm(data = glass, log(Na23) ~ log(Li7))
@@ -125,11 +137,13 @@ ggplot(data = bfl2, aes(x = `log(Li7)`)) +
   theme(text = element_text(size = rel(4)))
 ```
 
-## Residual Plot 
+---
+class: primary
+# Residual Plot 
 
 Look at the residuals $e$ by the values of $X$: 
 
-```{r resid, fig.height=3, out.width='.49\\linewidth', fig.show='hold'}
+```{r resid, fig.height=2.5, out.width='.49\\linewidth', fig.show='hold'}
 ggplot(data = bfl2, aes(x = `log(Li7)`)) + 
   geom_point(aes(y = .resid)) +
   geom_hline(yintercept = 0 , color = 'red') + 
@@ -144,7 +158,9 @@ ggplot(data = bfl2, aes(x = .resid, y = ..density..)) +
 
 Want to see a random scatter of points above and below 0
 
-## $R^2$: how well does $X$ explain $Y$?
+---
+class: primary
+# $R^2$: how well does $X$ explain $Y$?
 
 $R^2$, the **coefficient of determination** defines how much of the variability in $Y$ is explainable by the values of $X$. 
 
@@ -159,9 +175,13 @@ Example:
 
 78.62% of the variability in $Y$ is explained by the value of $X$. 
 
+---
+class: inverse, center
 # Section 4.2: Multiple Regression
 
-## Multiple Regression = Multiple Predictors
+---
+class: primary
+# Multiple Predictors
 
 Multiple regression is the same general idea as simple linear regression, but instead of one predictor variable, $X$, we have two or more: $X_1, X_2, \dots, X_p$ where $p$ is the number of predictor variables. 
 
@@ -174,7 +194,9 @@ $\beta_0$ (intercept) and $\beta_1, \dots, \beta_p$ are called *coefficients*
 
 Why? 
 
-## Why Multiple Regression? 
+---
+class: primary
+# Why MR? 
 
 - May know that more than 1 variable affects the value of $Y$ (background knowledge)
 - More predictors generally means better fit, better predictions
@@ -186,9 +208,10 @@ blfm2 <- lm(log(Na23) ~ log(Li7) + log(Nd146), data = glass)
 blfm2
 ```
 
-## Multiple Regression Example
 
-\small
+---
+class: primary
+# MR Example
 
 Example: $\log(Na23) = \beta_0 + \beta_1 \cdot \log(Li7) + \beta_2 \cdot \log(Nd146)$
 
@@ -204,9 +227,9 @@ $R^2 = 1 - \frac{Var(e)}{Var(y)} = 1 - \frac{0.000155}{0.00089} = 0.8258$
 
 What do you think of this model? 
 
-## Multiple Regression Example
-
-\small
+---
+class: primary
+# MR Example
 
 Example: $\log(Na23) = \beta_0 + \beta_1 \cdot \log(Li7) + \beta_2 \cdot \log(Nd146)$
 
@@ -220,21 +243,21 @@ ggplot(data = blfm22) +
 
 $R^2 = 1 - \frac{Var(e)}{Var(y)} = 1 - \frac{0.000155}{0.00089} = 0.8258$
 
-\textcolor{red}{Better fit than the simple linear regression, but we uncovered a new pattern: two distinct groups of residuals}
+.red[Better fit than the simple linear regression, but we uncovered a new pattern: two distinct groups of residuals]
 
-## Another multiple regression 
+---
+class: primary
+# Another MR
 
-\small
-
-There are 2 manufacturers in the glass data, so we'll add the manufacturer as a variable in the model: 
+.small[There are 2 manufacturers in the glass data, so we'll add the manufacturer as a variable in the model: 
 
 $$\hat{Y}  = \beta_0 + \beta_1 \cdot X_1 +  \beta_2 \cdot X_2 +  \beta_3 \cdot X_3$$
 
 - $Y = \log(Na23)$, $X_1 = \log(Li7)$, $X_2 = \log(Nd146)$, $X_3 = \text{manufacturer}$. 
 
 ```{r multreg3, echo =T }
-blfm3 <- lm(log(Na23) ~ log(Li7) + log(Nd146) + mfr , data = glass)
-blfm3
+blfm3 <- lm(log(Na23) ~ log(Li7) + log(Nd146) + mfr , 
+            data = glass)
 ```
 ```{r multreg3resid, out.height='.6\\textwidth', fig.height=2}
 blfm32 <- fortify(blfm3)
@@ -242,10 +265,15 @@ ggplot(data = blfm32) +
   geom_point(aes(x = `log(Na23)`, y = .fitted)) + 
   geom_abline(slope = 1, intercept = 0)
 ```
+]
 
+---
+class: inverse, center
 # Section 4.3: Logistic Regression
 
-## Different types of responses
+---
+class: primary
+# Different responses
 
 In linear & multiple regression, we have a *continuous* numerical response variable. However, this is not always the case. 
 
@@ -257,7 +285,9 @@ Examples:
 - Is a glass fragment from manufacturer 1 or 2? 
 - Will a juror say the defendant in a case is guilty or not guilty? 
 
-## Logistic regression 
+---
+class: primary
+# Logistic regression 
 
 Idea: 
 
@@ -268,23 +298,29 @@ When the outcome is one of 2 options, you select the "success" outcome and model
 - If there are more 1s than 0s, then $p_i$ should be higher than 0.50
 - Can use other information $x_i$ to influence the value of $p_i$ in the model 
 
-## Motivating Example
+---
+class: primary
+# Motivating Example
 
 Suppose we want to model what effects a juror's verdict:
 
 - $Y_i = 1$ means "guilty" and $Y_i = 0$ means "not guilty" 
 - Let $x_i$ be a variable indicating whether or not the defendant's DNA was found at the crime scene. $x_i$ is also binary: $x_i = 1$ when the defendant's DNA was found at the crime scene, and $x_i=0$ otherwise
-- We want to tie the probability a juror's verdict is guilty ($p_i$) to the presence of DNA evidence 
+- We want to tie the probability a juror's verdict is guilty ( $p_i$ ) to the presence of DNA evidence 
 - The probability should go up when there is DNA evidence, and should go down when there isn't DNA evidence. 
 
-## Formulae 
+---
+class: primary
+# Formulae 
 
 $$Y_i \sim \text{Bernoulli}(p_i)$$
 $$\text{logit}(p_i) = \alpha + \beta \cdot x_i$$
 
 $Y_i$ is a random variable with $P(Y_i = 1) = p_i$, and the value of $p_i$ changes with the with the value of other information $x_i$. $\alpha$ is the intercept, $\beta$ is the slope of the model (similar to simple linear regression). 
 
-## Logit??? 
+---
+class: primary
+# Logit??? 
 
 The logit function takes a number from (0,1) (here, $p_i$) and turns it into a real number $(-\infty, \infty)$ (here $\alpha + \beta \cdot x_i$).
 
@@ -294,34 +330,39 @@ $$p_i = \frac{\exp\{\alpha + \beta \cdot x_i \}}{1 + \exp\{\alpha + \beta \cdot 
 
 This is why we use it for logistic regression: we can turn any value and combination of predictor variables into a probability in this way. 
 
-## Logit example 
+---
+class: primary
+# Logit example 
 
 Email data: 
 
-```{r email}
+```{r email, results='asis'}
 email <- openintro::email
 email %>% select(spam, to_multiple, winner) %>% mutate(winner = recode(winner, "no"= 0, "yes" = 1)) -> email
-email %>% slice(c(1:3, 3919:3921)) %>% knitr::kable()
+email %>% slice(c(1:3, 3919:3921)) %>% knitr::kable(format = "html")
 ```
 
 Is it spam? We think that this can be predicted by: whether or not it is sent to multiple people and/or it contains the word "winner"
 
-## Logit example 
-
-\footnotesize 
+---
+class: primary
+# Logit example 
 
 ```{r email2, echo = TRUE, tidy=TRUE}
-glm(spam ~ to_multiple + winner, family = binomial, data = email)
+glm(spam ~ to_multiple + winner, 
+    family = binomial, data = email)
 ```
 
 
-## Logit example
+---
+class: primary
+# Logit example
 
-```{r email3}
+```{r email3, results='asis'}
 glm1 <- glm(spam ~ to_multiple + winner, family = binomial, data = email)
 pred <- predict(glm1, type = "response")
 new <- email %>% group_by(spam, to_multiple, winner) %>% count 
 new$pred_prob <- round(predict(glm1, type = "response", newdata = new),3)
-knitr::kable(new, caption = "Predicted probabilities of spam given the to_multiple and winner variables")
+knitr::kable(new, caption = "Predicted probabilities of spam given the to_multiple and winner variables", format = "html")
 ```
 
