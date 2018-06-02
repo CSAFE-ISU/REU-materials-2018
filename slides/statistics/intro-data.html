@@ -1,20 +1,25 @@
----
-title: "Part 1: Introduction to Data"
-author: "Sam Tyner"
-date: "2018/06/05"
-output:
-  xaringan::moon_reader:
-    css: ["default", "csafe.css", "csafe-fonts.css"]
-    lib_dir: libs
-    nature:
-      highlightStyle: github
-      highlightLines: true
-      countIncrementalSlides: false
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Part 1: Introduction to Data</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Sam Tyner" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="csafe.css" type="text/css" />
+    <link rel="stylesheet" href="csafe-fonts.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Part 1: Introduction to Data
+### Sam Tyner
+### 2018/06/05
+
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, fig.align = 'center', fig.width = 6, cache = T)
-```
+
+
 
 class: primary
 # Textbook
@@ -224,7 +229,7 @@ We'll get there eventually!
 class: primary
 # Your Turn 1.1.1
 
-Researchers studying the effect of temperature on glass looked at the refractive index (RI) measured on 89 different types of glass before and after being exposed to extreme temperatures. The RI value on all glass types was recorded, then the glass was exposed to very cold ( $0^o$ F) or very hot ( $400^o$ F) conditions for 20 minutes. After the glass returned to room temperature, the researchers measured the RI again to see if it was the same or if it had changed. Results are summarized below: 
+Researchers studying the effect of temperature on glass looked at the refractive index (RI) measured on 89 different types of glass before and after being exposed to extreme temperatures. The RI value on all glass types was recorded, then the glass was exposed to very cold ( `\(0^o\)` F) or very hot ( `\(400^o\)` F) conditions for 20 minutes. After the glass returned to room temperature, the researchers measured the RI again to see if it was the same or if it had changed. Results are summarized below: 
 
 Group | change | no change | Total
 :-----|:------:|:---------:|------:
@@ -260,8 +265,8 @@ Cold  |  2     |  44       |   46
 ------|--------|-----------|--------
 Total | 12     | 77        | 89
 
-1. What percent of observations had a change in RI after being exposed to extreme heat? .red[ $\frac{10}{43} = 0.23 = 23\%$ ]
- What percent of observations had a change in RI after being exposed to extreme cold? .red[ $\frac{2}{46} = 0.04 = 4\%$ ]
+1. What percent of observations had a change in RI after being exposed to extreme heat? .red[ `\(\frac{10}{43} = 0.23 = 23\%\)` ]
+ What percent of observations had a change in RI after being exposed to extreme cold? .red[ `\(\frac{2}{46} = 0.04 = 4\%\)` ]
 2. At first glance, does exposure to extreme temperatures appear to have an effect on RI of glass? Explain. .red[Heat, yes. Cold, no.]
 3. Do the data provide convincing evidence that there is a real change in RI for either group? .red[(discussion)]
 4. Do you think the effect may just be due to random variability (as opposed to temperature)? .red[(discussion)]
@@ -289,13 +294,68 @@ Data are stored in **tables** aka **matrices**:
 - data are stored in a **matrix**
 - Example: 6 randomly selected obervations of 6 variables on glass element analysis. (units of last 3 columns are ppm)
 
-```{r glassdat, results='asis'}
-library(tidyverse)
-library(gridExtra)
-glass <- read_csv("dat/glass_sample.csv")
-glass_samp <- glass[sample(nrow(glass), 6), 1:6]
-knitr::kable(glass_samp, format = "html")
-```
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; pane &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Piece &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Rep &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Li7 &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Na23 &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Mg25 &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; P3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 13 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.30 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 109700 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 24330 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; P1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.65 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 101050 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 23360 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; P4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 24 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.10 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 105240 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 24500 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; P2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 23 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.77 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 102200 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 23180 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; P2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 24 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.60 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 101900 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 23050 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; P1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.69 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 100530 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 23790 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
 
 ---
 class: primary
@@ -313,11 +373,7 @@ Most (if not all) analyses are performed in order to determine if there is a rel
 
 Is there a relationship between these two variables in the glass data? 
 
-```{r glassscatterpos, out.width='.8\\textwidth', fig.height=3}
-ggplot(data = glass) + 
-  geom_point(aes(x = Li7, y = Na23)) + 
-  labs(x = "Lithium (ppm)", y = "Sodium (ppm)", title = "Glass element analysis", subtitle = "Method: ICP-MS")
-```
+&lt;img src="intro-data_files/figure-html/glassscatterpos-1.png" width=".8\textwidth" style="display: block; margin: auto;" /&gt;
 
 ---
 class: primary
@@ -325,11 +381,7 @@ class: primary
 
 Is there a relationship between these two variables in the glass data? 
 
-```{r glassscatterneg, out.width='.8\\textwidth', fig.height=3}
-ggplot(data = glass) + 
-  geom_point(aes(y = Na23, x = Sr88)) + 
-  labs(x = "Sodium (ppm)", y = "Strontium (ppm)", title = "Glass element analysis", subtitle = "Method: ICP-MS")
-```
+&lt;img src="intro-data_files/figure-html/glassscatterneg-1.png" width=".8\textwidth" style="display: block; margin: auto;" /&gt;
 
 ---
 class: primary
@@ -337,11 +389,7 @@ class: primary
 
 Is there a relationship between these two variables in the glass data? 
 
-```{r glassscatternon, out.width='.8\\textwidth', fig.height=3}
-ggplot(data = glass) + 
-  geom_point(aes(x = Pb208, y = Sr88)) + 
-  labs(x = "Lead (ppm)", y = "Strontium (ppm)", title = "Glass element analysis", subtitle = "Method: ICP-MS")
-```
+&lt;img src="intro-data_files/figure-html/glassscatternon-1.png" width=".8\textwidth" style="display: block; margin: auto;" /&gt;
 
 ---
 class: primary
@@ -363,7 +411,7 @@ class: primary
 class: primary
 # Your Turn 1.2.1
 
-Researchers collected data to examine the relationship between air pollutants and preterm births in Southern California. During the study air pollution levels were measured by air quality monitoring stations. Levels of $CO$ were recorded in ppm, $NO_2$ and $O_3$ in pphm, and coarse particulate matter ( $PM_{10}$ ) in $\mu g/m^3$. Length of gestation data were collected on 143,196 births between the years 1989 and 1993, and air pollution exposure during gestation was calculated for each birth. The analysis suggested that increased ambient $PM_{10}$ and, to a lesser degree, $CO$ concentrations may be associated with the occurrence of preterm births. In this study, identify: 
+Researchers collected data to examine the relationship between air pollutants and preterm births in Southern California. During the study air pollution levels were measured by air quality monitoring stations. Levels of `\(CO\)` were recorded in ppm, `\(NO_2\)` and `\(O_3\)` in pphm, and coarse particulate matter ( `\(PM_{10}\)` ) in `\(\mu g/m^3\)`. Length of gestation data were collected on 143,196 births between the years 1989 and 1993, and air pollution exposure during gestation was calculated for each birth. The analysis suggested that increased ambient `\(PM_{10}\)` and, to a lesser degree, `\(CO\)` concentrations may be associated with the occurrence of preterm births. In this study, identify: 
 
 1. The observational units
 2. The variables and their types
@@ -373,10 +421,10 @@ Researchers collected data to examine the relationship between air pollutants an
 class: primary
 # YT 1.2.1 (soln.)
 
-Researchers collected data to examine the relationship between air pollutants and preterm births in Southern California. During the study air pollution levels were measured by air quality monitoring stations. Levels of $CO$ were recorded in ppm, $NO_2$ and $O_3$ in pphm, and coarse particulate matter ( $PM_{10}$ ) in $\mu g/m^3$. Length of gestation data were collected on 143,196 births between the years 1989 and 1993, and air pollution exposure during gestation was calculated for each birth. The analysis suggested that increased ambient $PM_{10}$ and, to a lesser degree, $CO$ concentrations may be associated with the occurrence of preterm births. In this study, identify: 
+Researchers collected data to examine the relationship between air pollutants and preterm births in Southern California. During the study air pollution levels were measured by air quality monitoring stations. Levels of `\(CO\)` were recorded in ppm, `\(NO_2\)` and `\(O_3\)` in pphm, and coarse particulate matter ( `\(PM_{10}\)` ) in `\(\mu g/m^3\)`. Length of gestation data were collected on 143,196 births between the years 1989 and 1993, and air pollution exposure during gestation was calculated for each birth. The analysis suggested that increased ambient `\(PM_{10}\)` and, to a lesser degree, `\(CO\)` concentrations may be associated with the occurrence of preterm births. In this study, identify: 
 
 1. The observational units - .red[143,196 births in Southern California from 1989-1993]
-2. The variables and their types - .red[Length of gestation, $CO$, $NO_2$, $O_3$, and $PM_{10}$. All are numerical & continuous]
+2. The variables and their types - .red[Length of gestation, `\(CO\)`, `\(NO_2\)`, `\(O_3\)`, and `\(PM_{10}\)`. All are numerical &amp; continuous]
 3. The main research question - .red[Is there an association between pregnant mothers' exposure to air pollution and preterm births?]
 
 ---
@@ -387,11 +435,62 @@ A survey was conducted to study the smoking habits of UK residents. Below is a d
 
 .small[
 
-```{r smoking1, results = "asis"}
-smokers <- openintro::smoking
-smokers <- select(smokers, gender, age, maritalStatus, grossIncome, smoke, amtWeekends, amtWeekdays)
-knitr::kable(smokers[c(1:3, 1691), ], format = "html")
-```
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt;   &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; gender &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; age &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; maritalStatus &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; grossIncome &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; smoke &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; amtWeekends &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; amtWeekdays &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 38 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Divorced &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 2,600 to 5,200 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; No &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 42 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Single &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Under 2,600 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Yes &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 12 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 12 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 40 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Married &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 28,600 to 36,400 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; No &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 1691 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 31 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Married &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 10,400 to 15,600 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; No &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
 
 ] 
 
@@ -449,7 +548,7 @@ Anecdote = story
 
 One or two or a handful of observations cannot be  proof of a pattern 
 
-Haphazard, cherry-picked examples $\neq$ Science! 
+Haphazard, cherry-picked examples `\(\neq\)` Science! 
 
 ---
 class: primary
@@ -472,7 +571,7 @@ class: primary
 - **bias**: the method of collection favors one type of response over others. Example: 
 
 
-<img src="img/dewey.jpg" class="center">
+&lt;img src="img/dewey.jpg" class="center"&gt;
 
 ---
 class: primary
@@ -545,26 +644,11 @@ What is the explanatory variable in the 3 scenarios from earlier (if applicable)
 
 ---
 class: primary
-# Correlation $\neq$ Causation
+# Correlation `\(\neq\)` Causation
 
 An association between the explanatory and response variable does not always mean that the explanatory variable causes the change in the response variable.
 
-```{r spurious, fig.height=3, fig.width=7}
-library(rvest)
-url <- "http://tylervigen.com/old-version.html"
-html <- read_html(url)
-html %>% html_children() %>% html_children() %>% 
-  html_nodes("table") %>% html_table(fill = TRUE) -> cor_tables
-cor_tables[[8]][1:3,-c(1,12)] -> spurious
-names(spurious) <- 2000:2009
-spurious <- spurious[-1,]
-spurious$var <- c("Per capita cheese consumption in the US (lbs)", "# of people who died becoming tangled\nin their bedsheets in the US")
-spurious %>% gather(year, val, 1:10) %>% 
-  spread(var, val) %>% mutate_all(.funs = parse_number) %>% 
-  ggplot(aes(x = `Per capita cheese consumption in the US (lbs)`, y = `# of people who died becoming tangled\nin their bedsheets in the US`)) + 
-  geom_point() + 
-  geom_smooth(method = "lm", se=FALSE)
-```
+&lt;img src="intro-data_files/figure-html/spurious-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 class: primary
@@ -599,25 +683,13 @@ class: primary
 
 Researchers are interested in predicting the amount of lead in a pane of glass by measuring the content of another element that is much cheaper to measure, rubidium. A random sample of 193 panes of glass from homes built before 1950 in Ames, Iowa was taken. The scatterplot below displays the relationship between these two elements.
 
-```{r yourturn23, fig.height = 2}
-set.seed(123456)
-glass %>% filter(mfr == "M1") %>% sample_n(193) %>% 
-  ggplot() + 
-  geom_point(aes(x = Rb85, y = Pb208)) + 
-  labs(x = "Rubidium concentration (ppm)", y = "Lead concentration (ppm)")
-```
+&lt;img src="intro-data_files/figure-html/yourturn23-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 class: primary
 # YT 1.3.2 (cont.)
 
-```{r yourturn232, fig.height = 2}
-set.seed(123456)
-glass %>% filter(mfr == "M1") %>% sample_n(193) %>% 
-  ggplot() + 
-  geom_point(aes(x = Rb85, y = Pb208)) + 
-  labs(x = "Rubidium concentration (ppm)", y = "Lead concentration (ppm)")
-```
+&lt;img src="intro-data_files/figure-html/yourturn232-1.png" style="display: block; margin: auto;" /&gt;
 
 1. What is the explanatory variable and what is the response variable?
 2. Describe the relationship between the two variables.
@@ -662,17 +734,7 @@ class: primary
 - all elements have the same chance of being chosen
 - the selection of one element does not affect the chances of a second element being selected 
 
-```{r sampling, fig.height=2.5}
-set.seed(123456)
-samps <- data_frame(x = rnorm(100), y = rnorm(100))
-samps$srs <- rbinom(100, 1, .2)
-ggplot(data = samps) + 
-  geom_point(aes(x = x, y = y, color = as.factor(srs))) + 
-  scale_color_manual(values = c("black", "red")) + 
-  theme_void() + 
-  theme(legend.position = 'none') + 
-  ggtitle("Simple random sample")
-```
+&lt;img src="intro-data_files/figure-html/sampling-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 class: primary
@@ -683,33 +745,7 @@ class: primary
 - elements within a strata are more similar than elements from different strata
 - draw simple random samples from each strata
 
-```{r strsamp, fig.height = 2}
-rectdat <- data_frame(xmin= c(-3,-3,0,0), xmax = c(0,0,3,3), ymin = c(-2.5, 0, -2.5, 0), ymax=c(0,2,0,2), group = LETTERS[1:4])
-samps$strat <- NA
-for(i in 1:100){
-  if (samps$x[i] < 0 & samps$y[i] < 0){
-    samps$strat[i] <- "A"
-  } else if (samps$x[i] < 0 & samps$y[i] > 0){
-    samps$strat[i] <- "B"
-  } else if (samps$x[i] > 0 & samps$y[i] < 0){
-    samps$strat[i] <- "C"
-  } else {
-    samps$strat[i] <- "D"
-  }
-}
-
-samps <- samps %>% group_by(strat) %>% mutate(strat2 = row_number())
-samps <- mutate(samps, strat3 = ifelse(strat2 < 9, 1, 0))
-  
-ggplot() + 
-  geom_rect(data = rectdat, aes(xmin = xmin, xmax=xmax, ymin=ymin, ymax=ymax, fill = group), alpha = 0.3) + 
-  scale_fill_brewer(palette = "Dark2") + 
-   geom_point(data = samps, aes(x = x, y = y, color = as.factor(strat3))) + 
-  scale_color_manual(values = c("black", "red")) + 
-  theme_void() + 
-  theme(legend.position = 'none') + 
-  ggtitle("Stratified sample")
-```
+&lt;img src="intro-data_files/figure-html/strsamp-1.png" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -720,21 +756,7 @@ class: primary
 - Clusters are similar
 - Randomly sample clusters, and then take a census of all elements in the cluster
 
-```{r cluster, fig.height=2}
-set.seed(123456)
-samps2 <- data_frame(x = runif(100, -3,3), y = samps$y)
-
-samps2$clus <- as.numeric(cut_interval(samps2$x, n  = 10))
-samps2 <- mutate(samps2, clus2 = ifelse(clus %in% c(1,3,5,8), 1,0))
-
-ggplot() + 
-  geom_vline(aes(xintercept = c(-2.99, -2.4, -1.8, -1.21, -.61, -.0146, 0.581, 1.18, 1.77, 2.37)), alpha = .8) +
-  geom_point(data = samps2, aes(x = x, y = y, color = as.factor(clus2))) + 
-  scale_color_manual(values = c("black", "red")) + 
-  theme_void() + 
-  theme(legend.position = 'none') + 
-  ggtitle("Cluster sample")
-```
+&lt;img src="intro-data_files/figure-html/cluster-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 class: primary
@@ -750,13 +772,7 @@ class: primary
 - Observe all elements in a population
 - Rarely done because it's so expensive
 
-```{r, fig.height=2}
-ggplot(data = samps) + 
-  geom_point(aes(x = x, y = y), color = 'red') +
-  theme_void() + 
-  theme(legend.position = 'none') + 
-  ggtitle("Census")
-```
+&lt;img src="intro-data_files/figure-html/unnamed-chunk-1-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 class: primary
@@ -764,29 +780,13 @@ class: primary
 
 The following scatterplot was created as part of a study evaluating the relationship between estimated life expectancy at birth (as of 2014) and percentage of internet users (as of 2009) in 208 countries for which such data were available.
 
-```{r yourturn141, fig.height=2}
-load("dat/factbook.rda")
-cia_factbook %>% 
-  mutate(perc_internet_users = 100 * internet_users / population) %>% 
-  filter(!is.na(perc_internet_users), !is.na(life_exp_at_birth)) %>%
-  ggplot() + 
-  geom_point(aes(x = perc_internet_users, y = life_exp_at_birth)) + 
-  labs(x = "% Internet Users", y = "Life expectancy at birth (years)")
-```
+&lt;img src="intro-data_files/figure-html/yourturn141-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 class: primary
 # YT 1.4.1 (cont.)
 
-```{r yourturn142, fig.height=2}
-load("dat/factbook.rda")
-cia_factbook %>% 
-  mutate(perc_internet_users = 100 * internet_users / population) %>% 
-  filter(!is.na(perc_internet_users), !is.na(life_exp_at_birth)) %>%
-  ggplot() + 
-  geom_point(aes(x = perc_internet_users, y = life_exp_at_birth)) + 
-  labs(x = "% Internet Users", y = "Life expectancy at birth (years)")
-```
+&lt;img src="intro-data_files/figure-html/yourturn142-1.png" style="display: block; margin: auto;" /&gt;
 
 1. Describe the relationship between life expectancy and percentage of internet users. 
 2. What type of study is this? 
@@ -796,15 +796,7 @@ cia_factbook %>%
 class: primary
 # YT 1.4.1 (soln.)
 
-```{r yourturn143, fig.height=2}
-load("dat/factbook.rda")
-cia_factbook %>% 
-  mutate(perc_internet_users = 100 * internet_users / population) %>% 
-  filter(!is.na(perc_internet_users), !is.na(life_exp_at_birth)) %>%
-  ggplot() + 
-  geom_point(aes(x = perc_internet_users, y = life_exp_at_birth)) + 
-  labs(x = "% Internet Users", y = "Life expectancy at birth (years)")
-```
+&lt;img src="intro-data_files/figure-html/yourturn143-1.png" style="display: block; margin: auto;" /&gt;
 
 1. Describe the relationship between life expectancy and percentage of internet users. .red[Positive, non-linear relationship. Levels off at around age 75]
 2. What type of study is this? .red[Observational]
@@ -972,11 +964,7 @@ class: primary
 
 - two numerical variables 
 
-```{r glassscatterpos2, out.width='.8\\textwidth', fig.height=3}
-ggplot(data = glass) + 
-  geom_point(aes(x = Li7, y = Na23)) + 
-  labs(x = "Lithium (ppm)", y = "Sodium (ppm)", title = "Glass element analysis", subtitle = "Method: ICP-MS")
-```
+&lt;img src="intro-data_files/figure-html/glassscatterpos2-1.png" width=".8\textwidth" style="display: block; margin: auto;" /&gt;
 
 ---
 class: primary
@@ -984,11 +972,7 @@ class: primary
 
 - one numerical variable 
 
-```{r glasshist, out.width='.8\\textwidth', fig.height=3}
-ggplot(data = glass) + 
-  geom_histogram(aes(x = Li7), binwidth=.2, color = 'black', fill = 'white') + 
-  labs(x = "Lithium (ppm)", title = "Glass element analysis", subtitle = "Method: ICP-MS")
-```
+&lt;img src="intro-data_files/figure-html/glasshist-1.png" width=".8\textwidth" style="display: block; margin: auto;" /&gt;
 
 ---
 class: primary
@@ -996,16 +980,7 @@ class: primary
 
 - assess distribution of one numerical variable
 
-```{r glassboxpl, fig.height=3}
-vals1 <- as.numeric(summary(glass$Li7)[-4])
-labs1 <- c("Min", "Q1", "Median", "Q3", "Max")
-ggplot() + 
-  geom_boxplot(data = glass, aes(x = 1, y = Li7)) +
-  geom_text(data = NULL, aes(x = 1, y = vals1, label = labs1), hjust = 0, vjust = 0) + 
-  labs(title = "Glass element analysis", subtitle = "Lithium measured by ICP-MS") +
-  coord_flip() + 
-  theme_void() 
-```
+&lt;img src="intro-data_files/figure-html/glassboxpl-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 class: primary
@@ -1013,11 +988,7 @@ class: primary
 
 - compare distribution of a numerical variable across different values of a categorical variable 
 
-```{r glassboxpl2, fig.height=3}
-ggplot(data = glass) + 
-  geom_boxplot(aes(x = pane, y = Li7)) + 
-  labs(x = "Pane", y = "Lithium (ppm)", title = "Glass element analysis", subtitle = "Method: ICP-MS")
-```
+&lt;img src="intro-data_files/figure-html/glassboxpl2-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 class: primary
@@ -1025,20 +996,7 @@ class: primary
 
 Indicate which plots show a positive association, a negative association, and no association. If there is an association, is it linear or non-linear? 
 
-```{r yourturn161, fig.height=3}
-x <- 1:100
-set.seed(123456)
-y <- 4 + 0.5*x + rnorm(100, sd = 10)
-y2 <- rnorm(100)
-y3 <- 4 + .2*x^2 + rnorm(100,sd = 100)
-y4 <- 4 - 0.5*x + rnorm(100, sd = 8)
-dat <- data_frame(x = rep(x, 4), y = c(y, y2, y3, y4), group = rep(1:4, each = 100))
-ggplot(data = dat) + 
-  geom_point(aes(x = x, y = y), alpha = .8) + 
-  facet_wrap(~group, scales = 'free') + 
-  theme_void() + 
-  theme(panel.background = element_rect(color = 'black', fill = 'grey90'))
-```
+&lt;img src="intro-data_files/figure-html/yourturn161-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 class: primary
@@ -1119,25 +1077,7 @@ class: primary
 
 Describe the data in the histograms and match them to the boxplots.
 
-```{r yourturn163, fig.align='center', out.width='99%', fig.height=4}
-set.seed(123456)
-N <- rnorm(1000, mean = 60, sd = 4)
-U <- runif(1000, min = 0, max = 100)
-G <- rgamma(1000, 2)
-dat <- data_frame(a = N, b = U, c = G)
-p1 <- dat %>% gather(var, val) %>%
-  ggplot() + 
-  geom_histogram(aes(x = val), bins = 20) + 
-  facet_wrap(~var, scales = 'free', nrow = 1) + 
-  theme_bw()
-p2 <- dat %>% select(`1` = c, `2` = a, `3` = b) %>% gather(var, val) %>%
-  ggplot() + 
-  geom_boxplot(aes(x = 1 , y = val)) + 
-  facet_wrap(~var, scales = 'free', nrow = 1) + 
-  theme_bw() + 
-  theme(axis.title = element_blank(), axis.text.x = element_blank(), axis.ticks.x = element_blank())
-grid.arrange(p1, p2, nrow = 1)
-```
+&lt;img src="intro-data_files/figure-html/yourturn163-1.png" width="99%" style="display: block; margin: auto;" /&gt;
 
 ---
 class: primary
@@ -1160,17 +1100,48 @@ class: primary
 - contigency tables show observed counts of categorical variables
 - Example: `titanic` data 
 
-```{r titanic, results='asis'}
-t2 <- data.frame(Titanic) %>% 
-  group_by(Class, Survived) %>% 
-  summarise(total = sum(Freq)) %>% 
-  spread(Survived, total) %>% 
-  mutate(Total = No + Yes) %>% 
-  ungroup() %>%
-  add_row(Class = "Total", No = 122+167+528+673, Yes = 203+118+178+212, Total = 325+285+706+885)
-names(t2)[2:3] <- c("Died", "Survived") 
-knitr::kable(t2, format = "html")
-```
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Class &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Died &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Survived &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Total &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 1st &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 122 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 203 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 325 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 2nd &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 167 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 118 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 285 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 3rd &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 528 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 178 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 706 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Crew &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 673 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 212 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 885 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Total &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1490 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 711 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2201 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
 
 ---
 class: primary
@@ -1178,18 +1149,7 @@ class: primary
 
 - show counts of different groups in the data 
 
-```{r titanic2, fig.height=4, out.width='99%'}
-p1 <- data.frame(Titanic) %>% group_by(Class) %>% 
-  summarise(n = sum(Freq)) %>% 
-  ggplot() + 
-  geom_bar(aes(x = Class, weight = n))
-p2 <- data.frame(Titanic) %>% group_by(Class, Survived) %>% 
-  summarise(n = sum(Freq)) %>% 
-  ggplot() + 
-  geom_bar(aes(x = Class, weight = n, fill = Survived), position = "dodge") + 
-  scale_fill_manual(values = c("#e41a1c", "#4daf4a"))
-grid.arrange(p1, p2, nrow = 1)
-```
+&lt;img src="intro-data_files/figure-html/titanic2-1.png" width="99%" style="display: block; margin: auto;" /&gt;
 
 ---
 class: primary
@@ -1197,9 +1157,7 @@ class: primary
 
 - plots to compare two categorical variables 
 
-```{r mosa, fig.height=5}
-mosaicplot(~ Sex + Survived, data = Titanic, color = TRUE)
-```
+&lt;img src="intro-data_files/figure-html/mosa-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 class: primary
@@ -1207,28 +1165,7 @@ class: primary
 
 The bar plot and the pie chart below show the ditribution of blood types in the US. 
 
-```{r bloodtypes, out.width='99%', fig.height=4, out.height='50%'}
-url <- "https://www2.palomar.edu/anthro/blood/table_of_ABO_and_Rh_blood_type_frequencies_in_US.htm"
-library(rvest)
-blood <- read_html(url) %>% html_children() %>% html_nodes("table") %>% magrittr::extract2(1) %>% html_table(fill = T)
-names(blood) <- c("ABOType", "RhType", "USpopFreq", "USpopFreq2")
-blood <- blood %>% mutate(USpopFreq = parse_number(USpopFreq)/100, USpopFreq2 = parse_number(USpopFreq2)/100)
-blood <- blood %>% mutate(RhType = ifelse(RhType == "positive", "+", "-"), type = paste0(ABOType, RhType)) 
-
-p1 <- ggplot(data = blood) + 
-  geom_bar(aes(x = reorder(type, USpopFreq), weight = USpopFreq)) + 
-  coord_flip() + 
-  labs(x = "Blood Type", y = "Frequency in US population") + 
-  theme(text = element_text(size = rel(4)))
-
-p2 <- ggplot(blood, aes(x="", y=USpopFreq, fill=type)) +
-  geom_bar(width = 1, stat = "identity", color = 'black') + 
-  scale_fill_brewer(palette = "Paired") + 
-  coord_polar("y", start=0) + 
-  theme_void() + 
-  ggtitle("     Blood Type Frequency in\n     US Population")
-grid.arrange(p1, p2, nrow = 1)
-```
+&lt;img src="intro-data_files/figure-html/bloodtypes-1.png" width="99%" height="50%" style="display: block; margin: auto;" /&gt;
 
 ---
 class: primary
@@ -1256,11 +1193,7 @@ class: primary
 class: primary
 # YT 1.7.2 (cont.)
  
-```{r yt172}
-dream <- openintro::dream
-names(dream)[2] <- "support"
-mosaicplot(~ ideology + support, data = dream, color = TRUE)
-```
+&lt;img src="intro-data_files/figure-html/yt172-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 class: primary
@@ -1270,3 +1203,51 @@ A random sample of US registered voters were asked if they support the DREAM Act
  
 
 .red[The vertical locations at which the ideological groups break into the Yes, No, and Not Sure categories differ, which idicates that likelihood of supporting the DREAM act varies by political ideology. This suggests that the two variables may be dependent.]
+    </textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function() {
+  var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})();</script>
+
+<script>
+(function() {
+  var i, text, code, codes = document.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+})();
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
