@@ -1,0 +1,66 @@
+---
+title: "Cultivating Your Online Presence"
+author: "Sam Tyner"
+date: "2018/06/06"
+output:
+  xaringan::moon_reader:
+    css: ["default", "csafe.css", "csafe-fonts.css"]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+```
+
+class: primary
+# Outline
+
+1. Why is it important?
+2. What shouldn't you have online?
+3. What should you have online? 
+4. Privacy settings 
+5. When to make a website?
+
+---
+class: inverse
+# Why? 
+
+---
+class: primary
+# The new Descartes
+
+"*Cogito, ergo sum.*" - René Descartes 
+
+
+<img src="https://upload.wikimedia.org/wikipedia/commons/7/73/Frans_Hals_-_Portret_van_Ren%C3%A9_Descartes.jpg" height='50%', width='50%'>
+
+---
+class: primary
+# I think, therefore I am
+
+"*I ~~think~~ web, therefore I am*" - [Yihui Xie](https://slides.yihui.name/2012-stats-web.html#1.0)
+
+If it's not online, does it exist? 
+
+![](https://i.makeagif.com/media/10-16-2015/IiK121.gif)
+
+---
+class: primary
+# Online Platforms
+
+- Facebook
+- Twitter
+- LinkedIn
+- Pinterest
+- Medium
+- Tumblr
+- Wordpress
+- Blogspot
+
+---
+class: inverse
+# Dont's
