@@ -1,0 +1,23 @@
+---
+title: "Functions in `R`"
+author: "Sam Tyner"
+date: "2018/06/05"
+output:
+  xaringan::moon_reader:
+    css: ["default", "csafe.css", "csafe-fonts.css"]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+editor_options: 
+  chunk_output_type: console
+---
+
+class: primary
+# Function 
+
+A **function** in `R` takes *input* and returns *output*
+
+- Input is given in the form of *arguments* passed to the function
+- Output is what is *returned* from the function 
