@@ -1,18 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Functions in R</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Sam Tyner" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="csafe.css" type="text/css" />
+    <link rel="stylesheet" href="csafe-fonts.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Functions in <code>R</code>
+### Sam Tyner
+### 2018/06/05
+
 ---
-title: "Functions in `R`"
-author: "Sam Tyner"
-date: "2018/06/05"
-output:
-  xaringan::moon_reader:
-    css: ["default", "csafe.css", "csafe-fonts.css"]
-    lib_dir: libs
-    nature:
-      highlightStyle: github
-      highlightLines: true
-      countIncrementalSlides: false
-editor_options: 
-  chunk_output_type: console
----
+
 
 class: primary
 # Functions
@@ -29,7 +34,7 @@ class: primary
 Help files usually have 6 most useful sections
 
 - **Description**: tells you what the function does (may not be super informative)
-- **Usage**: shows you how to use the function and all the arguments it takes with their defaults<sup>1<sup/> 
+- **Usage**: shows you how to use the function and all the arguments it takes with their defaults&lt;sup&gt;1&lt;sup/&gt; 
 - **Arguments**: describes the arguments used in the function and what type of value each one takes. There must always be a comma `,` between arguments.
 - **Details**: tells you more about how the function behaves
 - **Value**: describes what the function's output is 
@@ -54,7 +59,7 @@ Right now, you "only" have access to base `R` functions.
 Base `R` is incredibly powerful, and you can do many powerful statistical procedures, such as: 
 
 - simulation: `rnorm()`, `rbinom()`, `rt()`, and many more
-- Student's $t$-test: performs tests for population means (`t.test()`)
+- Student's `\(t\)`-test: performs tests for population means (`t.test()`)
 - Fitting linear models with `lm()`
 - Fitting generalized linear models with `glm()`
 - and many more! 
@@ -145,5 +150,52 @@ Take some time to think about a statistical analysis you may be interested in do
 
 1. Try to find an `R` package that does the analysis you're interested in (or something close)
 2. Install the `R` package you find
-3. Find an example in the help file and try doing it yourself!  
+3. Find an example in the help file and try doing it yourself!
+    </textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function() {
+  var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})();</script>
 
+<script>
+(function() {
+  var i, text, code, codes = document.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+})();
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
