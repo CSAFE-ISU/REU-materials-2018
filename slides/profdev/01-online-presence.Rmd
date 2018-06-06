@@ -63,4 +63,94 @@ class: primary
 
 ---
 class: inverse
-# Dont's
+# Don'ts
+
+---
+class: primary
+# No-brainers
+
+- Photos of yourself with alcohol/drugs
+
+- Explicit photos 
+
+- Photos with illicit objects or doing illicit acts
+
+- Rude, crude, offensive language 
+
+---
+class: inverse
+# Dos
+
+---
+class: primary
+# Professional Presence
+
+- LinkedIn Profile
+    * Should have as much *relevant* information as possible
+    * University, graduation year, future plans/goals
+    * Professional looking photos (professional as in you look professional)
+- Twitter account 
+    * separate from your personal account
+    * avoid political statements 
+- Facebook Profile
+    * Unless you have a business and you want to advertise on Facebook,
+    * I suggest you use Facebook for family and friends only
+    * Avoid adding / accepting colleagues, esp. those senior to you
+
+---
+class: primary
+# LinkedIn Profile
+
+Resources from Iowa State Career Services [here](https://iastate.app.box.com/s/0gfcxkseizmjjz8zl9sx)
+
+1. Complete your profile thoroughly
+2. Build your network
+3. Join LinkedIn Groups
+4. Participate in discussions
+5. Identify target companies 
+6. Conduct company research
+7. Connect with other students and alumni 
+
+---
+class: 
+
+---
+class: inverse
+# Privacy
+
+---
+class: primary
+# Check your settings! 
+
+- Who can see what you post?
+    * Be careful with Facebook! 
+    * Privacy settings can vary by type of post 
+- Settings -> Privacy 
+
+---
+class: inverse
+# Your own website
+
+---
+class: primary
+# Needed?
+
+How do you know if you need to create a website? 
+
+- Do others *in the field you want to be in* have one? 
+- Do you need to show that you can produce original content? 
+- Do you need to demonstrate a skillset or knowledge base (i.e. by writing blog posts)? 
+- Do you need a place to collect all of your professional activity? (i.e. papers you've written, conferences attended, presentations given)
+
+---
+class: primary
+# How? 
+
+There are a lot of platforms to create your own website, with a lot of variability in ease-of-use 
+
+- Wordpress
+- Blogger
+- Wix
+- Weebly
+- Netlify
+- GithubPages 
