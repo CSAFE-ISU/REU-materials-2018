@@ -143,8 +143,7 @@ head(africa)
 ---
 class: primary
 # Text files 
-
-Read the data [here](https://raw.githubusercontent.com/CSAFE-ISU/REU-materials-2018/master/slides/rstats/data/poem.txt)
+Data is [here](https://raw.githubusercontent.com/CSAFE-ISU/REU-materials-2018/master/slides/rstats/data/poem.txt)
 
 ```{r}
 poem <- read_lines("https://raw.githubusercontent.com/CSAFE-ISU/REU-materials-2018/master/slides/rstats/data/poem.txt")
@@ -155,7 +154,37 @@ poem
 class: primary
 # Your Turn 3.2
 
-Read in the rest of the Google Sheets from the Gapminder data set and combine them into one data set with the `bind_rows()` function. Save it as `gapdata`.
+Read in the rest of the Google Sheets from the Gapminder data set and combine them into one data set with the `bind_rows()` function in the `dplyr` package. Save it as `gapdata`.
 
+```{r echo = FALSE}
+library(dplyr)
+americas <- read_xlsx("data/Gapminder.xlsx", sheet = "Americas")
+asia <- read_xlsx("data/Gapminder.xlsx", sheet = "Asia")
+europe <- read_xlsx("data/Gapminder.xlsx", sheet = "Europe")
+oceania <-  read_xlsx("data/Gapminder.xlsx", sheet = "Oceania")
+gapdata <- bind_rows(africa, americas, asia, europe, oceania)
+```
 
+---
+class: primary
+# Plot `gapdata`
+
+```{r eval = FALSE}
+library(ggplot2)
+ggplot(data = gapdata) + 
+  geom_point(aes(x = log(gdpPercap), y = lifeExp, 
+                 color = continent, size = pop)) + 
+  facet_wrap(~continent)  + 
+  theme(legend.position = c(.75,.25))
+```
+
+---
+class: secondary
+
+```{r echo=FALSE, fig.align='center', fig.height=6}
+library(ggplot2)
+ggplot(data = gapdata) + 
+  geom_point(aes(x = log(gdpPercap), y = lifeExp, color = continent, size = pop)) + 
+  facet_wrap(~continent)
+```
 
