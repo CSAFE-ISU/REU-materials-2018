@@ -18,10 +18,8 @@ editor_options:
 knitr::opts_chunk$set(message= FALSE, warning = FALSE)
 ```
 
-
----
 class: primary
-## Data in Excel
+# Data in Excel
 
 - Formats xls and csv - what's the difference?
 
@@ -29,21 +27,24 @@ class: primary
 
 - csv is an extension for Comma Separated Value files. They are text files - directly readable.
 
-- Example: Gas prices in midwest since 1994
+- Example: Glass element analysis data
 
 ---
+class: primary
+# Glass data
 
-## Gas Prices in the Midwest
+Visit [this link](https://raw.githubusercontent.com/CSAFE-ISU/REU-materials-2018/master/slides/rstats/data/GK_clean_results.csv) to get the data. 
 
 ```{r message=FALSE, warning=FALSE}
 library(readr)
-midwest <- read_csv("http://heike.github.io/rwrks/03-r-format/data/midwest.csv")
-head(midwest)
+glass <- read_csv("https://raw.githubusercontent.com/CSAFE-ISU/REU-materials-2018/master/slides/rstats/data/GK_clean_results.csv")
+head(glass)
 ```
 
 
 ---
-## `read_csv` vs. `read_*`
+class: primary
+# `read_csv` vs. `read_*`
 
 `read_csv` is just one way to read a file using the `readr` package: 
 
@@ -54,109 +55,42 @@ head(midwest)
 - `read_table`: read a file separated by space
 
 ---
-class: inverse
-## Your Turn 
-
-Have a look at the parameters of `read_csv` to solve the following problems:
-
-1. Read the first two lines of the file into an object called `midwest_names`
-
-2. Read everything EXCEPT the first two lines into an object called `midwest_data`
-
-Hint: Visit http://heike.github.io/rwrks/03-r-format/data/midwest.csv to download the data and look at it in Excel to help figure out what the issue is. 
-
-```{r, echo=FALSE}
-midwest_names <- read_csv("http://heike.github.io/rwrks/03-r-format/data/midwest.csv", n_max= 2, col_names = FALSE)
-midwest_data <- read_csv("http://heike.github.io/rwrks/03-r-format/data/midwest.csv", skip = 2, col_names = FALSE)
-```
-
----
-
-## Quick Lesson in Data Cleaning
-
-```{r, warning=FALSE, message=FALSE}
-library(lubridate)
-library(tidyverse)
-values <- c(midwest_data$X3, midwest_data$X5, midwest_data$X7, 
-            midwest_data$X9, midwest_data$X11)
-dates <- c(paste(midwest_data$X1, midwest_data$X2, sep = "-"), 
-           paste(midwest_data$X1, midwest_data$X4, sep = "-"),
-           paste(midwest_data$X1, midwest_data$X6, sep = "-"),
-           paste(midwest_data$X1, midwest_data$X8, sep = "-"),
-           paste(midwest_data$X1, midwest_data$X10, sep = "-"))
-
-dates <- dates[!is.na(values)]
-values <- values[!is.na(values)]
-
-dates <- ymd(dates)
-
-midwest_gas <- data_frame(date = dates, price = values)
-midwest_gas <- arrange(midwest_gas, dates)
-```
-
----
-
-## Now we can make a plot!
+class: primary
+# Now we can make a plot!
 
 ```{r, warning=FALSE, message=FALSE, fig.width=7, fig.height=4}
 library(ggplot2)
-ggplot(midwest_gas, aes(x = date, y = price)) + geom_line()
+ggplot(glass, 
+       aes(x = Li7, y = Na23)) + 
+  geom_point()
 ```
 
 ---
+class: primary
+# Read Excel Data
 
-## Reading Excel Data
+Download the boxoffice.xlsx file from [this link](https://github.com/CSAFE-ISU/REU-materials-2018/blob/master/slides/rstats/data/boxoffice.xlsx) and put it in your "LearningR" folder. 
 
-Download the midwest.xls file to your current working directory (`getwd()`)
+Read it in and save it as `boxofc`
 
 ```{r, eval=FALSE}
 library(readxl)
+ 
+boxofc <- read_excel("boxoffice.xlsx")
 
-midwest2 <- read_excel("midwest.xls")
-
-head(midwest2)
+head(boxofc)
 ```
-
-Something isn't quite right here...
-
-```{r midwest, echo=FALSE}
+```{r, echo=FALSE}
 library(readxl)
+ 
+boxofc <- read_excel("data/boxoffice.xlsx")
 
-midwest2 <- read_excel("../data/midwest.xls")
-
-head(midwest2)
+head(boxofc)
 ```
 
 ---
-
-## Reading Excel Data: Attempt #2
-
-The 2nd row of the excel file also contains variable names.
-
-Let's skip the first this time. We can then rename the first column.
-
-```{r, eval=FALSE}
-library(readxl)
-
-midwest2 <- read_excel("midwest.xls", skip = 1)
-names(midwest2)[1] <- "Year-Month"
-head(midwest2)
-```
-
-```{r midwest2, echo=FALSE}
-library(readxl)
-
-midwest2 <- read_excel("../data/midwest.xls", skip = 1)
-names(midwest2)[1] <- "Year-Month"
-head(midwest2)
-
-```
-
-Better, but not yet perfect...
-
----
-
-## `foreign` Package
+class: primary
+# `foreign` Package
 
 - Other file formats can be read using the functions from package `foreign`
 
@@ -169,8 +103,8 @@ Better, but not yet perfect...
 - Systat: `read.systat`
 
 ---
-class: inverse
-## Your Turn (~2 minutes) 
+class: primary
+# Your Turn 3.1 
 
 The NHANES (National Health and Nutrition Survey) publishes data in the SAS xport format:
 
@@ -182,7 +116,46 @@ https://wwwn.cdc.gov/Nchs/Nhanes/continuousnhanes/default.aspx?BeginYear=2013
 
 3. Briefly examine the dataset you've imported (use `head` or `tail`, etc)
 
+---
+class: primary
+# Other Data Types 
 
-```{r purl, eval=FALSE, include=FALSE, purl=FALSE}
-#knitr::purl("03-r-format/knitr/1-Files.Rmd", output="03-r-format/code/1-Files.R", documentation = 0)
+What can you think of? 
+
+---
+class: primary
+# Google Sheets 
+
+```{r eval = FALSE}
+install.packages("googlesheets")
+library(googlesheets)
+gap <- gs_key("1D5FK6z7aGukdGRAJQoyuPc2QV5zSJ4oN7oslp_u7YEQ")
+gs_browse(gap)
+africa <- gs_read(gap, "Africa")
+americas <- gs_read(gap, "Americas")
 ```
+```{r echo = FALSE}
+library(readxl)
+africa <- read_xlsx("data/Gapminder.xlsx", sheet = "Africa")
+head(africa)
+```
+
+---
+class: primary
+# Text files 
+
+Read the data [here](https://raw.githubusercontent.com/CSAFE-ISU/REU-materials-2018/master/slides/rstats/data/poem.txt)
+
+```{r}
+poem <- read_lines("https://raw.githubusercontent.com/CSAFE-ISU/REU-materials-2018/master/slides/rstats/data/poem.txt")
+poem
+```
+
+---
+class: primary
+# Your Turn 3.2
+
+Read in the rest of the Google Sheets from the Gapminder data set and combine them into one data set with the `bind_rows()` function. Save it as `gapdata`.
+
+
+
