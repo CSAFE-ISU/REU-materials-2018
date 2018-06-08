@@ -1,0 +1,446 @@
+---
+title: "Homework 1 Solution"
+author: "Sam Tyner"
+date: "6/8/2018"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(message = FALSE, warning = FALSE,  echo=FALSE, fig.align='center', fig.height=3)
+```
+
+## Assignment
+
+Ch. 1 of OpenIntro Statistics problems 2, 4, 11, 14, 16, 20, 22, 26, 30, 32, 34, 40, 44, 52, 54, 66, 70a-c. Do all parts unless otherwise said
+
+### Problem 2
+
+**Sinusitis and antibiotics**: Researchers studying the effect of antibiotic treatment for acute sinusitis compared to symptomatic treatments randomly assigned 166 adults diagnosed 
+with acute sinusitis to one of two groups: treatment or control. Study participants received either a 10-day course of amoxicillin (an antibiotic) or a placebo similar in appearance and taste. The placebo consisted of symptomatic treatments such as acetaminophen, nasal decongestants, etc. At the end of the 10-day period patients were asked if they experienced significant improvement in symptoms. The distribution of responses is summarized below. 
+
+-- | Improvement | No Improvement | **Total**
+:--| :---:       | :----:         | :---:
+Treatment Group | 66 | 19 | **85**
+Control Group | 65 | 16 | **81**
+**Total** |  **131** | **35** | **166**
+
+a. What percent of patients in the treatment group experienced a significant 
+improvement in symptoms? What percent in the control group?
+b. Based on your findings in part (a), which treatment appears to be more 
+effective for sinusitis?
+c. Do the data provide convincing evidence that there is a difference in the 
+improvement rates of sinusitis symptoms? Or do you think that the observed 
+difference might just be due to chance?
+
+#### Solution 
+
+a. Treatment: $\frac{66}{85} =$ `r round(66/85, 3) * 100`%. Control: $\frac{65}{81} =$ `r round(65/81,3)*100`%
+b. The control seems like it may be slightly better because a higher percentatge of patients in that group reported imporoved symptoms. 
+c. Since the observed percentages are so close together (less than 3% apart), it may just be due to random chance. 
+
+### Problem 4
+
+**Buteyko method, study components**: The Buteyko method is a shallow breathing technique developed by Konstantin 
+Buteyko, a Russian doctor, in 1952. Anecdotal evidence suggests that the Buteyko 
+method can reduce asthma symptoms and improve quality of life. In a scientific 
+study to determine the effectiveness of this method, researchers recruited 600 
+asthma patients aged 18-69 who relied on medication for asthma treatment. These 
+patients were split into two research groups: one practiced the Buteyko method 
+and the other did not. Patients were scored on quality of life, activity, 
+asthma symptoms, and medication reduction on a scale from 0 to 10. On average, 
+the participants in the Buteyko group experienced a significant reduction in 
+asthma symptoms and an improvement in quality of life.
+In this study, identify:
+
+a. the cases,
+b. the variables and their types, and
+c. the main research question.
+
+#### Solution 
+
+a. The cases, or observations, are the 600 asthma patients aged 18-69 who rely on medication for asthma treatment. 
+b. The variables are the treatment group (categorical, nominal), the quality of life (categorical, orginal), activity level (categorical, orginal), asthma symptoms (categorical, orginal), and medication reduction (categorical, orginal). They are all ordinal and categorical because they are being grouped into categories (0-10) that have inherent ordering. 
+c. One way to phrase the research question is, "Does the Buteyko breathing method improve symptoms for asthma sufferers?"
+
+### Problem 11 
+
+**Buteyko method, scope of inference**: Problem 4 introduces a study on using the Buteyko 
+shallow breathing technique to reduce asthma symptoms and improve quality of life.
+As part of this study 600 asthma patients aged 18-69 who relied on medication for 
+asthma treatment were recruited and randomly assigned to two groups: one practiced 
+the Buteyko method and the other did not. Those in the Buteyko group experienced,
+on average, a significant reduction in asthma symptoms and an improvement in quality 
+of life.
+
+a. Identify the population of interest and the sample in this study.
+b. Comment on whether or not the results of the study can be generalized to the 
+population, and if the findings of the study can be used to establish causal 
+relationships.
+
+#### Solution
+
+a. Population: all asthma sufferers aged 18-69 who use asthma medication. Sample: 600 asthma patients aged 18-69 who use asthma medication
+b. If the patients in this sample, who are likely not randomly sampled, can be considered to be representative of all asthma patients aged 18-69 who rely on medication for asthma treatment, then the results are generalizable to the population defined above. Additionally, since the study is experimental, the findings can be used to establish causal relationships.
+
+### Problem 14
+
+**Cats on YouTube**: Suppose you want to 
+estimate the percentage of videos on YouTube that are cat videos. It is 
+impossible for you to watch all videos on YouTube so you use a random video 
+picker to select 1000 videos for you. You find that 2\% of these videos are 
+cat videos.Determine which of the following is an observation, a variable, 
+a sample statistic, or a population parameter.
+
+a. Percentage of all videos on YouTube that are cat videos.
+b. 2\%.
+c. A video in your sample.
+d. Whether or not a video is a cat video.
+
+#### Solution
+
+a. Population parameter
+b. Sample statistics
+c. Observation
+d. Variable
+
+### Problem 16
+
+**Income and education in US counties**: The scatterplot below shows the relationship between per capita income 
+(in thousands of dollars) and percent of population with a bachelor's 
+degree in 3,143 counties in the US in 2010.
+
+```{r p16, echo = FALSE, fig.align='center', fig.height=3}
+library(openintro)
+library(ggplot2)
+data(countyComplete)
+ggplot(data = countyComplete) + 
+  geom_point(aes(x = bachelors, y = per_capita_income), color = "steelblue") + 
+  labs(x = "Percent with Bachelor's degree", y = "Per Capita Income (in $1,000)") + 
+  theme_classic()
+```
+
+a. What are the explanatory and response variables?
+b. Describe the relationship between the two variables. Make sure to discuss 
+unusual observations, if any.
+c. Can we conclude that having a bachelor's degree increases one's income?
+
+#### Solution
+
+a. Explanatory: Percent of county population with Bachelor's degree; Response: Per capita income in the county
+b. Generally, the higher the percent of the population with a Bachelor's degree, the higher the per capita income in that area. There are a few observations which have much higher per capita income relative to their percentage with Bachelor's degree.
+c. No, because we are only doing an observational study. In addition, the values are computed over the whole county and do not refer to individuals. 
+
+### Problem 20 
+
+**Stressed out, Part I**: A study that 
+surveyed a random sample of otherwise healthy high school students found that 
+they are more likely to get muscle cramps when they are stressed. The study 
+also noted that students drink more coffee and sleep less when they are 
+stressed.
+
+a. What type of study is this?
+b. Can this study be used to conclude a causal relationship between 
+increased stress and muscle cramps?
+c. State possible confounding variables that might explain the observed 
+relationship between increased stress and muscle cramps. 
+
+#### Solution
+
+a. Observational
+b. No, because it is not an experiment.
+c. The lack of sleep and increased amount of caffeine from the coffee could also be causing the cramps. 
+
+### Problem 22
+
+**Random digit dialing**: The Gallup Poll uses a 
+procedure called random digit dialing, which creates phone numbers based on 
+a list of all area codes in America in conjunction with the associated number 
+of residential households in each area code. Give a possible reason the Gallup 
+Poll chooses to use random digit dialing instead of picking phone numbers 
+from the phone book.
+
+#### Solution
+
+Not everyone has their number in the phone book, especially with more and more people using cell phones to replace land lines. In addition, people may have removed their numbers from the phone book for privacy. So, not everyone in the population has an equal chance of being selected if you use the phone book. 
+
+### Problem 26
+
+**City council survey**: A city council has requested a 
+household survey be conducted in a suburban area of their city. The area is broken 
+into many distinct and unique neighborhoods, some including large homes, some with 
+only apartments, and others a diverse mixture of housing structures. Identify the 
+sampling methods described below, and comment on whether or not you think they 
+would be effective in this setting.
+
+a. Randomly sample 50 households from the city.
+b. Divide the city into neighborhoods, and sample 20 households from each 
+neighborhood.
+c. Divide the city into neighborhoods, randomly sample 10 neighborhoods, 
+and sample all households from those neighborhoods.
+d. Divide the city into neighborhoods, randomly sample 10 neighborhoods, 
+and then randomly sample 20 households from those neighborhoods.
+e. Sample the 200 households closest to the city council offices.
+
+#### Solution
+
+a. A simple random sample might not be effective because you may over- or under-represent a type of neighborhood.
+b. This is a stratified sample that ensures all neigborhoods are represented. This is the best method here. 
+c. This is a cluster sample, and will not give a representative sample. Since two neighborhoods are very different in this city, it is possible with a cluster sample to randomly choose only one type of neighborhood and exclude parts of the population.
+d. This is a multistage sample. It will not give a representative sample for the same reason as (c). 
+e. This is not a representative sample. It sounds more like a convenience sample.
+
+### Problem 30
+
+**Stressed out, Part II**: In a study evaluating the 
+relationship between stress and muscle cramps, half the subjects are randomly assigned to
+be exposed to increased stress by being placed into an elevator that falls rapidly and 
+stops abruptly and the other half are left at no or baseline stress.
+
+a. What type of study is this?
+b. Can this study be used to conclude a causal relationship between increased stress 
+and muscle cramps?
+
+#### Solution
+
+a. An experiment
+b. Yes, because we used an experiment to establish a causal relationship. 
+
+### Problem 32 
+
+**Vitamin supplements**: In order to assess the effectiveness 
+of taking large doses of vitamin C in reducing the duration of the common cold, 
+researchers recruited 400 healthy volunteers from staff and students at a university. A 
+quarter of the patients were assigned a placebo, and the rest were evenly divided 
+between 1g Vitamin C,  3g Vitamin C, or 3g Vitamin C plus additives to be taken at onset 
+of a cold for the following two days. All tablets had identical appearance and packaging.
+The nurses who handed the prescribed pills to the patients knew which patient received 
+which treatment, but the researchers assessing the patients when they were sick did not. 
+No significant differences were observed in any measure of cold duration or severity 
+between the four medication groups, and the placebo group had the shortest duration of 
+symptoms.
+
+a. Was this an experiment or an observational study? Why?
+b. What are the explanatory and response variables in this study?
+c. Were the patients blinded to their treatment?
+d. Was this study double-blind?
+e. Participants are ultimately able to choose whether or not to use the pills 
+prescribed to them. We might expect that not all of them will adhere and take their 
+pills. Does this introduce a confounding variable to the study? Explain your reasoning.
+
+#### Solution
+
+a. It was an experiment because the participants were assigned to treatments and manipulated.
+b. Explanatory: pills taken (placebo, 1g Vitamin C, etc.); Response: Length of common cold symptoms
+c. Doesn't say explicitly but assume yes because they were randomly assigned to groups and all packages look the same they don't know what treatment they got.
+d. Yes because the doctor examining the patient doesn't know what treatment they got, and neither does the patient.
+e. Yes it does. For one, the people taking the placebo may not take the full prescribed dosage if they don't feel an effect. In addition, if they don't take the pills, then the confounding variable would be whether or not they took the pills. 
+
+### Problem 34
+
+**Music and learning**: You would like to conduct an experiment in 
+class to see if students learn better if they study without any music, with music that 
+has no lyrics (instrumental), or with music that has lyrics. Briefly outline a design for 
+this study.
+
+#### Solution
+
+Here is a possible study outline:
+
+1. Randomly select 30 students from the class.
+2. Randomly assign 10 students to each group (no music, music without lyrics, music with lyrics)
+3. Give all 30 students an exam to assess their baseline knowledge.
+4. Tell the 30 students to study the material on the exam for 2 hours. Provide the same study materials to all students, and provide all students listening to music the same music within each group. Make sure the environments all the students are studying in are as similar as possible. 
+5. After the 2 hours, give all students another exam on the same material. 
+6. Compare the score differences between all three groups. 
+
+### Problem 40
+
+**Office productivity**: Office productivity is relatively low 
+when the employees feel no stress about their work or job security. However, high levels 
+of stress can also lead to reduced employee productivity. Sketch a plot to represent the 
+relationship between stress and productivity.
+
+#### Solution
+
+```{r p40, echo = FALSE, fig.align='center', fig.height=3}
+x <- seq(0, 10, 0.25)
+y <- 5 - (x-5)^2 + 20
+qplot(x=x, y=y, geom = 'line') + 
+  labs(x = "Stress Level (Lowest Stress = 0, Highest Stress = 10)", y = "Work Productivity") + 
+  scale_y_continuous(labels = c("Lowest\nProductivity", "", "", "", "", "Highest\nProductivity")) + 
+  scale_x_continuous(breaks = 0:10)
+```
+
+### Problem 44 
+
+**Make-up exam**: In a class of 25 students, 24 of them took an exam 
+in class and 1 student took a make-up exam the following day. The professor graded the 
+first batch of 24 exams and found an average score of 74 points with a standard 
+deviation of 8.9 points. The student who took the make-up the following day scored 64 
+points on the exam.
+
+a. Does the new student's score increase or decrease the average score?
+b. What is the new average?
+c. Does the new student's score increase or decrease the standard deviation of the 
+scores?
+
+#### Solution
+
+a. It decreases the average because it is below the previous average.
+b. The new average is $\frac{74 \times 24 + 64}{25}=$ `r round((74*24 + 64)/25, 1)`
+c. It will increase the standard deviation slightly because it is more than one standard deviation away from the current standard deviation. 
+
+```{r echo = FALSE}
+n1 <- 24
+n2 <- n1+1
+xbar1 <- 74
+s1 <- 8.9
+xbar2 <- (xbar1*n1 + 64)/n2
+# sqrt(((n2 - 2) * s1^2 + (64 - xbar1)*(64-xbar2))/n1)
+```
+
+
+### Problem 52 
+
+**Median vs. mean**: Estimate the median for the 400 observations shown in the histogram, and note whether you expect the mean to be higher or lower than the median.
+
+```{r echo = FALSE, fig.align='center', fig.height=3}
+set.seed(9823)
+x <- 100 * rbeta(400, 12, 3)
+qplot(x=x, fill = I("steelblue"), binwidth=5, color = I("black"), center = 82.5) + 
+  theme_classic() + scale_x_continuous(breaks = 4:10*10) + labs(x = "", y = "")
+```
+
+#### Solution
+
+The median is probably around 80, maybe a bit lower than that. The mean will be lower than the median because there are some outlier low values that will pull it down. 
+
+### Problem 54
+
+**Marathon winners**: The histogram and box plots below show the distribution of finishing times for male and female winners of the New York Marathon between 1970 and 1999.
+
+```{r p54, echo=FALSE}
+data("marathon")
+p1 <- ggplot(data = marathon) + 
+  geom_histogram(aes(x = Time), binwidth = .2, center = 2.1, fill = "steelblue", color = "black") + 
+  theme_classic()
+p2 <- ggplot(data = marathon, aes(x = 1, y = Time)) + 
+  stat_boxplot(geom ='errorbar') + 
+  geom_boxplot(outlier.colour = "steelblue") + 
+  theme_classic() + 
+  theme(axis.line.x = element_blank(), axis.text.x = element_blank(), axis.ticks.x = element_blank(),
+        axis.title.x = element_blank())
+      
+gridExtra::grid.arrange(p1, p2, nrow = 1)
+```
+
+a. What features of the distribution are apparent in the histogram and not the box plot? What features are apparent in the box plot but not in the histogram?
+b. What may be the reason for the bimodal distribution? Explain.
+c. Compare the distribution of marathon times for men and women based on the box plot shown below.
+
+```{r p54c}
+ggplot(data = marathon, aes(x = Gender, y = Time)) + 
+  stat_boxplot(geom ='errorbar') + 
+  geom_boxplot(outlier.colour = "steelblue") + 
+  lims(y = c(2.0, 3.2)) + 
+  #scale_y_continuous( breaks = c(2.0, 2.4, 2.8, 3.2)) +
+  theme_classic() + 
+  scale_x_discrete(labels = c("Women", "Men")) + 
+  coord_flip() 
+```
+
+d. The time series plot shown below is another way to look at these data. Describe what is visible in this plot but not in the others.
+
+```{r 54d}
+ggplot(data = marathon) + 
+  geom_point(aes(x = Year, y = Time, color = Gender)) + 
+  scale_color_manual(values = c(COL[1], COL[2]), name="", labels = c("Women", "Men")) + 
+  theme_classic() + 
+  theme(legend.position = c(.8,.8))
+```
+
+#### Solution
+
+a. In the histogram, the two modes are more visible. In the boxplot, the outliers and median value are more apparent. 
+b. Men and women on average have very different finishing times. One mode is for men while the other is for women. 
+c. The women's finishing times are higher and more variable than the men's finishing times. 
+d. The women's time is always higher than the men's time, and they are both decreasing over time. They decrease rapidly at first, then at a slower pace over time. 
+
+### Problem 66
+
+**Views on immigration** 910 randomly sampled registered 
+voters from Tampa, FL were asked if they thought workers who have illegally 
+entered the US should be (i) allowed to keep their jobs and apply for 
+US citizenship, (ii) allowed to keep their jobs as temporary guest workers 
+but not allowed to apply for US citizenship, or (iii) lose their jobs and 
+have to leave the country. The results of the survey by political ideology 
+are shown below.
+
+-- | Conservative | Moderate | Liberal | **Total**
+:-|  :--:       |  :---:   |  :---:  |   :---:  
+ (i) Apply for US citizenship | 57 | 120 | 101 | **278** 
+ (ii) Guest worker | 121 | 113 | 28 | **262**
+ (iii) Leave the country | 179 | 126 | 45 | **350**
+ (iv) Not sure | 15 | 4 | 1 | **20**
+**Total** | **372** | **363** | **175** | **910**
+
+a. What percent of these Tampa, FL voters identify themselves as conservatives?
+b. What percent of these Tampa, FL voters identify themselves as conservatives 
+and are in favor of the citizenship option?
+c.  What percent of these Tampa, FL voters who identify themselves as 
+conservatives are also in favor of the citizenship option? What percent of 
+moderates share this view? What percent of liberals share this view?
+d. Do political ideology and views on immigration appear to be independent? 
+Explain your reasoning.
+
+#### Solution
+
+a. $\frac{372}{910}=$ `r round(372/910, 3)*100`%
+b. $\frac{57}{910}=$ `r round(57/910, 3)*100`%
+c. In favor of citizenship by ideology: conservative = $\frac{57}{372}=$ `r round(57/372, 3)*100`%; moderate = $\frac{120}{363}=$ `r round(120/363, 3)*100`%; liberal = $\frac{101}{175}=$ `r round(101/175, 3)*100`%
+d. No. Support for citizenship seems to increase as level of convservativeness decreases. 
+
+### Problem 70a-c
+
+**Heart transplants**: The Stanford University Heart Transplant Study was conducted to determine whether an 
+experimental heart transplant program increased lifespan. Each patient 
+entering the program was designated an official heart transplant candidate, 
+meaning that he was gravely ill and would most likely benefit from a new heart. 
+Some patients got a transplant and some did not. The variable `transplant` 
+indicates which group the patients were in; patients in the treatment group got a 
+transplant and those in the control group did not. Another variable called 
+`survived` was used to indicate whether or not the patient was alive 
+at the end of the study. Of the 34 patients in the control group, 30 died. Of the 69 people in the treatment group, 45 died. 
+
+```{r p70a}
+data(heartTr)
+
+# mosaic plot -------------------------------------------------------
+par(mar = c(0, 0, 0, 0), las = 1, mgp = c(2.7, 0.9, 0))
+ mosaicplot(transplant ~ survived, data = heartTr, 
+           main = "", xlab = "", ylab = "", color = COL[1],
+           cex.axis = 1.5)
+```
+
+```{r p70b}
+# box plot -------------------------------------------------------
+
+par(mar = c(2, 4.8, 0, 0), las = 1, mgp = c(3.5, 0.7, 0), 
+    cex.lab = 1.5, cex.axis = 1.5)
+boxPlot(heartTr$survtime, fact = heartTr$transplant, 
+        ylab = "Survival Time (days)", col = COL[1,2])
+```
+
+a. Based on the mosaic plot, is survival independent of whether or not the 
+patient got a transplant? Explain your reasoning.
+b. What do the box plots below suggest about the efficacy (effectiveness) of the heart transplant treatment.
+c. What proportion of patients in the treatment group and what proportion of 
+patients in the control group died?
+
+#### Solution
+
+a. No. The treatment group has much higher survival rate.
+b. On average, it increases length of survival, but by how much is highly variable. 
+c. Proportion who died by treatment: control= $\frac{30}{34} =$ `r round(30/34, 3)*100`%; treatment =  $\frac{45}{69} =$ `r round(45/69, 3)*100`%
