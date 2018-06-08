@@ -1,7 +1,7 @@
 ---
 title: "Data Visualization with `ggplot2`"
 author: "Haley Jeppson, Sam Tyner"
-date: 
+date: "2018/06/07"
 output:
   xaringan::moon_reader:
     css: ["default", "csafe.css", "csafe-fonts.css"]
