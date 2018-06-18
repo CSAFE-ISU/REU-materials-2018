@@ -1,0 +1,162 @@
+---
+title: "Homework 2 Solution"
+author: "Sam Tyner"
+date: "6/18/2018"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(message = FALSE, warning = FALSE,  echo=FALSE, fig.align='center', fig.height=3)
+```
+
+## Assignment
+
+Ch. 2 of OpenIntro Statistics problems 8a, 8c-f, 14, 16, 18, 22, 26, 34, 38. Do all parts unless otherwise stated. 
+
+### Problem 8
+
+The American Community Survey is an ongoing survey that provides data every year to give communities the current information they need to plan investments and services. The 2010 American Community Survey estimates that 14.6% of Americans live below the poverty line, 20.7% speak a language other than English (foreign language) at home, and 4.2% fall into both categories.
+
+a. Are living below the poverty line and speaking a foreign language at home disjoint?
+b. ~~Draw a Venn diagram summarizing the variables and their associated probabilities.~~
+c. What percent of Americans live below the poverty line and only speak English at home?
+d. What percent of Americans live below the poverty line or speak a foreign language at home?
+e. What percent of Americans live above the poverty line and only speak English at home?
+f. Is the event that someone lives below the poverty line independent of the event that the person speaks a foreign language at home?
+
+#### Solution
+
+Let $P$ be the event of living below the poverty line, and let $N$ be the event of speaking a language other than English at home. $P(P) = 0.146$; $P(N) = 0.207$; $P(P \cap N) = 0.042$ 
+
+a. No, because 4.2% of the population lives below the poverty line and speaks a language other than English at home. 
+b. 
+c. Let $N^c$ be the complement of event $N$. (i.e. $N^c$ is the event of speaking English at home). Then,  
+$$P(P \cap N^c )= P(P) - P(P \cap N) = 0.146 - 0.042 = 0.104$$ 
+so the answer is 10.4%. 
+d. $P(P \cup N) = P(P) + P(N) - P(P \cap N) = 0.146 + 0.207 - 0.042 = 0.311$ or 31.1% 
+e. Let $P^c$ be the complement of event $P$. (i.e. $P^c$ is the event of living above the poverty line). Then, 
+$$P(P^c \cap N^c )= P(N^c) - P(P \cap N^c) = (1-0.207) - 0.104 = 0.689$$ 
+so the answer is 68.9%. 
+f. If $P$ and $N$ are independent, $P(P \cap N) = P(P) \times P(N)$. $P(P \cap N) = 0.042$. $P(P) \times P(N) = 0.146 \times 0.207 = 0.030$.  $P(P \cap N) \neq P(P) \times P(N)$ so $P$ and $N$ are not independent.
+
+### Problem 14
+
+The Behavioral Risk Factor Surveillance System (BRFSS) is an annual telephone survey designed to identify risk factors in the adult population and report emerging health trends. The following table summarizes two variables for the respondents: health status and health coverage, which describes whether each respondent had health insurance.
+
+-- | Excellent health | Very good health | Good health | Fair Health | Poor Health | Total 
+:--| --:  |  --:  | --: | --: | --: | --: | 
+Doesn't have health insurance |  459 | 727 | 854 | 385 | 99 | 2524 
+Has health insurance | 4198 | 6245 | 4821 | 1634 | 578 | 17476 
+**Total** | 4657 | 6972 | 5675 | 2019 | 677 | 20000
+
+a. If we draw one individual at random, what is the probability that the respondent has excellent health and doesn’t have health coverage?
+b. If we draw one individual at random, what is the probability that the respondent has excellent health or doesn’t have health coverage?
+
+#### Solution
+
+a. $\frac{459}{20000} = 0.023$
+b. $\frac{4657}{20000} + \frac{2524}{20000} - \frac{459}{20000} = \frac{6722}{20000} = 0.336$ 
+
+### Problem 16
+
+Suppose 80% of people like peanut butter, 89% like jelly, and 78% like both. Given that a randomly sampled person likes peanut butter, what’s the probability that he also likes jelly?
+
+#### Solution
+
+Let $B$ be the event that someone likes peanut butter and let $J$ be the event that someone likes jelly. We know $P(B) = 0.80$, $P(J) = 0.89$ and $P(B \cap J) = 0.78$. We want to know $P(J|B)$. $$P(J | B ) = \frac{P(J \cap B)}{ P(B)} = \frac{0.78}{0.80} = 0.975$$
+
+### Problem 18
+
+The Behavioral Risk Factor Surveillance System (BRFSS) is an annual telephone survey designed to identify risk factors in the adult population and report emerging health trends. The following table displays the distribution of health status of respondents to this survey (excellent, very good, good, fair, poor) and whether or not they have health insurance.
+
+-- | Excellent health | Very good health | Good health | Fair Health | Poor Health | Total 
+:--| --:  |  --:  | --: | --: | --: | --: | 
+Doesn't have health insurance |  0.230 | 0.0364 | 0.0427 | 0.0192 | 0.0050 | 0.1262
+Has health insurance | 0.2099 | 0.3123 | 0.2410 | 0.0817 | 0.0289 | 0.8738 
+**Total** | 0.2329 | 0.3486 | 0.2838 | 0.1009 |0.0338 | 1.0000
+
+a. Are being in excellent health and having health coverage mutually exclusive?
+b. What is the probability that a randomly chosen individual has excellent health?
+c. What is the probability that a randomly chosen individual has excellent health given that he has health coverage?
+d. What is the probability that a randomly chosen individual has excellent health given that he doesn’t have health coverage?
+e. Do having excellent health and having health coverage appear to be independent?
+
+#### Solution
+
+a. No. 20.99% have excellent health and health coverage.
+b. 0.2329
+c. $\frac{0.2099}{0.8738} = 0.2402$
+d. $\frac{0.0230}{0.1262} = 0.1823$
+e. If they were independent, the probability of having excellent health *and* having health coverage would be equal to the probability of having excellent health *times* the probability of having health coverage. The first quantity is 0.2099, and the second is $0.2329 \times 0.8738 = 0.2035$. Though these numbers are close, they are not equal, therefore the two events are not independent. 
+
+### Problem 22
+
+A genetic test is used to determine if people have a predisposition for thrombosis, which is the formation of a blood clot inside a blood vessel that obstructs the flow of blood through the circulatory system. It is believed that 3% of people actually have this predisposition. The genetic test is 99% accurate if a person actually has the predisposition, meaning that the probability of a positive test result when a person actually has the predisposition is 0.99. The test is 98% accurate if a person does not have the predisposition. What is the probability that a randomly selected person who tests positive for the predisposition by the test actually has the predisposition?
+
+#### Solution
+
+Let $T$ be the event of having thrombosis. Let $+$ be the event of testing positive for thrombosis. We want to know $P(T | +)$. Using Bayes' Theorem,
+$$P(T | +) = \frac{P(+|T) \times P(T)}{P(+|T) \times P(T) + P(+|T^c) \times P(T^c)} = \frac{0.99 \cdot 0.03}{0.99 \cdot 0.03 + 0.02\times 0.97} = 0.6049$$
+
+### Problem 26
+
+About 30% of human twins are identical, and the rest are fraternal. Identical twins are necessarily the same sex – half are males and the other half are females. One-quarter of fraternal twins are both male, one-quarter both female, and one-half are mixes: one male, one female. You have just become a parent of twins and are told they are both girls. Given this information, what is the probability that they are identical?
+
+#### Solution
+
+Let $I$ be the event of identical twins. Let $M$ be the event the twins are both male, let $F$ be the event that both twins are female, and let $B$ be the event that they are mixed sex. From the information given in the problem, we know that $P(I) = 0.30$, so $P(I^c) = 0.70$ (where $I^c$ is the event the twins are fraternal). We also know that $P(F | I^c) = 0.25$.  We want to know $P(I | F)$. Using Bayes' theorem,
+$$P(I | F) = \frac{P(F|I) \times P(I)}{P(F|I) \times P(I) + P(F|I^c) \times P(I^c)} = \frac{0.50 \cdot 0.30}{0.50 \cdot 0.30 + 0.25 \cdot 0.70} = 0.4615$$
+
+### Problem 34
+
+Consider the following card game with a well-shuffled deck of cards. If you draw a red card, you win nothing. If you get a spade, you win $5. For any club, you win $10 plus an extra $20 for the ace of clubs.
+
+a. Create a probability model for the amount you win at this game. Also, find the expected winnings for a single game and the standard deviation of the winnings.
+b. What is the maximum amount you would be willing to pay to play this game? Explain your reasoning.
+
+#### Solution
+
+Let $X$ be the amount of money you win and let $P(X)$ be the probability you win that amount. The probability distribution is: 
+
+$X$ | 0 | 5 | 10 | 30
+:---|:-:|:-:|:--:|:--:|
+$P(X)$ | $\frac{26}{52}$ | $\frac{13}{52}$ | $\frac{12}{52}$ | $\frac{1}{52}$
+
+$E[X] = 0 \times \frac{26}{52} + 5 \times \frac{13}{52} + 10 \times \frac{12}{52} + 30 \times \frac{1}{52} = 4.13$
+
+The expected value of our winnings in the game is $4.13. Depending on how much risk you're willing to take, any amount up to $4 may be reasonable. I'm not very risky, so I'd say $2 max. 
+
+### Problem 38
+
+An airline charges the following baggage fees: $25 for the first bag and $35 for the second. Suppose 54% of passengers have no checked luggage, 34% have one piece of checked luggage and 12% have two pieces. We suppose a negligible portion of people check more than two bags.
+
+a. Build a probability model, compute the average revenue per passenger, and compute the corresponding standard deviation.
+b. About how much revenue should the airline expect for a flight of 120 passengers? With what standard deviation? Note any assumptions you make and if you think they are justified.
+
+#### Solution
+
+a. Let $X$ be the amount earned from a passenger's baggage. Let $P(X)$ be the probablity of earning that amount. The probability model looks like: 
+
+$X$ | 0 | 25 | 35
+:---|:-:|:-:|:--:
+$P(X)$ | 0.54 | 0.34 | 0.12
+
+The average revenue is $E[X] = 0\cdot 0.54 + 25 \cdot 0.34 + 35 \cdot 0.12 = 12.7$.  Here's the standard deviation, computed using `R`. 
+
+```{r, echo=TRUE}
+# values of X
+X <- c(0,25,35)
+# corresponding probabilities
+pr <- c(.54, .34, .12)
+# expected value
+EX <- sum(X*pr)
+# variance 
+Var <- sum((X - EX)^2 * pr)
+# standard deviation
+StdDev <- sqrt(Var)
+StdDev
+```
+
+b. For 120 passengers, the expected revenue is $120 \times 12.7 = 1524$, with standard deviation $120 \times 14.08 = 1689.6$. We assumed implicitly that all the 120 passengers are independent from each other and have the same expected behavior.   
