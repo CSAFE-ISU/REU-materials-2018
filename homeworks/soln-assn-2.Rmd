@@ -139,15 +139,15 @@ b. About how much revenue should the airline expect for a flight of 120 passenge
 
 a. Let $X$ be the amount earned from a passenger's baggage. Let $P(X)$ be the probablity of earning that amount. The probability model looks like: 
 
-$X$ | 0 | 25 | 35
+$X$ | 0 | 25 | 60
 :---|:-:|:-:|:--:
 $P(X)$ | 0.54 | 0.34 | 0.12
 
-The average revenue is $E[X] = 0\cdot 0.54 + 25 \cdot 0.34 + 35 \cdot 0.12 = 12.7$.  Here's the standard deviation, computed using `R`. 
+The average revenue is $E[X] = 0\cdot 0.54 + 25 \cdot 0.34 + 60 \cdot 0.12 = 15.7$.  Here's the standard deviation, computed using `R`. 
 
 ```{r, echo=TRUE}
 # values of X
-X <- c(0,25,35)
+X <- c(0,25,60)
 # corresponding probabilities
 pr <- c(.54, .34, .12)
 # expected value
@@ -159,4 +159,4 @@ StdDev <- sqrt(Var)
 StdDev
 ```
 
-b. For 120 passengers, the expected revenue is $120 \times 12.7 = 1524$, with standard deviation $120 \times 14.08 = 1689.6$. We assumed implicitly that all the 120 passengers are independent from each other and have the same expected behavior.   
+b. For 120 passengers, the expected revenue is $120 \times 15.7 = 1884$, with standard deviation $120 \times 19.95 = 2394$. We assumed implicitly that all the 120 passengers are independent from each other and have the same expected behavior.   
