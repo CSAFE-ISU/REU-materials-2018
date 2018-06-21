@@ -1,7 +1,7 @@
 ---
 title: "Part 4: Regression"
 author: "Sam Tyner"
-date: "TBD"
+date: "2018-06-21"
 output:
   xaringan::moon_reader:
     css: ["default", "csafe.css", "csafe-fonts.css"]
@@ -210,7 +210,7 @@ class: primary
 5. Interpret the slope.
 6. Interpret R2. (Hint: `summary(my_lm)`)
 
-```{r, eval = FALSE}
+```{r, eval = FALSE, echo = TRUE}
 install.pacakges("openintro")
 library(openintro)
 my_data <-openintro::murders
@@ -224,7 +224,7 @@ class: primary
 
 .small[
 
-```{r, eval = FALSE}
+```{r, echo=TRUE}
 # 1. install.packages("openintro")
 # 2.
 my_data <-openintro::murders
@@ -355,7 +355,7 @@ In `R` fit a multiple regression with birthweight (`bwt`) as the dependent varia
 
 Save the model as `babies_model` and print off a summary of `babies_model`. 
 
-```{r}
+```{r, echo=TRUE}
 babies_model <- lm(bwt ~ ., data = openintro::babies[,-1])
 summary(babies_model)
 ```
@@ -376,12 +376,13 @@ Using the `babies_model`
 class: primary
 # YT 4.2.2 (soln.)
 
+.small[
 $Y =$ birthweight; $X_1=$ gestation; $X_2=$ parity; $X_3=$ mother's age; $X_4=$ mother's height; $X_5=$ mother's weight; $X_6=$ mother smokes.
 
 1. $Y = -80.41 + 0.44 \cdot X_1 - 3.33 \cdot X_2 - 0.009 \cdot X_3 + 1.15 \cdot X_4 + 0.050 \cdot X_5 - 8.401 \cdot X_6$
 2. When all else is held constant, for every additional day of gestation, the birthweight increases by 0.44 ounces. When all else is held constant, for every year older the mother is, the birthweight decreases by 0.009 ounces.
 3. 
-```{r}
+```{r, echo=TRUE}
 # get the first observation
 obs1 <- openintro::babies[1,]
 # prediction
@@ -391,7 +392,7 @@ obs1$bwt - y_hat
 ```
 
 4. $R^2=0.258$. So, 25.8% of the variability in birthweight can be explained by the variability in the variables $X_1, \dots, X_6$. 
-
+]
 
 ---
 class: inverse, center
@@ -482,6 +483,20 @@ glm(spam ~ to_multiple + winner,
 
 ---
 class: primary
+# Probability
+
+We can also talk about probability that the dependent variable will equal 1.
+
+$P(Y_i = 1) = p_i = \frac{\exp\{\alpha + \beta \cdot x_i \}}{1 + \exp\{\alpha + \beta \cdot x_i \}}$
+
+In the email example, what is the probability that the email is spam if `to_multiple` = 0 and `winner` = 1? 
+
+$p_i = \frac{\exp\{-2.160 + 1.502 \}}{1 + \exp\{-2.160 + 1.502\}} =$ `r round(exp(-2.160 + 1.502)/(1+ exp(-2.160 + 1.502 )) ,3)`
+
+Can also be done with `predict.glm` with the `type = "response"` argument 
+
+---
+class: primary
 # Logit example
 
 ```{r email3, results='asis'}
@@ -494,35 +509,115 @@ knitr::kable(new, caption = "Predicted probabilities of spam given the to_multip
 
 ---
 class: primary
+# Interpretation
+
+The interpretation of coefficients is NOT the same as it was for linear regression: 
+
+Linear regression: $Y = \beta_0 + \beta_1 \cdot x$. 
+- Interpretation of slope ( $\beta_1$ ): 
+- for every one unit increase of $x$, $Y$ increases by $\beta_1$ units.
+
+--
+
+Logistic regression: $logit(p_i) = \alpha + \beta \cdot X_i$.
+- Interpretation of slope ( $\beta$ ): 
+- "For every one unit increase of $X_i$, $logit(p_i)$ increases by $\beta$"
+- Meaningless! 
+
+---
+class: primary
+# Interpretation
+
+Instead, use the inverse logit function to convert everything to probabilities: 
+
+Let $X_i = x_i$:
+
+$$p_1 = \frac{\exp\{\alpha + \beta \cdot x_i \}}{1 + \exp\{\alpha + \beta \cdot x_i \}}$$
+Let $X_i = x_i + 1$: 
+$$p_2 = \frac{\exp\{\alpha + \beta \cdot (x_i+1) \}}{1 + \exp\{\alpha + \beta \cdot (x_i+1) \}}$$
+
+What's the difference between $p_1$ and $p_2$??? 
+
+---
+class: primary
+# Odds ratio
+
+An **odds ratio** as a ratio of odds. **Odds** are ratios of probabilities of 2 events. 
+
+.small[
+Example: Odds in horse racing
+
+- Suppose you want to place a bet on a horse name Cleopatra winning the race. Odds for Cleopatra are reported as 4:1.
+- Let $Y$ be the event that Cleopatra wins the race
+- Let $Y^c$ be the event that any horse in the race other than Cleopatra wins the race.
+- The odds ratio is written as $O(Y) = \frac{P(Y^c)}{P(Y)}$
+- We know that $P(Y)+P(Y^c)=1$.  
+- With this information, we can determine $P(Y)$, the probability that Cleopatra wins the race: 
+$$O(Y) = \frac{P(Y^c)}{P(Y)} = \frac{1-P(Y)}{P(Y)}$$
+$$\frac{1 - P(Y)}{P(Y)} = 4 \Rightarrow \frac{1}{P(Y)} - 1 = 4 \Rightarrow P(Y) = \frac{1}{5}$$
+]
+
+---
+class: primary
+# Interpretation
+
+To interpret the parameters from logistic regression, we talk about the odds ratio: for every 1 unit increase in x, the odds that $Y=1$ increase by $e^\beta$
+
+Email example: when `winner` goes from 0 (email doesn't contain the word "winner") to 1 (email does contain the word "winner"), the odds that the email is spam increase by $e^{1.502} \approx 4.5$.
+
+(Do the math live!)
+
+So when the email contains the word winner, it is 4.5 times more likely to be spam, with everything else held constant. 
+
+---
+class: primary
 # Your Turn 4.3.1
 
-1. Read the help file for the dataset `orings` in the `openintro` package. 
-2. Each row of the data represents a different shuttle mission. Examine these data and describe what you observe with respect to the relationship between temperatures and damaged O-rings.
-3. Run the following code to create a new dataset called `orings2`
-```{r}
-library(openintro)
-data("orings")
-orings2 <- NULL
-for(i in 1:nrow(orings)){
-  new <- data.frame(temp = orings$temp[i], 
-                    fail = rep(c(1,0), c(orings$damage[i], 6-orings$damage[i])))
-  orings2 <- rbind(orings2, new)
-}
-```
-4. Fit a logistic regression to the `orings2` data.
-```{r, eval = FALSE}
-# some code to get you started
-oring_model <- glm(___ ~ ___ , data = orings2, family = "binomial")
+1. The package `openintro` contains a dataset called `possum`. Load this data in `R`.
+2. Read the help file (`?possum`) to learn about the variables. 
+3. We want to know whether or not a possum came from Victoria, Australia, as opposed to other regions in Australia. Fit a logistic regression to the data, using `pop` as the dependent variable. Use `sex`, `totalL`, `tailL`, and `skullW` as explanatory variables. Print a summary of the model. 
+```{r, eval = FALSE, echo=TRUE}
+# here is some code to get you started 
+data("possum")
+# make a new population variable the is 0-1 like the logistic regression needs. 
+possum$pop2 <- as.numeric(possum$pop == "Vic")
+# model: fill in the blanks 
+possum_model <- glm(___ ~ ___, data = possum, family = "binomial")
 ```
 
 ---
 class: primary
 # YT 4.3.1 (soln.)
 
-1.
-2. The lowest temperature has a lot of failures. 
-3. 
-4. 
-```{r}
-oring_model <- glm(fail ~ temp , data = orings2, family = "binomial")
+```{r, echo=TRUE}
+data("possum")
+possum$pop2 <- as.numeric(possum$pop == "Vic")
+possum_model <- glm(pop2 ~ sex + totalL + tailL + skullW, data = possum, family = "binomial")
+summary(possum_model)$coef
 ```
+
+
+---
+class: primary
+# Your Turn 4.3.2
+
+Using the `possum_model` from the previous question: 
+
+1. Write out the form of the model. Also identify the variables that are positively associated with a possum from Victoria.
+2. Suppose we see a brushtail possum at a zoo in the US, and a sign says the possum had been captured in the wild in Australia, but it doesn’t say which part of Australia. However, the sign does indicate that the possum is male, its skull is about 63 mm wide, its tail is 37 cm long, and its total length is 83 cm. What is the reduced model’s computed probability that this possum is from Victoria? Hint: see the `type` argument of the `predict.glm` function.
+
+---
+class: primary
+# YT 4.3.2 (soln.)
+
+.small[
+Let $Y$ be the location of the possum. $Y = 1$ when the possum is from Victoria, and $Y=0$ otherwise. $X_1$ is the possum's sex, $X_2$ is the possum's length (cm), $X_3$ is the length of the possum's tail (cm), and $X_4$ is the width of the possum's skull (mm). 
+ 
+1. $Y \sim Bern(p)$; $logit(p) = 33.51 - 1.42\cdot X_1 + 0.57 \cdot X_2 - 1.81 \cdot X_3 - 0.28\cdot X_4$. The only variable positively associated with possums from Victoria is the total length. 
+2. To predict, we want to create a new dataframe with 1 row containing this possum's measurements, then use the `predict` function and the `possum_model` object. ]
+```{r, echo=T}
+newpossum <- data.frame(sex = "m", skullW = 63, totalL = 83, tailL=37)
+predict(possum_model, newdata = newpossum, type = "response")
+```
+So, it is very unlikely this possum came from Victoria. 
+
