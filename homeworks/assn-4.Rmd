@@ -13,9 +13,11 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Do the problems below. You should turn in a .pdf file that you created from a .Rmd file. 
 
-You need to show me all of the `R` code you use to solve the problems, and you need to write your final answers in complete sentences. There are only 3 problems, so you can spend a lot of time using your `R` and RMarkdown skills and resources to make the answers look very nice. It would also be nice if each problem read as a mini data analysis project instead of bulleted answers to questions, but this is not required. 
+You need to show me all of the `R` code you use to solve the problems, and you need to write your final answers in complete sentences. There are only 3 problems, so you can spend a lot of time using your `R` & RMarkdown skills and resources to make the answers look very nice. It would also be nice if each problem read as a mini data analysis project instead of numbered answers to questions, but this is not required. 
 
-This assignment is due on Tuesday, June 26th at 4:00pm. You can get the .Rmd that creates this assignment page [here](https://raw.githubusercontent.com/CSAFE-ISU/REU-materials-2018/master/homeworks/assn-4.Rmd) to help you get started. 
+This assignment is due on Wednesday, June 27th at 9:00am. You can get the .Rmd that creates this assignment page [here](https://raw.githubusercontent.com/CSAFE-ISU/REU-materials-2018/master/homeworks/assn-4.Rmd) to help you get started. 
+
+**Note:** I don't expect you to know how to do everything right away. Consult the slides, the `R` cheatsheets, the `R` help files, each other, Google, etc. This assignment was designed to use a little bit of most slide sets we've done so far.  
 
 ### Problem 1
 
@@ -67,5 +69,6 @@ for(i in 1:nrow(orings)){
 ```
 3. Using `orings2`, fit a logistic regression to the data using the `glm` function. 
 4. Write out the logistic model using the point estimates of the model parameters.
-5. After the [Challenger Explosion](https://en.wikipedia.org/wiki/Space_Shuttle_Challenger_disaster) in January of 1986, an investigation was done to determine the cause. The investigation found that the explosion was caused by the failure of the O-rings due to the low temperature during the shuttle launch. Based on the model, do you think the investigation was correct? Explain.
-6. Predict the probability of a damaged O-ring for each temperature value from 53-81 (i.e. `53:81`). Create a plot showing the observed data (in `orings2`) as points ($x$ = temperature, $y$ = fail) and draw a line through the predicted probabilities at each temperature value from 53-81. Describe what you see in the plot. 
+5. Interpret the coefficient for temperature: How does an increase of the temperature by 1 degree affect the odds that the O-ring in the shuttle will be damages? 
+6. After the [Challenger Explosion](https://en.wikipedia.org/wiki/Space_Shuttle_Challenger_disaster) in January of 1986, an investigation was done to determine the cause. The investigation found that the explosion was caused by the failure of the O-rings due to the low temperature during the shuttle launch. Based on the model, do you think the investigation was correct? Explain.
+7. Predict the probability of a damaged O-ring for each temperature value from 53-81 (i.e. `53:81`). Create a plot showing the observed data (in `orings2`) as points ($x$ = temperature, $y$ = fail) and draw a line through the predicted probabilities at each temperature value from 53-81. Describe what you see in the plot. 
