@@ -1,0 +1,31 @@
+---
+title: "Part 5: Classification"
+author: "Sam Tyner"
+date: "TBD"
+output:
+  xaringan::moon_reader:
+    css: ["default", "csafe.css", "csafe-fonts.css"]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+class: primary
+# Outline
+
+1. What is classification? 
+2. Motivating Example
+3. Features
+4. A familiar example (logistic regression)
+5. Trees `rpart`
+6. Forests  `randomForest`
+7. K Nearest neighbors `caret::knn3`
+
+
+

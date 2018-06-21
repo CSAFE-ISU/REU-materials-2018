@@ -239,6 +239,7 @@ Interpret intercept: When a city has 0 people living in poverty, annual the murd
 Interpret slope: for each additional percent of people living in poverty, the murder rate goes up by 2.56 per million. 
 
 Interpret R^2: The $R^2$ value is 0.7052. So, 70.52% of the variation in murder rate can be explained by the variation in poverty rate. Note: CORRELATION $\neq$ CAUSATION
+
 ]
 
 ---
