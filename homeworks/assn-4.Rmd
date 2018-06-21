@@ -1,0 +1,71 @@
+---
+title: 'Homework 4: Regression with `R`'
+author: "Sam Tyner"
+date: "6/21/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Assignment Directions
+
+Do the problems below. You should turn in a .pdf file that you created from a .Rmd file. 
+
+You need to show me all of the `R` code you use to solve the problems, and you need to write your final answers in complete sentences. There are only 3 problems, so you can spend a lot of time using your `R` and RMarkdown skills and resources to make the answers look very nice. It would also be nice if each problem read as a mini data analysis project instead of bulleted answers to questions, but this is not required. 
+
+This assignment is due on Tuesday, June 26th at 4:00pm. You can download the .Rmd that creates this assignment page [here]() to help you get started. 
+
+### Problem 1
+
+The dataset `starbucks` in the `openintro` package contains nutritional information on 77 Starbucks food items. Spend some time reading the help file of this dataset. For this problem, you will explore the relationship between the calories and carbohydrate grams in these items. 
+
+1. Create a scatterplot of this data with calories on the $x$-axis and carbohydrate grams on the $y$-axis, and describe the relationship you see.
+2. In the scatterplot you made, what is the explanatory variable? What is the response variable? Why might you want to construct the problem in this way? 
+3. Fit a simple linear regression to this data, with carbohydrate grams as the dependent variable and the calories as the explanatory variable. Use the `lm()` function. 
+4. Write the fitted model out using mathematical notation. Interpret the slope and the intercept parameters. 
+5. Find and interpret the value of $R^2$ for this model. 
+5. Create a residual plot. The `ggplot2` function `fortify` can help a lot with this. Describe what you see in the residual plot. Does the model look like a good fit? 
+
+### Problem 2
+
+The `openintro` package contains a dataset called `absenteeism` that consists of data on 146 schoolchildren in a rural area of Australia. Spend some time reading the help file of this dataset. We are interested in seeing if the ethnicity (aboriginal or not), sex (male or female), and learning ability (average or slow) of the children affects the number of days they are absent from school. 
+
+1. Convert the `Eth`, `Sex`, and `Lrn` variables to binary variables. One way to do this is with the function `ifelse()`. You should construct them so that
+    a. `Eth = 1` if the student is not aboriginal and `Eth = 0` if the student is aboriginal;  
+    b. `Sex = 1` if the student is male and `Sex = 0` if the student is female;
+    c. `Lrn = 1` if the student is a slow learner and `Lrn = 0` is the student is an average learner. 
+2. Fit a linear model to the data with `Days` as the dependent variable and the three variables mentioned in (1) as explanatory variables. 
+3. Write the fitted model out using mathematical notation. Interpret all of the fitted values in context. 
+4. Find and interpret the adjusted $R^2$ value for this model. 
+5. Create a residual plot. Describe what you see in the residual plot. Does the model look like a good fit? 
+6. Below is some data on new children in the school system. Predict the number of days each student will be absent, and display these predictions with the new data in a table. 
+```{r, eval=FALSE}
+library(tidyverse)
+newdata <- data_frame(Eth = c(1,1,1,0,0),
+                      Sex = c(0,1,0,1,0),
+                      Lrn = c(0,0,1,1,0)) 
+```
+
+### Problem 3
+
+The `openintro` package contains a dataset called `orings` that contains information on 23 NASA space shuttle launches. Spend some time reading the help file of this dataset.
+
+1. Each row of the data represents a different shuttle mission. Examine these data and describe what you observe with respect to the relationship between temperatures and damaged O-rings.
+2. Run the following code to create a new dataset called `orings2`
+```{r, eval = FALSE}
+library(openintro)
+data("orings")
+orings2 <- NULL
+for(i in 1:nrow(orings)){
+  new <- data.frame(temp = orings$temp[i], # for each row in orings,
+                    fail = rep(c(1,0), c(orings$damage[i], # create 6 new rows:
+                                     6-orings$damage[i]))) # 1 for each launch
+  orings2 <- rbind(orings2, new)
+}
+```
+3. Using `orings2`, fit a logistic regression to the data using the `glm` function. 
+4. Write out the logistic model using the point estimates of the model parameters.
+5. After the [Challenger Explosion](https://en.wikipedia.org/wiki/Space_Shuttle_Challenger_disaster) in January of 1986, an investigation was done to determine the cause. The investigation found that the explosion was caused by the failure of the O-rings due to the low temperature during the shuttle launch. Based on the model, do you think the investigation was correct? Explain.
+6. Predict the probability of a damaged O-ring for each temperature value from 53-81 (i.e. `53:81`). Create a plot showing the observed data (in `orings2`) as points ($x$ = temperature, $y$ = fail) and draw a line through the predicted probabilities at each temperature value from 53-81. Describe what you see in the plot. 
