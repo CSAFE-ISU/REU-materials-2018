@@ -15,7 +15,7 @@ Do the problems below. You should turn in a .pdf file that you created from a .R
 
 You need to show me all of the `R` code you use to solve the problems, and you need to write your final answers in complete sentences. There are only 3 problems, so you can spend a lot of time using your `R` and RMarkdown skills and resources to make the answers look very nice. It would also be nice if each problem read as a mini data analysis project instead of bulleted answers to questions, but this is not required. 
 
-This assignment is due on Tuesday, June 26th at 4:00pm. You can download the .Rmd that creates this assignment page [here]() to help you get started. 
+This assignment is due on Tuesday, June 26th at 4:00pm. You can get the .Rmd that creates this assignment page [here](https://raw.githubusercontent.com/CSAFE-ISU/REU-materials-2018/master/homeworks/assn-4.Rmd) to help you get started. 
 
 ### Problem 1
 
