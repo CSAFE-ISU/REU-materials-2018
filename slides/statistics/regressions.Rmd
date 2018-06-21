@@ -80,7 +80,7 @@ ggplot(data = glass) +
 class: primary
 # Linear Regression
 
-![](regressions_files/figure-beamer/scatter-1)
+![](regressions_files/figure-html/scatter-1)
 
 Guesstimate the slope and intercept of a line through this data
 
@@ -91,7 +91,7 @@ Guesstimate the slope and intercept of a line through this data
 class: primary
 # Linear Regression
 
-![](regressions_files/figure-beamer/scatter-1)
+![](regressions_files/figure-html/scatter-1)
 
 Guesstimate the slope and intercept of a line through this data
 
@@ -104,11 +104,23 @@ class: primary
 
 The *best fit line* is the equation $Y = a\cdot X +b$ with values $a,b$ that minimize the **sum of squared residuals**. What does that mean? 
 
->- Write the best fit line as $\hat{Y} = \beta_0 + \beta_1 \cdot X$. 
->- $\hat{Y}$ is the predicted value of $Y$ by the best fit line
->- **Residual** - what is "left over" after the prediction. 
->- Denote residual for observation $i$ by $e_i = Y_i - \hat{Y}_i$
->- We are minimizing $\sum_{i= 1}^N e_i^2$
+- Write the best fit line as $\hat{Y} = \beta_0 + \beta_1 \cdot X$. 
+
+--
+
+- $\hat{Y}$ is the predicted value of $Y$ by the best fit line
+
+--
+
+- **Residual** - what is "left over" after the prediction. 
+
+--
+
+- Denote residual for observation $i$ by $e_i = Y_i - \hat{Y}_i$
+
+--
+
+- We are minimizing $\sum_{i= 1}^N e_i^2$
 
 ---
 class: primary
@@ -143,20 +155,21 @@ class: primary
 
 Look at the residuals $e$ by the values of $X$: 
 
-```{r resid, fig.height=2.5, out.width='.49\\linewidth', fig.show='hold'}
-ggplot(data = bfl2, aes(x = `log(Li7)`)) + 
+```{r resid, fig.height=4, out.width = "85%"}
+p1 <- ggplot(data = bfl2, aes(x = `log(Li7)`)) + 
   geom_point(aes(y = .resid)) +
   geom_hline(yintercept = 0 , color = 'red') + 
   theme_bw() + 
   theme(text = element_text(size = rel(4)))
-ggplot(data = bfl2, aes(x = .resid, y = ..density..)) + 
+p2 <- ggplot(data = bfl2, aes(x = .resid, y = ..density..)) + 
   geom_histogram(fill = 'white', color = 'black') + 
   geom_density() + 
   theme_bw() + 
   theme(text = element_text(size = rel(4)))
+gridExtra::grid.arrange(p1, p2, nrow = 1)
 ```
 
-Want to see a random scatter of points above and below 0
+Want to see a random scatter of points above and below 0 and the values to look approximately normally distributed.
 
 ---
 class: primary
@@ -174,6 +187,59 @@ Example:
 - $R^2 = 1 - \frac{Var(e)}{Var(y)}  = 1- 0.2138 = 0.7862$
 
 78.62% of the variability in $Y$ is explained by the value of $X$. 
+---
+class: primary
+# Your Turn 4.1.1
+
+Suppose we fit a regression line to predict the shelf life of an apple based on its weight. For a particular apple, we predict the shelf life to be 4.6 days. The apple’s residual is -0.6 days. Did we over or under estimate the shelf-life of the apple? Explain your reasoning.
+
+---
+class: primary
+# YT 4.1.1 (soln.)
+
+Over-estimate, because the residual is calculated as observed minus predicted
+
+---
+class: primary
+# Your Turn 4.1.2
+
+1. Install the `R` package `openintro`.
+2. Using `R`, fit a linear model to the `murders` dataset, with murder rate as the dependent variable and percent in poverty as the explanatory variable. Then...
+3. Write out the linear model. 
+4. Interpret the intercept.
+5. Interpret the slope.
+6. Interpret R2. (Hint: `summary(my_lm)`)
+
+```{r, eval = FALSE}
+install.pacakges("openintro")
+library(openintro)
+my_data <-openintro::murders
+# here is some code to get you started (fill in the blanks): 
+my_lm <- lm(___ ~ ___, data = my_data)
+```
+
+---
+class: primary
+# YT 4.1.2 (soln.)
+
+.small[
+
+```{r, eval = FALSE}
+# 1. install.packages("openintro")
+# 2.
+my_data <-openintro::murders
+my_lm <- lm(annual_murders_per_mil ~ perc_pov, data = my_data)
+summary(my_lm)
+```
+
+The model: $Y = -29.90 + 2.56 \cdot X$ where $Y$ is the annual murder rate per million people, and $X$ is the percent of people living in poverty. 
+
+Interpret intercept: When a city has 0 people living in poverty, annual the murder rate is -29.9 per million. This is totally non-sensical.
+
+Interpret slope: for each additional percent of people living in poverty, the murder rate goes up by 2.56 per million. 
+
+Interpret R^2: The $R^2$ value is 0.7052. So, 70.52% of the variation in murder rate can be explained by the variation in poverty rate. Note: CORRELATION $\neq$ CAUSATION
+]
 
 ---
 class: inverse, center
@@ -258,6 +324,7 @@ $$\hat{Y}  = \beta_0 + \beta_1 \cdot X_1 +  \beta_2 \cdot X_2 +  \beta_3 \cdot X
 ```{r multreg3, echo =T }
 blfm3 <- lm(log(Na23) ~ log(Li7) + log(Nd146) + mfr , 
             data = glass)
+summary(blfm3)$r.squared
 ```
 ```{r multreg3resid, out.height='.6\\textwidth', fig.height=2}
 blfm32 <- fortify(blfm3)
@@ -266,6 +333,65 @@ ggplot(data = blfm32) +
   geom_abline(slope = 1, intercept = 0)
 ```
 ]
+
+---
+class: primary
+# Your Turn 4.2.1 
+
+The `openintro` package contains the data `babies`.
+
+In `R` fit a multiple regression with birthweight (`bwt`) as the dependent variable and all other variables (except `case`) as explanatory variables. 
+
+Save the model as `babies_model` and print off a summary of `babies_model`. 
+
+---
+class: primary
+# YT 4.2.1 (soln.) 
+
+.small[
+The `openintro` package contains the data `babies`.
+
+In `R` fit a multiple regression with birthweight (`bwt`) as the dependent variable and all other variables (except `case`) as explanatory variables. 
+
+Save the model as `babies_model` and print off a summary of `babies_model`. 
+
+```{r}
+babies_model <- lm(bwt ~ ., data = openintro::babies[,-1])
+summary(babies_model)
+```
+]
+
+---
+class: primary
+# Your Turn 4.2.2
+
+Using the `babies_model`
+
+1. Write the equation of the regression line that includes all of the variables.
+2. Interpret the slopes of `gestation` and `age` in this context.
+3. Calculate the residual for the first observation in the data set. (Hint: see the `predict` function)
+4. Interpret the $R^2$ value for this larger model. 
+
+---
+class: primary
+# YT 4.2.2 (soln.)
+
+$Y =$ birthweight; $X_1=$ gestation; $X_2=$ parity; $X_3=$ mother's age; $X_4=$ mother's height; $X_5=$ mother's weight; $X_6=$ mother smokes.
+
+1. $Y = -80.41 + 0.44 \cdot X_1 - 3.33 \cdot X_2 - 0.009 \cdot X_3 + 1.15 \cdot X_4 + 0.050 \cdot X_5 - 8.401 \cdot X_6$
+2. When all else is held constant, for every additional day of gestation, the birthweight increases by 0.44 ounces. When all else is held constant, for every year older the mother is, the birthweight decreases by 0.009 ounces.
+3. 
+```{r}
+# get the first observation
+obs1 <- openintro::babies[1,]
+# prediction
+y_hat <- predict(babies_model, newdata = obs1)
+# Residual 
+obs1$bwt - y_hat
+```
+
+4. $R^2=0.258$. So, 25.8% of the variability in birthweight can be explained by the variability in the variables $X_1, \dots, X_6$. 
+
 
 ---
 class: inverse, center
@@ -324,7 +450,7 @@ class: primary
 
 The logit function takes a number from (0,1) (here, $p_i$) and turns it into a real number $(-\infty, \infty)$ (here $\alpha + \beta \cdot x_i$).
 
-The inverse of this function (take a number from $(-\infty, \infty)$ and turn it into a number from (0,1)) is: 
+The inverse of this function (to take a number from $(-\infty, \infty)$ and turn it into a number from (0,1)) is: 
 
 $$p_i = \frac{\exp\{\alpha + \beta \cdot x_i \}}{1 + \exp\{\alpha + \beta \cdot x_i \}}$$
 
@@ -366,3 +492,37 @@ new$pred_prob <- round(predict(glm1, type = "response", newdata = new),3)
 knitr::kable(new, caption = "Predicted probabilities of spam given the to_multiple and winner variables", format = "html")
 ```
 
+---
+class: primary
+# Your Turn 4.3.1
+
+1. Read the help file for the dataset `orings` in the `openintro` package. 
+2. Each row of the data represents a different shuttle mission. Examine these data and describe what you observe with respect to the relationship between temperatures and damaged O-rings.
+3. Run the following code to create a new dataset called `orings2`
+```{r}
+library(openintro)
+data("orings")
+orings2 <- NULL
+for(i in 1:nrow(orings)){
+  new <- data.frame(temp = orings$temp[i], 
+                    fail = rep(c(1,0), c(orings$damage[i], 6-orings$damage[i])))
+  orings2 <- rbind(orings2, new)
+}
+```
+4. Fit a logistic regression to the `orings2` data.
+```{r, eval = FALSE}
+# some code to get you started
+oring_model <- glm(___ ~ ___ , data = orings2, family = "binomial")
+```
+
+---
+class: primary
+# YT 4.3.1 (soln.)
+
+1.
+2. The lowest temperature has a lot of failures. 
+3. 
+4. 
+```{r}
+oring_model <- glm(fail ~ temp , data = orings2, family = "binomial")
+```
