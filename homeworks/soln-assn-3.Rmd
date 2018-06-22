@@ -1,0 +1,276 @@
+---
+title: "Homework 3 Solution"
+author: "Sam Tyner"
+date: "TBD"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Assignment
+
+Ch. 3 of OpenIntro Statistics problems 4, 6, 8, 16, 26, 28, 32, 44. 
+
+### Problem 4
+
+In triathlons, it is common for racers to be placed into age and gender groups. Friends Leo and Mary both completed the Hermosa Beach Triathlon, where Leo competed in the Men, Ages 30 - 34 group while Mary competed in the Women, Ages 25 - 29 group. Leo completed the race in 1:22:28 (4948 seconds), while Mary completed the race in 1:31:53 (5513 seconds). Obviously Leo finished faster, but they are curious about how they did within their respective groups. Can you help them? Here is some information on the performance of their groups:
+
+- The finishing times of the Men, Ages 30 - 34 group has a mean of 4313 seconds with a standard deviation of 583 seconds.
+- The finishing times of the Women, Ages 25 - 29 group has a mean of 5261 seconds with a standard deviation of 807 seconds.
+- The distributions of finishing times for both groups are approximately Normal. 
+
+Remember: a better performance corresponds to a faster finish.
+
+a. Write down the short-hand for these two normal distributions.
+b. What are the $z$-scores for Leo's and Mary's finishing times? What do these $z$-scores tell you?
+c. Did Leo or Mary rank better in their respective groups? Explain your reasoning.
+d. What percent of the triathletes did Leo finish faster than in his group?
+e. What percent of the triathletes did Mary finish faster than in her group?
+f. If the distributions of finishing times are not nearly normal, would your answers to parts b - e change? Explain your reasoning.
+
+#### Solution
+
+a: Men's finishing times: $M \sim N(4313, 583)$. Women's finishing times: $W \sim N(5261, 807)$. 
+b. Leo's $z$-score: $z_L = \frac{4948 - 4313}{583} =$ `r round((4948 - 4313)/583, 3)`.   Mary's $z$-score: $z_M = \frac{5513 - 5261}{807} =$ `r round((5513 - 5261)/807, 3)`. The $z$-scores tell you the number of standard deviations away from the mean the observation is. It gives you a way to compare observations from different groups.  
+c. With respect to their groups, Mary had a better time than Leo because her $z$-score was smaller. 
+d. In symbols, we want to know: $P(M \geq  4948)$. This is the area under the normal curve above Leo's score. We use `pnorm`: 
+```{r, echo = T}
+1 - pnorm(4948, mean = 4313, sd = 583)
+```
+So, Leo finished faster than 13.8% of the men in his age group. 
+e. In symbols, we want to know: $P(F \geq  5513)$. This is the area under the normal curve above Leo's score. We use `pnorm`: 
+```{r, echo = T}
+1 - pnorm(5513, mean = 5261, sd = 807)
+```
+So, Mary finished faster than 37.7% of the women in her group. 
+f. Partially. The $z$-scores are still the same, but the probabilities that we computed in parts d and e would change if the distribution were not normal.
+
+### Problem 6
+
+In Exercise 3.4 we saw two distributions for triathlon times: men's finishing times, $M \sim N(4313, 583)$, and women's finishing times. $W \sim N(5261, 807)$. Times are listed in seconds. Use this information to compute each of the following:
+
+a. The cutoff time for the fastest 5% of athletes in the men's group, i.e. those who took the shortest 5% of time to finish.
+b. The cutoff time for the slowest 10% of athletes in the women's group.
+
+#### Solution
+
+a. In symbols, we want the value $m$ such that $P(M \leq m) = 0.05$
+
+```{r, echo =T}
+qnorm(0.05, mean = 4313, sd = 583)
+```
+
+b. In symbols, we want the value $f$ such that $P(F \geq f) = 0.10$
+
+```{r, echo =T}
+qnorm(.9, mean = 5621, sd = 807)
+```
+
+These are prepresented in picture form below: 
+
+```{r, echo = FALSE, message=FALSE, warning=FALSE, fig.align="center"}
+library(tidyverse)
+library(csafethemes)
+m <- seq(4313-4*583, 4313+4*583, 1)
+dm <- dnorm(m, 4313, 583)
+f <- seq(5621-4*807, 5621+4*807, 1)
+df <- dnorm(f, 5621, 807)
+racetimes <- data_frame(time = c(m,f) , dens = c(dm, df), 
+                        gender = rep(c("male", "female"), c(length(m), length(f))))
+ggplot(data = racetimes) + 
+  geom_line(aes(x = time, y = dens, color = gender)) + 
+  geom_area(data = filter(racetimes, gender == "male", time < 3354.05), aes(x = time, y = dens, fill = gender)) + 
+  geom_area(data = filter(racetimes, gender == "female", time > 6655.212), aes(x = time, y = dens, fill = gender)) +
+  scale_fill_csafe() + 
+  scale_color_csafe() + 
+  labs(x = "Finishing time (sec)", y = "density", title = "Fastest 5% of men and slowest 10% of women") + 
+  theme_csafe() + 
+  theme(plot.title = element_text(size = rel(.75)))
+```
+
+### Problem 8
+
+The Capital Asset Pricing Model (CAPM) is a financial model that assumes returns on a portfolio are normally distributed. Suppose a portfolio has an average annual return of 14.7% (i.e. an average gain of 14.7%) with a standard deviation of 33%. A return of 0% means the value of the portfolio doesn’t change, a negative return means that the portfolio loses money, and a positive return means that the portfolio gains money.
+
+a. What percent of years does this portfolio lose money, i.e. have a return less than 0%? 
+b. What is the cutoff for the highest 15% of annual returns with this portfolio?
+
+#### Solution
+
+Let $R$ represent the return. We assume $R \sim N(14.7, 33)$
+
+a. We want $P(R < 0)$: 
+```{r, echo = T}
+pnorm(0, mean = 14.7, sd = 33)
+```
+So, in about 32.8% of years, this portfolio will have negative return.
+
+b. We want $r$ such that $P(R > r) = 0.15$: 
+```{r, echo=T}
+qnorm(0.85, mean = 14.7, sd = 33)
+```
+So 15% of the returns will be 48.9% or higher. 
+
+### Problem 16
+
+SAT scores (out of 2400) are distributed normally with a mean of 1500 and a standard deviation of 300. Suppose a school council awards a certificate of excellence to all students who score at least 1900 on the SAT, and suppose we pick one of the recognized students at random. What is the probability this student’s score will be at least 2100? (The material covered in Section 2.2 would be useful for this question.)
+
+#### Solution
+
+Let $S$ be a student's SAT score. $S \sim N(1500, 300)$ We want the probability that a student's score is greater than or equal to 2100 *given* that we know the student's score is greater than or equal to 1900. In symbols, we want:
+$$P(S \geq 2100 | S \geq 1900) = \frac{P(S \geq 2100 \cap S \geq 1900)}{P(S \geq 1900)} =  \frac{P(S \geq 2100)}{P(S \geq 1900)} = \frac{0.0228}{0.0912} = 0.2494$$
+```{r, echo = TRUE}
+# P(S >= 2100): 
+num <- 1-pnorm(2100, 1500, 300)
+num
+# P(S >= 1900):
+den <- 1-pnorm(1900, 1500, 300)
+den
+# P(S >=2100 |S >= 1900)
+num/den
+```
+So, if we randomly selecte a recognized student, there is about a 24.94% chance that they scored more than 2100. 
+
+In a picture, we want the ratio of the purple area to the blue + purple area.  
+
+```{r, echo=FALSE, fig.align='center'}
+x <- seq(1500 - 4* 300, 1500+4*300, 1)
+dx <- dnorm(x, mean = 1500, sd = 300)
+dat <- data_frame(x = x, dens = dx)
+ggplot() + 
+  geom_area(data = dat %>% filter(x >= 1900, x <=2100), aes(x = x , y = dens), fill = csafethemes:::csafe_cols[1]) + 
+  geom_area(data = dat %>% filter(x >=2100), aes(x = x , y = dens), fill = csafethemes:::csafe_cols_secondary[1]) + 
+  geom_line(data = dat, aes(x = x , y = dens)) +
+  theme_csafe()
+```
+
+### Problem 26
+
+The National Vaccine Information Center estimates that 90% of Americans have had chickenpox by the time they reach adulthood.
+
+a. Is the use of the binomial distribution appropriate for calculating the probability that exactly 97 out of 100 randomly sampled American adults had chickenpox during childhood.
+b. Calculate the probability that exactly 97 out of 100 randomly sampled American adults had chickenpox during childhood.
+c. What is the probability that exactly 3 out of a new sample of 100 American adults have not had chickenpox in their childhood?
+d. What is the probability that at least 1 out of 10 randomly sampled American adults have had chickenpox?
+e. What is the probability that at most 3 out of 10 randomly sampled American adults have not had chickenpox?
+
+#### Solution
+
+a. Yes. It fits all 4 criteria: fixed number of trials ( $n = 100$ ); the trials are independent (randomly selected); each trial is either a "success" (vaccinated) or a "failure" (not vaccinated); and the probability of a "success" ( $p = 0.90$ ) is the same for all trials. Let $C_{100}$ be the number of people out of 100 that have had chickenpox. 
+b. Using the formula for binomial random variables: 
+$$P(C_{100} = 97)=\binom{100}{97}\cdot 0.90^{97} \cdot (1-0.90)^3 = 0.0059$$
+Using `R`: 
+```{r}
+dbinom(97, 100, 0.90)
+```
+c. Same as b. 
+d. Let $C_{10}$ be the number of people out of 10 that are vaccinated. We want: $P(C_{10} \geq 1) = 1 - P(C_{10} = 0)$. Using the binomial distribution formula: 
+$$P(C_{10} \geq 1) = 1 - P(C_{10} = 0) = 1-  \binom{10}{0}\cdot 0.90^{0} \cdot (1-0.90)^{10}=1 - 10^{-10} \approx 1$$
+Using `R`: 
+```{r}
+dbinom(0, 10, .9)
+1 - dbinom(0, 10, .9)
+```
+e. We want: $P(C_{10} \geq 7)$. Using the binomial distribution formula:
+$$P(C_{10} \geq 7) =  \sum_{c = 7}^{10}  \binom{10}{c}\cdot 0.90^{c} \cdot (1-0.90)^{10-c}=9.12 \times 10^{-6}$$
+Using `R` (two solutions):
+```{r}
+# compute each probability with dbinom and then sum them up
+sum(dbinom(7:10, 10, .9))
+# compute the cumulative probability with pbinom and subtract from 1
+1-pbinom(6, 10, .9)
+```
+
+### Problem 28
+
+We learned in Exercise 3.26 that about 90% of American adults had chickenpox before adulthood. We now consider a random sample of 120 American adults.
+
+a. How many people in this sample would you expect to have had chickenpox in their childhood? And with what standard deviation?
+b. Would you be surprised if there were 105 people who have had chickenpox in their childhood?
+c. What is the probability that 105 or fewer people in this sample have had chickenpox in their childhood? How does this probability relate to your answer to part b?
+
+#### Solution
+
+a. $C_{120}$ is the number of people out of 120 who have had chickenpox. $E[C_{120}] = 120 \times 0.90 = 108$. $Var(C_{120}) = 120 \times 0.90 \times 0.10 =10.8$. We'd expect 108 of the 120 to have had chickenpox, with standard deviation of $\sqrt{10.8}\approx 3.29$.
+b. No. 105 is less than 1 standard deviation from the mean, so it's not unusual.
+c. We want: $P(C_{120} \leq 105)$. Using the binomial formula: 
+$$P(C_{120} \leq 105) =  \sum_{c = 0}^{105}  \binom{120}{c}\cdot 0.90^{c} \cdot (1-0.90)^{10-c} = 0.2182$$
+Using `R`:
+```{r}
+pbinom(105, 120, .9)
+```
+This value is the probability of any value of $C_{120}$ less than or equal to 105 occurring, while part b just considered the probability of $C_{120}$ equalling 105. Since this probability is about 22%, it's not very unusual to see something slightly less than 105 either. 
+
+Here is a picture of the full probability distribution of $C_{120}$. Notice how quikly it drops off below 100 and starts to look like the normal distribution: 
+```{r, echo = FALSE}
+x <- 0:120
+dx <- dbinom(x, 120, .9)
+qplot(x = x, weight = dx, geom = "bar") + 
+  theme_csafe()
+```
+
+### Problem 32
+
+A 2005 Gallup Poll found that 7% of teenagers (ages 13 to 17) suffer from arachnophobia and are extremely afraid of spiders. At a summer camp there are 10 teenagers sleeping in each tent. Assume that these 10 teenagers are independent of each other.
+
+a. Calculate the probability that at least one of them suffers from arachnophobia.
+b. Calculate the probability that exactly 2 of them suffer from arachnophobia.
+c. Calculate the probability that at most 1 of them suffers from arachnophobia.
+d. If the camp counselor wants to make sure no more than 1 teenager in each tent is afraid of spiders, does it seem reasonable for him to randomly assign teenagers to tents?
+
+#### Solution
+
+Let $A_{10}$ be the number of teenagers out of 10 who suffer from arachnophobia. 
+
+a. We want: $P(A_{10} \geq 1) = 1 - P(A_{10} = 0)$. Using the formula: 
+$$P(A_{10} \geq 1) = 1 - P(A_{10} = 0) = 1-  \binom{10}{0}\cdot 0.07^{0} \cdot (1-0.07)^{10}=0.516$$
+Using `R`:
+```{r}
+1-dbinom(0, 10, .07)
+```
+b. We want: $P(A_{10} = 2)$. Using the binomial formula: 
+$$P(A_{10} = 2) = \binom{10}{2}\cdot 0.07^{2} \cdot (1-0.07)^{10-2}=0.123$$
+Using `R`: 
+```{r}
+dbinom(2, 10, .07)
+```
+c. We want $P(C_{10} \leq 1)$. Using the binomial formula: 
+$$P(C_{10} \leq 1) = P(C_{10} = 0) + P(C_{10} = 1) = \binom{10}{0}\cdot 0.07^{0} \cdot (1-0.07)^{10} + \binom{10}{1}\cdot 0.07^{1} \cdot (1-0.07)^{10-1} = 0.848$$
+Using `R`: 
+```{r}
+pbinom(1, 10, .07)
+```
+d. Yes. There is about an 85% chance that when 10 teenagers are assigned at random, no more than one of them will suffer from arachnophobia, so the odds are in his favor and he can randomly assign. He may want to be more cautious, however, if the number of students is very large (more than 300), because that increases the likelihood that some cabins will have more than one student with arachnophobia in them. 
+
+### Problem 44
+
+A very skilled court stenographer makes one typographical error (typo) per hour on average.
+
+a. What probability distribution is most appropriate for calculating the probability of a given number of typos this stenographer makes in an hour?
+b. What are the mean and the standard deviation of the number of typos this stenographer makes?
+c. Would it be considered unusual if this stenographer made 4 typos in a given hour?
+d. Calculate the probability that this stenographer makes at most 2 typos in a given hour.
+
+#### Solution
+
+a. A Poisson distribution: you have a large population (many keystrokes), we are concerned with the number of events (counting typos), and let's assume the typos are independent. (May or may not actually be true.)
+b. $\lambda = 1$ so the mean is 1 per hour and the standard deviation is $\sqrt{1} = 1$ per hour.
+c. Let $T$ be the number of typos per hour. $T \sim Pois(1)$. We want: $P(T = 4)$. Using the Poisson distribution formula: 
+$$P(T = 4) = \frac{1^{4}\cdot e^{1}}{4!} = 0.015$$
+Using `R`:
+```{r}
+dpois(4, 1)
+```
+There is only a 1.5% chance of 4 typos in 1 hour so it would be considered unusual. Also 4 is 3 standard deviations away from the mean of 1, so it is very unusual.
+d. We want $P(T \leq 2)$. Using the Poisson distrubution formula: 
+$$P(T \leq 2) = \sum_{t = 0}^2 \frac{1^t \cdot e^1}{t!} = 0.9197$$
+Using `R`
+```{r}
+ppois(2, 1)
+```
+
+
+
+
