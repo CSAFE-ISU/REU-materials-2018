@@ -10,10 +10,12 @@ output:
       highlightStyle: github
       highlightLines: true
       countIncrementalSlides: false
+editor_options: 
+  chunk_output_type: inline
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo =FALSE, fig.align = 'center', message=FALSE, warning=FALSE)
 ```
 
 class: primary
@@ -28,4 +30,506 @@ class: primary
 7. K Nearest neighbors `caret::knn3`
 
 
+---
+class: inverse
+# What is classification?
 
+---
+class: primary
+# Definition
+
+Classification is 
+
+- for determining the category a new observation belongs to
+- based on a **training** set of data with observations belonging to different categories
+- used on a **test** set of data where the categories are unknown
+
+The *response* variable is the category of the observation
+
+The *explanatory* variables are **features** of the observations 
+
+---
+class: primary
+# What we want
+
+We want to *learn* about the categories from the training set so we can *classify* the (future) observations from the test set. 
+
+---
+class: inverse
+# Motivating Example
+
+---
+class: primary
+# Handwritten digits
+
+```{r dat, fig.height=6}
+library(tidyverse)
+train <- read_csv("dat/small-digit-train.csv")
+# function to create a raster image from a row of the test data
+to_raster <- function(arow){
+  pixels <- as.numeric(arow)
+  raster <- data.frame(matrix(data = pixels, 
+                    nrow=28, ncol=28, byrow = T), stringsAsFactors = F) %>%
+    mutate(row = 1:n()) %>% 
+    gather(key = col, value = color, -row) %>% 
+    mutate(col = parse_number(as.character(col)),
+           color = 255 - as.numeric(as.character(color)),
+           color2 = rgb(color, color, color, maxColorValue = 255)) 
+  return(raster)
+}
+library(purrr) 
+train_raster <- train %>% group_by(label) %>% 
+  mutate(rep = row_number()) %>% 
+  ungroup() %>% 
+  nest(-c(label, rep)) %>% 
+  mutate(rasters = map(data, to_raster)) %>% select(-data) %>% unnest()
+ggplot(data = train_raster) + 
+  geom_raster(aes(x = col, y = -row, fill = I(color2))) + 
+  facet_grid(label~rep, labeller = label_both) + 
+  theme_void()
+```
+
+---
+class: primary
+# Classification
+
+It's easy for humans to identify the digit written in each of those images. But...
+
+- we're not as fast as computers
+- we get fatigued 
+- we get bored
+- we make mistakes 
+
+It's a lot harder for computers to identify a written digit. But...
+
+- they're freaky fast
+- they (almost) never get tired 
+- they never get bored of mundane tasks
+- they don't make mistakes 
+
+---
+class: primary
+# Goal
+
+We are going to use statistics to classify the handwritten digits
+
+We need: 
+
+- lots of training data
+- feature sets 
+
+Download the training data [here](https://github.com/CSAFE-ISU/REU-materials-2018/blob/master/slides/statistics/dat/smallish-digit-train.csv) or read it in using this url: 
+
+```
+url <- "https://raw.githubusercontent.com/CSAFE-ISU/REU-materials-2018/master/slides/statistics/dat/smallish-digit-train.csv" 
+```
+
+---
+class: inverse
+# Features
+
+---
+class: primary
+# Definition
+
+**Features** are a subset of variables or combinations of variables that are used to build a model 
+
+Feature extraction and feature selection are important because: 
+
+- they removes redundant information from the data
+- they help avoid overfitting 
+- they can make the model easier to interpret
+
+We can use algorithms to extract/select features (later) or we can create them on our own
+
+---
+class: primary
+# Examples
+
+For handwritten digits: 
+
+- means of the grayscale values in rows and/or columns 
+- number of rows and/or columns that are all zeroes 
+
+For Dr. Hofmann's bullet data: 
+
+- cross-correlation factor
+- continuous matching striae 
+
+---
+class: primary
+# Number of all 0s
+
+Let's first build a simple feature: the number of rows in the pixel image that are all 0 (all white)
+
+First, we have to get the data into the right form: 
+
+```{r bigraster, echo = TRUE}
+library(tidyverse)
+train <- read_csv("dat/smallish-digit-train.csv") 
+# function to convert each row to a matrix
+to_raster <- function(arow){
+  pixels <- as.numeric(arow)
+  raster <- data.frame(matrix(data = pixels, 
+                    nrow=28, ncol=28, byrow = T), stringsAsFactors = F) %>%
+    mutate(row = 1:n()) %>% 
+    gather(key = col, value = color, -row) %>% 
+    mutate(col = parse_number(as.character(col)),
+           color = 255 - as.numeric(as.character(color)),
+           color2 = rgb(color, color, color, maxColorValue = 255)) 
+  return(raster)
+}
+```
+
+---
+class: primary
+# Number of all 0s
+
+```{r bigraster2, echo=TRUE}
+train_raster <- train %>% group_by(label) %>% 
+  mutate(rep = row_number()) %>% 
+  ungroup() %>% 
+  nest(-c(label, rep)) %>% 
+  mutate(rasters = map(data, to_raster)) %>% select(-data) %>% unnest()
+train_feature1 <- train_raster %>% 
+  group_by(label, rep, row) %>% 
+  summarise(zeroes = sum(color == 255)) %>% 
+  ungroup() %>% group_by(label, rep) %>% 
+  summarise(n_0 = sum(zeroes == 28))
+```
+
+---
+class: inverse
+# Logistic Regression (remix)
+
+---
+class: primary
+# Model
+
+.small[
+Need 2 categories, so let's pick a number: 5 
+
+"Success" = 5, "Failure" = not 5]
+
+```{r logreg, echo=T}
+train_feature1 <- train_feature1 %>% 
+  mutate(label2 = as.numeric(label == 5))
+lr1 <- glm(label2 ~ n_0, data = train_feature1, family = "binomial")
+coef(lr1)
+exp(coef(lr1))
+```
+.small[For each additional row of all 0s, the odds that the number is 5 increase by 1.85. (About twice as likely to be 5 for every additional row of all 0s)]
+
+---
+class: primary
+# Prediction 
+
+```{r test, echo = TRUE}
+test <- read_csv("dat/small-digit-train.csv")
+test_raster <- test %>% group_by(label) %>% 
+  mutate(rep = row_number()) %>% 
+  ungroup() %>% 
+  nest(-c(label, rep)) %>% 
+  mutate(rasters = map(data, to_raster)) %>% select(-data) %>% unnest()
+test_feature1 <- test_raster %>% 
+  group_by(label, rep, row) %>% 
+  summarise(zeroes = sum(color == 255)) %>% 
+  ungroup() %>% group_by(label, rep) %>% 
+  summarise(n_0 = sum(zeroes == 28))
+test_feature1 <- test_feature1 %>% ungroup() %>%
+  mutate(label2 = as.numeric(label == 5),
+         pred = predict(lr1, newdata = test_feature1, type="response"))
+table(test_feature1$label2, round(test_feature1$pred, 3))
+```
+
+---
+class: primary
+# Assessment
+
+Not a very good model: 
+
+- few "successes" relative to the number of failures (only 10% are successes)
+- model is only based on one aggregate feature - need more! 
+- want more classes, not just "success" and "failure" 
+
+Other options: 
+
+- trees 
+- forests 
+- k-nearest neighbors 
+
+---
+class: inverse
+# Decision trees
+
+---
+class: primary
+# Decision trees 
+
+Classification with a sequence of binary decisions. 
+
+Example: who survived the sinking of the Titanic? ([Wikipedia](https://commons.wikimedia.org/wiki/File:CART_tree_titanic_survivors.png))
+
+```{r titanic, fig.cap='A tree showing survival of passengers on the Titanic ("sibsp" is the number of spouses or siblings aboard). The figures under the leaves show the probability of survival and the percentage of observations in the leaf.', fig.height=4}
+library(rpart)
+library(rpart.plot)
+data(ptitanic)
+tree <- rpart(survived ~ ., data=ptitanic, cp=.02)
+cols <- c("darkred", "green4")[tree$frame$yval] # green if survived
+prp(tree, tweak=1.4, extra=106, under=TRUE, branch=.5, faclen=0,
+    ge=" > ", eq=" ", split.prefix="is ", split.suffix="?",
+    col=cols, border.col=cols)
+```
+
+---
+class: primary
+# Digits
+
+```{r treecode, echo=TRUE, eval=FALSE}
+set.seed(123456)
+# fit tree
+tree1 <- rpart(as.factor(label) ~ ., data=train, cp=.02)
+# plot tree
+prp(tree1, under = T, extra=104, tweak = 1.5)
+```
+
+---
+class: primary
+# Digits
+
+```{r tree2, out.width = '90%'}
+set.seed(123456)
+tree1 <- rpart(as.factor(label) ~ ., data=train, cp=.02)
+prp(tree1, under = T, extra=104, tweak = 1.5)
+```
+
+---
+class: primary
+# Classifier regions
+
+First 2 splits only: how does the model think? 
+
+```{r classregion, fig.height = 6}
+library(csafethemes)
+p1 <- ggplot(data = train) + 
+  geom_text(aes(x = pixel155, y = pixel239, label = label), size = 3) + 
+  geom_vline(xintercept = 6.5, color = "#77BC1F") + 
+  geom_segment(data = NULL, aes(x = 0, xend = 6.5, y = .5, yend = .5), 
+               color ="#CF0A2C") + 
+  theme_csafe()
+p1_zoom <- p1 + xlim(0,10) + ylim(0,2) + 
+  annotate("rect", xmin=0, xmax=6.5, ymin=0,  ymax=.5, fill="red", alpha=0.25) + 
+  annotate("rect", xmin=0, xmax=6.5, ymin=.5,  ymax=2, fill="blue", alpha=0.25) + 
+  annotate("rect", xmin=6.5, xmax = 10, ymin=0, ymax =2, fill = "#77BC1F", alpha=.25)
+gridExtra::grid.arrange(p1, p1_zoom, nrow=1)
+```
+
+---
+class: primary
+# Confusion matrix
+
+A **confusion matrix** shows you where the model gets it wrong. This can be done for both the training and testing data.
+
+Training: 
+
+```{r predict}
+pred_tree1 <- predict(tree1, type = "class")
+prop.table(table(train$label, pred_tree1) ,margin = 1)
+```
+
+Which class is it best at predicting? Which is is worst at predicting?
+
+---
+class: primary
+# Confusion matrix
+
+Testing: 
+```{r pred2}
+pred_test <- predict(tree1, newdata=test, type = "class")
+prop.table(table(test$label, pred_test), margin = 1)
+```
+
+Which class is it best at predicting? Which is it worst at predicting?
+
+
+---
+class: primary
+# Key Facts
+
+- randomness: if you don't set a "random seed", you'll end up with different results every time
+- trees with too many branches overfit the data 
+
+---
+class: inverse
+# Forests 
+
+---
+class: primary
+# Random Forests
+
+Forests are made up of trees: 
+
+- built on different (random) subsets of data
+- use different variables 
+- trees are typically small
+- each tree does something well, but does other things poorly
+- the trees work well together, better than one large tree (like a musical ensemble)
+- classes are assigned based on the most common group from the many trees (e.g. if an observation is classified as 5 in 6/10 trees and as 6 in 4/10 trees, the forest will classify it as 5)
+
+---
+class: primary
+# Digits forest
+
+```{r forest, echo=TRUE}
+library(randomForest)
+digit_forest <- randomForest(as.factor(label) ~ . , data = train, 
+                             ntree= 1000)
+digit_forest$confusion
+```
+
+---
+class: primary
+# Decisions 
+
+```{r}
+data.frame(digit_forest$votes) %>% mutate(id = row_number()) %>% 
+  gather(key = class, value = prob, -id) %>% mutate(class = parse_number(class)) %>% 
+  ggplot() + geom_tile(aes(x = class, y = id, fill = prob)) + 
+  scale_fill_continuous(low = "white", high = "black") + 
+  theme_csafe() + theme(aspect.ratio = 1)
+```
+
+---
+class: primary
+# Test data
+
+```{r testforest}
+pred_test <- predict(digit_forest, newdata = test)
+table(test$label, pred_test)
+```
+
+---
+class: primary
+# Var. importance
+
+Which pixel value(s) has/have the most influence over the model? 
+
+```{r import, echo = TRUE, fig.height=6}
+varImpPlot(digit_forest)
+```
+
+---
+class: secondary
+
+```{r import2, echo=TRUE, fig.height=6}
+ggplot(data = train, aes(x = pixel350, y = pixel378)) + 
+  geom_text(aes(label = label)) + 
+  theme_csafe()
+```
+
+---
+class: primary
+# Key Facts
+
+- forests are made up of decision trees
+- majority rules 
+- trees are built using different random subsets of the data
+- trees work better in groups 
+
+---
+class: inverse
+# K Nearest neighbors 
+
+---
+class: primary
+# Everyone's doing it!
+
+![](img/bridgejump.png)
+
+---
+class: primary
+# KNN Idea
+
+Classify points into groups based on what groups their $k$ nearest neighbors are in
+
+- $k$ is the number of neighbors to look at
+- larger $k$ means less precision  
+- smaller $k$ means more precision
+- choose $k$ to give most accurate model without overfitting 
+
+---
+class: primary
+# Pick k 
+
+Use brute force: do many $k$ and pick the $k$ value that results in lowest error rate on test set. 
+
+```{r knn, echo=TRUE, eval = FALSE}
+library(caret)
+knn_errors <- NULL
+for (i in 1:30){
+  digits_KNN <- knn3(as.factor(label) ~ ., data = train, k = i)
+  pred_KNN <- predict(digits_KNN, newdata = test, type = "class")
+  error_rate <- mean(as.factor(test$label) != pred_KNN)
+  score <- c(k = i, error = error_rate)
+  knn_errors <- rbind(knn_errors, score)
+}
+ggplot(data = data.frame(knn_errors), aes(x = k, y = error)) + geom_line() + geom_point() + theme_csafe()
+```
+
+---
+class: secondary
+
+```{r knn, echo=FALSE, fig.height=6}
+library(caret)
+knn_errors <- NULL
+for (i in 1:30){
+  digits_KNN <- knn3(as.factor(label) ~ ., data = train, k = i)
+  pred_KNN <- predict(digits_KNN, newdata = test, type = "class")
+  error_rate <- mean(as.factor(test$label) != pred_KNN)
+  score <- c(k = i, error = error_rate)
+  knn_errors <- rbind(knn_errors, score)
+}
+ggplot(data = data.frame(knn_errors), aes(x = k, y = error)) + geom_line() + geom_point() + theme_csafe()
+```
+
+---
+class: primary
+# K = 4
+
+Fit the model and look at class probabilities: 
+
+```{r knn4, echo=TRUE, eval=FALSE}
+digits_k4 <- knn3(as.factor(label) ~ ., data = train, k = 4)
+pred_k4<- predict(digits_k4, newdata = test)
+data.frame(pred_k4) %>% mutate(id = row_number()) %>% 
+  gather(key = class, value = prob, -id) %>% 
+  mutate(class=parse_number(class)) %>% 
+  ggplot() + 
+  geom_tile(aes(x = class, y = id, fill = prob)) + 
+  scale_fill_continuous(low = "white", high = "black") + 
+  theme_csafe() + theme(aspect.ratio = 1)
+```
+
+---
+class: secondary
+
+```{r knn4, echo=FALSE, fig.height=6}
+digits_k4 <- knn3(as.factor(label) ~ ., data = train, k = 4)
+pred_k4<- predict(digits_k4, newdata = test)
+data.frame(pred_k4) %>% mutate(id = row_number()) %>% 
+  gather(key = class, value = prob, -id) %>% 
+  mutate(class=parse_number(class)) %>% 
+  ggplot() + 
+  geom_tile(aes(x = class, y = id, fill = prob)) + 
+  scale_fill_continuous(low = "white", high = "black") + 
+  theme_csafe() + theme(aspect.ratio = 1)
+```
+
+---
+class: primary
+# Confusion 
+
+```{r predknn4, echo = TRUE}
+pred_k4.2 <- predict(digits_k4, newdata = test, type = "class")
+table(test$label, pred_k4.2)
+```

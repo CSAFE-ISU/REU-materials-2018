@@ -14,3 +14,5 @@ my_fun <- function(args){
   # stuff the function does 
   return(val) # must return 1 object only! 
 }
+
+qnorm(.9, mean= 5261, sd = 807)
