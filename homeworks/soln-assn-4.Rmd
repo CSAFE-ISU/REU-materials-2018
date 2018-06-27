@@ -1,0 +1,275 @@
+---
+title: 'Homework 4 Solution'
+author: "Sam Tyner"
+date: "6/27/2018"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE, fig.width = 7, fig.align = 'center')
+```
+
+### Problem 1
+
+The dataset `starbucks` in the `openintro` package contains nutritional information on 77 Starbucks food items. Spend some time reading the help file of this dataset. For this problem, you will explore the relationship between the calories and carbohydrate grams in these items. 
+
+1. Create a scatterplot of this data with calories on the $x$-axis and carbohydrate grams on the $y$-axis, and describe the relationship you see.
+2. In the scatterplot you made, what is the explanatory variable? What is the response variable? Why might you want to construct the problem in this way? 
+3. Fit a simple linear regression to this data, with carbohydrate grams as the dependent variable and the calories as the explanatory variable. Use the `lm()` function. 
+4. Write the fitted model out using mathematical notation. Make sure you define the variables you use. Interpret the slope and the intercept parameters. 
+5. Find and interpret the value of $R^2$ for this model. 
+5. Create a residual plot. The `ggplot2` function `fortify` can help a lot with this. Describe what you see in the residual plot. Does the model look like a good fit? 
+
+#### Solution
+
+In most restaurants in the US these days, regulation requires menu items to have the calories in the dish listed next to them. Many Americans also care about other nutrition facts, such as grams of protein, fat, or carbohydrates. For those on low-carb diets, the amount of carbohydrates in their food is very important to them. Since menus usually only list the calorie content, we want to construct a model that someone on a low-carb diet can use to predict carbohydrate grams from calories. 
+
+In the figure below, there is a scatter plot showing some data collected on food items at Starbucks. The figure shows that as the calories increase, the number of carbohyrdates also increases. There is, however, a lot of variability in the carb grams as the calories in the item increase. With a calorie count of 300 or more, it looks like carb grams become less associated with calories than they were with less than 300 calories. The calories in the dish is the explanatory variable and the grams of carbohydrates in the dish is the response variable. We want to build a model that helps people on low-carb diets predict the amount of carbs in an item at Starbucks based on the number of calories in the item.
+
+```{r scatter, fig.align='center', fig.cap='Is there a relationship between calories in an item at Starbucks and the number of carbs in the item?'}
+library(tidyverse)
+library(openintro)
+library(csafethemes)
+data("starbucks")
+ggplot(data = starbucks) + 
+  geom_point(aes(x = calories, y = carb), size = 3, color = "#77BC1F") + 
+  theme_csafe() + 
+  labs(x = "Calories",  y = "Carbohyrdates (g)", title = "Calories and Grams of Carbs in 77 Starbucks Foods") + theme(plot.title = element_text(size = rel(.9)))
+```
+
+Here is the model to predict carbs from calories: 
+
+```{r model1}
+model1 <- lm(carb ~ calories, data = starbucks)
+model1
+```
+
+Let $Y$ be the number of carbs in the item at Starbucks, and let $X$ be the number of calories in the item. The fitted model can then be written as: 
+$$Y = 8.944 + 0.106\cdot X.$$
+
+This model means that when there are 0 calories in an item ($X = 0$), we expect there to be 8.944g of carbs. This is nonsensical, however, because if a food item has 0 calories it cannot have 8.944g of carbs. (1 gram of carbs is equal to 4 calories.) Also, for every additional calorie in an item, the amount of carbs in the item increases by 0.106. An interpretation that makes more sense in context is that for every 100 additional calories in an item, the number of carbs increases, on average, by 10.6g. So, a person wishing to have a low-carb item should eat something lower in calories. 
+
+We first assess the fit of this model with the coefficient of determination, $R^2$. The $R^2$ value for this model is: 
+```{r r2}
+summary(model1)$r.squared
+```
+
+This means that about 45.6% of the variation in carbohydrate grams in an item at Starbucks can be explained by the linear relationship with calories. 
+
+Another way to assess the fit of the model is with the residual plot shown below: 
+```{r resid, fig.cap='The residual plot from our model with carbs as the response and calories as the explanatory variable.'}
+starbucks2 <- fortify(model1)
+ggplot(data = starbucks2) + 
+  geom_hline(yintercept = 0, color = "#003A70", size = 1.5) + 
+  geom_point(aes(x = calories, y = .resid), size = 3, color = "#CF0A2C") + 
+  labs(x = "Calories", y = "Residual (g of carbs)", title = "Residual plot: modeling carbs with calories") + 
+  theme_csafe() + 
+  theme(plot.title = element_text(size = rel(.9)))
+```
+
+The residual plot, if the model were a good fit, would look like a random "cloud" of points above and below the zero line. This plot shows a distinct pattern that we don't want: as the value on the $x$-axis increases, the residuals get larger (in absolute value). You can see that there is a funnel-like shape (that looks like "<") starting with low variability at 0 and flaring out as calories increases. This means that the variability in carb grams increases with calories, which is not how a linear model should look. So, this is not a good model for this data. 
+
+### Problem 2
+
+The `openintro` package contains a dataset called `absenteeism` that consists of data on 146 schoolchildren in a rural area of Australia. Spend some time reading the help file of this dataset. We are interested in seeing if the ethnicity (aboriginal or not), sex (male or female), and learning ability (average or slow) of the children affects the number of days they are absent from school. 
+
+1. Convert the `Eth`, `Sex`, and `Lrn` variables to binary variables. One way to do this is with the function `ifelse()`. You should construct them so that
+    a. `Eth = 1` if the student is not aboriginal and `Eth = 0` if the student is aboriginal;  
+    b. `Sex = 1` if the student is male and `Sex = 0` if the student is female;
+    c. `Lrn = 1` if the student is a slow learner and `Lrn = 0` is the student is an average learner. 
+2. Fit a linear model to the data with `Days` as the dependent variable and the three variables mentioned in (1) as explanatory variables. 
+3. Write the fitted model out using mathematical notation.  Make sure you define the variables you use. Interpret all of the coefficients (including the intercept) in context. 
+4. Find and interpret the adjusted $R^2$ value for this model. 
+5. Create a residual plot. Describe what you see in the residual plot. Does the model look like a good fit? 
+6. Below is some data on new children in the school system. Predict the number of days each student will be absent, and display these predictions with the new data in a table.
+
+```{r, eval=FALSE}
+library(tidyverse)
+newdata <- data_frame(Eth = c(1,1,1,0,0),
+                      Sex = c(0,1,0,1,0),
+                      Lrn = c(0,0,1,1,0)) 
+```
+
+#### Solution
+
+We want to know about the effects of enthicity, sex, and learning ability on student absenteeism in rural Australia. We will use multiple regression to do this. The data look something like this: 
+
+```{r head}
+data("absenteeism")
+head(absenteeism)
+```
+
+First, we need to recode the `Eth`, `Sex`, and `Lrn` data to be coded as 0-1.  The first variable, $X_1$ is ethnicity of the student. This is stored as `A` in the data if the student is aboriginal, and `N` if the student is nonaboriginal. We will set `Eth = 1` if the student is not aboriginal and `Eth = 0` if the student is aboriginal. The second variable, $X_2$ is the sex of the student, either male or female. We will set `Sex = 1` if the student is male and `Sex = 0` if the student is female. The final covairate, $X_3$ is the learning ability of a student, either a slow or an average learner. We set `Lrn = 1` if the student is a slow learner and `Lrn = 0` if the student is an average learner. Here is one way create these variables: 
+
+```{r recode}
+absenteeism <- absenteeism %>%
+  mutate(Eth = ifelse(Eth == "N", 1, 0), 
+         Sex = ifelse(Sex == "M", 1, 0), 
+         Lrn = ifelse(Lrn == "SL", 1, 0))
+```
+
+In order to determine the relationship between these three variables and the response variable, $Y$ the number of days absent from school, we use multiple regression: 
+
+```{r mr}
+model2 <- lm(Days ~ Eth + Sex + Lrn , data = absenteeism)
+model2 
+```
+
+The fitted model is: 
+$$Y = 18.932 - 9.112\cdot X_1 + 3.104 \cdot X_2 + 2.154 \cdot X_3$$
+
+For students who are aboriginal, female, and average learners (so, $X_1 = X_2 = X_3 = 0$), we expect them to miss 18.932, or about 19, days of school, on average. If all else is held constant, we expect students who are nonaboriginal to miss 9.112, or about 9, fewer days of school than students who are aboriginal. Similarly, we expect males to miss about 3 (3.104) more days of school than females, on average, and we expect students who are slow learners to miss about 2.154 more days, on average, than students who are average learners. 
+
+The adjusted $R^2$ value is: 
+```{r r22}
+summary(model2)$adj.r.squared
+```
+
+So, about 7% of the variability in days of school missed can be explained with the multiple regression model. 
+
+Another way to look at the model is a residual plot with the observed response variable on the $x$-axis and the residual on the $y$-axis. 
+
+```{r resid2}
+dat <- fortify(model2)
+ggplot(data = dat) + 
+  geom_hline(yintercept = 0, color = "#003A70", size = 1.5) + 
+  geom_point(aes(x = Days, y = .resid), size = 2.5, color = "#CF0A2C") + 
+  labs(x = "# of days missed", y = "Residual", title = "Residual plot: missing school") + 
+  theme_csafe() + 
+  theme(plot.title = element_text(size = rel(.9)))
+```
+
+We see an obivous pattern: the residual value increases as the number of days missed increases. This plot, combined with the adjusted $R^2$ value, indicates that we are totally failing to learn anything about the number of days of school missed with this model. There is clearly some variable we are missing that is more important than sex, ethnicity, or learning ability. 
+
+Next, we predict the number of days missed for each of the new students. 
+
+```{r newstud}
+newdata <- data_frame(Eth = c(1,1,1,0,0),
+                      Sex = c(0,1,0,1,0),
+                      Lrn = c(0,0,1,1,0))
+newdata <- newdata %>% 
+  mutate(Days_Missed = predict(model2, newdata = newdata))
+```
+
+If we had to use this model, we would predict the number of days that these new students would miss to be: 
+
+```{r newstudtab, echo=FALSE, results='asis'}
+knitr::kable(newdata, digits = c(0,0,0,2))
+```
+
+### Problem 3
+
+The `openintro` package contains a dataset called `orings` that contains information on 23 NASA space shuttle launches. Spend some time reading the help file of this dataset.
+
+1. Each row of the data represents a different shuttle mission. Examine these data and describe what you observe with respect to the relationship between temperatures and damaged O-rings.
+2. Run the following code to create a new dataset called `orings2`
+```{r, eval = FALSE}
+library(openintro)
+data("orings")
+orings2 <- NULL
+for(i in 1:nrow(orings)){
+  new <- data.frame(temp = orings$temp[i], # for each row in orings,
+                    fail = rep(c(1,0), c(orings$damage[i], # create 6 new rows:
+                                     6-orings$damage[i]))) # 1 for each launch
+  orings2 <- rbind(orings2, new)
+}
+```
+3. Using `orings2`, fit a logistic regression to the data using the `glm` function. 
+4. Write out the full logistic model using the point estimates of the model parameters.  Make sure you define the variables you use.
+5. Interpret the coefficient for temperature: How does an increase of the temperature by 1 degree affect the odds that the O-ring in the shuttle will be damaged? 
+6. After the [Challenger Explosion](https://en.wikipedia.org/wiki/Space_Shuttle_Challenger_disaster) in January of 1986, an investigation was done to determine the cause. The investigation found that the explosion was caused by damage to the O-ring, which was in turn due to the low temperature during the shuttle launch. Based on the model, do you think the investigation was correct? Explain.
+7. Predict the probability of a damaged O-ring for each temperature value from 53-81 (i.e. `53:81`). Create a plot showing the observed data (in `orings2`) as points ($x$ = temp, $y$ = fail) and draw a line through the predicted probabilities at each temperature value from 53-81. Describe what you see in the plot. 
+
+#### Solution 
+
+The dataset `orings` in the `openintro` package looks like this: 
+
+```{r, echo=FALSE, eval=FALSE, results='asis'}
+orings_table <- data.frame(t(orings))
+names(orings_table) <- orings_table[1,]
+orings_table <- orings_table[-1, ]
+knitr::kable(orings_table)
+```
+
+| temp  | 53| 57| 58| 63| 66| 67| 67| 67| 68| 69| 70| 70| 70| 70| 72| 73| 75| 75| 76| 76| 78| 79| 81|
+|:------|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|
+|damage |  5|  1|  1|  1|  0|  0|  0|  0|  0|  0|  1|  0|  1|  0|  0|  0|  0|  1|  0|  0|  0|  0|  0|
+
+The most damaged o-rings occur at lower temperatures, below 64. Of the 11 damaged o-rings, 8 occurred whent the temperature was below 64 degrees Fahrenheit. The following code creates a dataset appropriate for logistic regression. It creates a 1 for every damaged o-ring at each temperature, and creates 0s when there are no failures. Each temperature has 6 total observations, so a 1 is created for every damage, and the remaining observations (out of 6) are 0s. 
+
+```{r orings2}
+library(openintro)
+data("orings")
+orings2 <- NULL
+for(i in 1:nrow(orings)){
+  new <- data.frame(temp = orings$temp[i], # for each row in orings,
+                    fail = rep(c(1,0), c(orings$damage[i], # create 6 new rows:
+                                     6-orings$damage[i]))) # 1 for each launch
+  orings2 <- rbind(orings2, new)
+}
+```
+
+Now that the data is in the proper tidy form, we can fit a logistic regression: 
+
+```{r logreg}
+model3 <- glm(fail ~ temp, data = orings2, family = "binomial")
+coef(model3)
+```
+
+The full model is: 
+
+$$Y \sim Bern(p)$$
+$$logit(p) = 11.663 - 0.216\cdot X$$
+
+where $Y$ is an indicator variable that is 1 if the o-ring was damaged and 0 otherwise, and $X$ is the temperature (in degrees Farenheit) on the day of the launch. The probability that the o-ring fails is $p$. 
+
+The coefficient for temperature is -0.216. To interpret it, we compute $e^{-0.216} = 0.806$. One way to interpret this value is that for every additional degree Fahrenheit, the odds that the o-ring will be damaged are about 80.6% of the odds at the lower temperature. In other words, the increase in temperature decreases the odds of a damaged o-ring by about 20%. Another way to interpret this is to take the reciprocal, $\frac{1}{0.806} = 1.241$, and talk about the change in odds when the temperature *decreases*. Thus, when the temperature *decreases* by one degree, the odds that the o-ring will be damaged increase by a factor of about 1.24 times.
+
+The investigation into the Challenger Explosion found that the low temperature during the launch caused the o-ring to be damaged, which in turn caused the explosion. Our logistic regression supports the theory that lower temperatures increase the likelihood of o-ring damage. The lowest temperature in our data is 53 degrees F. The temperature on the day of the Challenger launch was 31 degrees F.[^1]
+
+Finally, we look at the predictions from our model with the observed 0-1 values for all temperatures in our range of observations.
+
+```{r predmod3, fig.cap="Observed failures (in red points) and predicted damage probability (in blue line) from the logistic regression on the o-ring data."}
+newdata <- data.frame(temp = 53:81)
+newdata <- newdata %>% 
+  mutate(pred_prob = predict(model3, newdata = newdata, type = "response"))
+ggplot(data = orings2) + 
+  geom_line(data = newdata, aes(x= temp , y= pred_prob), color = "#003A70", 
+            size = 1.5) + 
+  geom_point(aes(x = temp, y = fail), size = 2.5, color = "#CF0A2C", alpha = .3) + 
+  theme_csafe() + 
+  labs(x = "Temperature (degrees F)", y = "Probability of Damaged O-ring",
+       title = "Observed and Predicted Failure probabilities", 
+       subtitle = "Did low temperatures cause damaged o-rings?") + 
+  theme(plot.title = element_text(size = rel(.9)), plot.subtitle = element_text(size = rel(.7)))
+```
+
+In the figure above, the darker points represent many observations at that temperature. What we see is that as the temperature decreases and the observed number of failures decreases, the predicted probability of damage decreases and becomes about zero at temperatures higher than 70 degrees F. The highest probability of damage is about 55% at the lowest observed temperature, 53 degrees F. In addition, there appears to be a big change in slope at about 62 degrees F, meaning that the probability of damage decreases more slowly after that point. 
+
+The plot below was not required, but shows the predictions from the model outside the range of observations. Typically, extrapolation like this should not be used in a real-world context. This is for demonstration purposes only. 
+
+```{r extrap, echo = FALSE}
+extrapolated <- data.frame(temp = 31:52)
+extrapolated <- extrapolated %>% 
+  mutate(pred_prob = predict(model3, newdata = extrapolated, type = "response"))
+extrapolated2 <- data.frame(temp = 81:100)
+extrapolated2 <- extrapolated2 %>% 
+  mutate(pred_prob = predict(model3, newdata = extrapolated2, type = "response"))
+ggplot(data = orings2) + 
+  geom_line(data = newdata, aes(x= temp , y= pred_prob), color = "#003A70", 
+            size = 1.5) + 
+  geom_line(data = extrapolated, aes(x= temp , y= pred_prob), color = "#003A70", 
+            size = 1.5, linetype = "dotted", alpha = .5) +
+  geom_line(data = extrapolated2, aes(x= temp , y= pred_prob), color = "#003A70", 
+            size = 1.5, linetype = "dotted", alpha = .5) + 
+  geom_point(aes(x = temp, y = fail), size = 2.5, color = "#CF0A2C", alpha = .3) + 
+  theme_csafe() + 
+  labs(x = "Temperature (degrees F)", y = "Probability of Damaged O-ring",
+       title = "Extrapolated predictions of o-ring failure" ,
+       subtitle = "for temperatures outside the range of observation") + 
+  theme(plot.title = element_text(size = rel(.9)), plot.subtitle = element_text(size = rel(.7)))
+```
+
+[^1]: Though it is unwise to predict for data outside of our range of observation, the model we built predicts a probability of failure of 0.993 for a temperature of 31 degrees F. 
