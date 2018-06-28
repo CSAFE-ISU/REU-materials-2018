@@ -1,0 +1,12 @@
+name: Char-ID-App
+title: Char-ID-App
+username:
+account: sctyner
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 369309
+bundleId: 1454431
+url: https://sctyner.shinyapps.io/Char-ID-App/
+when: 1530195707.1724
+asMultiple: FALSE
+asStatic: FALSE
