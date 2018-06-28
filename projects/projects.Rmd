@@ -1,0 +1,106 @@
+---
+title: "Project Introduction"
+author: "Sam Tyner"
+date: "6-28-2018"
+output:
+  xaringan::moon_reader:
+    css: ["default", "csafe.css", "csafe-fonts.css"]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+class: inverse
+# Project #1 
+
+---
+class: primary
+# Project #1
+
+**Goal**: Uncover insights into how jurors decide on a verdict in a mock trial 
+
+- Data
+- Research Question
+- Methods 
+
+---
+class: primary
+# Data
+
+- 600 participants took a survey 
+- Recruited through Amazon Mechanical Turk 
+- Survey structure: 
+    * Read a case summary with inconclusive forensic evidence
+    * Make a verdict, estimate guilt probability
+    * Read an experimental condition: one of eight conditions, four evidence types (fiber, shoe, finger, DNA) and two strengths (random match probability of 1 in 100, 1 in 1 million)
+    * Make a verdict, estimate guilt probability again
+    * Answer some questions looking for comprehension of the materials 
+    * Answer demographic information questions 
+- Dataset has information on experimental condition, each participant's verdict, all their survey responses, and self-reported demographic information     
+    
+---
+class: primary
+# Research Questions
+
+> Which demographic characteristics are most associated with mock jurors returning a guilty verdict before seeing the forensic evidence? After seeing the forensic evidence? 
+
+> Which characteristics, accounting for the different experimental conditions, are most associated with someone changing their verdict from not guilty to guilty? 
+
+> Does someone's confidence in their scientific & mathematical ability seem to be associated with their final verdict? 
+
+---
+class: primary
+# Methodology
+
+### Logistic regression
+
+---
+class: inverse
+# Project #2 
+
+---
+class: primary
+# Project #2
+
+**Goal**: Create and classify a dataset of handwritten letters, building a model for determining the letter written in a handwritten document. 
+
+- Data
+- Research Question
+- Methods 
+
+---
+class: primary
+# Data
+
+[CVL Database](https://cvl.tuwien.ac.at/research/cvl-databases/an-off-line-database-for-writer-retrieval-writer-identification-and-word-spotting/)
+
+Hundreds of handwritten images of 7 paragraphs from 310 writers
+
+- 27 writers wrote all 7 paragraphs (6 in English, 1 in German)
+- 283 writers wrote 5 of the 7 paragraphs 
+
+You will create a database of letters, size 28 x 28 pixels from this dataset using an online app. 
+
+---
+class: primary
+# Research Question
+
+> Can you train a classifier to classify the letters in your database of handwritten letters with low error rate? 
+
+> Which features in handwritten letters are most important to classification? 
+
+---
+class: primary
+# Methods 
+
+### Shiny App for collecting data 
+
+###Classification methods 

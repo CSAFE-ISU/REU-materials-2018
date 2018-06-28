@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Project Introduction</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Sam Tyner" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="csafe.css" type="text/css" />
+    <link rel="stylesheet" href="csafe-fonts.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Project Introduction
+### Sam Tyner
+### 6-28-2018
+
+---
+
+
+
+
+class: inverse
+# Project #1 
+
+---
+class: primary
+# Project #1
+
+**Goal**: Uncover insights into how jurors decide on a verdict in a mock trial 
+
+- Data
+- Research Question
+- Methods 
+
+---
+class: primary
+# Data
+
+- 600 participants took a survey 
+- Recruited through Amazon Mechanical Turk 
+- Survey structure: 
+    * Read a case summary with inconclusive forensic evidence
+    * Make a verdict, estimate guilt probability
+    * Read an experimental condition: one of eight conditions, four evidence types (fiber, shoe, finger, DNA) and two strengths (random match probability of 1 in 100, 1 in 1 million)
+    * Make a verdict, estimate guilt probability again
+    * Answer some questions looking for comprehension of the materials 
+    * Answer demographic information questions 
+- Dataset has information on experimental condition, each participant's verdict, all their survey responses, and self-reported demographic information     
+    
+---
+class: primary
+# Research Questions
+
+&gt; Which demographic characteristics are most associated with mock jurors returning a guilty verdict before seeing the forensic evidence? After seeing the forensic evidence? 
+
+&gt; Which characteristics, accounting for the different experimental conditions, are most associated with someone changing their verdict from not guilty to guilty? 
+
+&gt; Does someone's confidence in their scientific &amp; mathematical ability seem to be associated with their final verdict? 
+
+---
+class: primary
+# Methodology
+
+### Logistic regression
+
+---
+class: inverse
+# Project #2 
+
+---
+class: primary
+# Project #2
+
+**Goal**: Create and classify a dataset of handwritten letters, building a model for determining the letter written in a handwritten document. 
+
+- Data
+- Research Question
+- Methods 
+
+---
+class: primary
+# Data
+
+[CVL Database](https://cvl.tuwien.ac.at/research/cvl-databases/an-off-line-database-for-writer-retrieval-writer-identification-and-word-spotting/)
+
+Hundreds of handwritten images of 7 paragraphs from 310 writers
+
+- 27 writers wrote all 7 paragraphs (6 in English, 1 in German)
+- 283 writers wrote 5 of the 7 paragraphs 
+
+You will create a database of letters, size 28 x 28 pixels from this dataset using an online app. 
+
+---
+class: primary
+# Research Question
+
+&gt; Can you train a classifier to classify the letters in your database of handwritten letters with low error rate? 
+
+&gt; Which features in handwritten letters are most important to classification? 
+
+---
+class: primary
+# Methods 
+
+### Shiny App for collecting data 
+
+###Classification methods
+    </textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function() {
+  var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})();</script>
+
+<script>
+(function() {
+  var i, text, code, codes = document.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+})();
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
